@@ -103,9 +103,9 @@
                                     {{ $category->name }}
                                 </button>
 
-                                @if ($category->sub_category->isNotEmpty())
+                                @if ($category->menu->isNotEmpty())
                                     <ul class="dropdown-menu dropdown-menu-dark">
-                                        @foreach ($category->sub_category as $subCategory)
+                                        @foreach ($category->menu as $subCategory)
                                             <li><a class="dropdown-item nav-link" href="{{ route('front.shop',[$category->slug,$subCategory->slug])}}">{{ $subCategory->name }}</a></li>
                                         @endforeach
                                     </ul>

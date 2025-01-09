@@ -1,6 +1,7 @@
+body { font-size: 15px;}
+ul, li { list-style-type: none; padding:0; margin: 0;}
 
-
-.content-header { padding:5px 0 15px 0;}
+.content-header { padding:5px 0 15px 0; background-color: #fff;}
 .content-header h1 { font-size: 1.6rem; }
 .btn { padding:7px 13px; font-size: 14px;;}
 
@@ -131,4 +132,36 @@
 .vegContainer .btn-group .btn { background-color: #ffffff; border-width: 2px;}
 .vegContainer .btn-group .active { border:2px green solid; color: green; }
 .vegContainer .btn-group .innerView { display: flex; justify-content:space-evenly;}
-.vegContainer .btn-group .innerView img { width: 10px;}
+.vegContainer .btn-group .innerView img { width: 20px;}
+
+.tableCount { position: absolute; top:12px; right:20px; padding:5px 10px; font-size: 12px; background-color: green; border-radius: 100px; color: #fff;}
+
+.showingTabls { border:1px red solid; position: absolute; top:40px; left:0;}
+
+.tab-heading-01 {
+  text-align: center;
+}
+
+.tabs { display: flex; border-bottom:1px #ccc solid; padding:0; display: 0; position: relative;}
+.tabs { list-style-type:none;}
+.tabs a {  margin-bottom: -1px;  display: block; padding: .5rem 1rem; color: #666; border:1px solid transparent; position: relative; }
+.tabs .active-tab a { color: #000; border:1px #ccc solid; border-radius: 4px 4px 0 0; background-color: #f7f7f8; }
+.tabs .active-tab a::after { content: "."; position:absolute; width: 100%; left:0; bottom:-2px; height: 2px; background-color: #f7f7f8; color: #fff;}
+.tabs .active-tab .showingTabs { padding:0 30px; display: block; position: absolute; top:40px; left:0; width: 100%; background-color: #f7f7f8; border: 1px #ccc solid; border-top:none; border-radius: 0 6px 6px 6px;}
+.showingTabs { display: none;}
+
+.tableWrapper { position: relative;}
+.status { font-size: 12px; padding:1px 8px; border-radius: 10px; height: 20px; }
+.booked { background-color: red;  color:#fff; }
+.filled { background-color: #9293a3;  color:#fff; }
+.available { background-color: #5dc720;  color:#fff; }
+.reserved { background-color: #eca214;  color:#fff; }
+
+.progressStep { display: flex; margin-top: 10px;}
+.progressStep li { margin-right: 20px; }
+.progressStep li a { display: flex; color: #666; font-size: 14px;}
+.progressStep li a.active, .progressStep li a:hover { color: #000;}
+.progressStep li a.active span, .progressStep li a:hover span { background-color: #7f57f1; color: #fff;}
+.progressStep li a span { background-color: #eeeef0; border-radius: 100px; padding:5px 3px; text-align: center; height: 32px; width: 32px; display: block; margin-right: 10px; position: relative; top:-5px; font-size: 14px;}
+
+

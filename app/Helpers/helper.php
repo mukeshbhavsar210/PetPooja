@@ -1,6 +1,7 @@
 <?php
 
 use App\Mail\OrderEmail;
+use App\Models\Area;
 use App\Models\Category;
 use App\Models\Country;
 use App\Models\Order;
@@ -9,8 +10,12 @@ use App\Models\ProductImage;
 use Illuminate\Support\Facades\Mail;
 
     function getCategories(){
-        return Category::orderBy('name','ASC')->with('sub_category')->take(4)->orderBy('id','DESC')->where('status',1)->where('showHome','Yes')->get();
-    }
+        return Category::orderBy('name','ASC')->with('menu')->take(4)->orderBy('id','DESC')->get();
+    }    
+
+    function getAreas(){
+        return Area::orderBy('name','ASC')->with('seating')->get();
+    }  
 
     function getProductImage($productId){
         return ProductImage::where('product_id',$productId)->first();

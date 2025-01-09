@@ -34,7 +34,7 @@ class UserController extends Controller
             'name' => 'required',
             'password' => 'required|min:5',
             'email' => 'required|email|unique:users',
-            'phone' => 'required',
+            'role' => 'required'
         ]);
 
         if($validator->passes()){
@@ -42,8 +42,7 @@ class UserController extends Controller
             $user = new User;
             $user->name = $request->name;
             $user->email = $request->email;
-            $user->phone = $request->phone;
-            $user->status = $request->status;
+            $user->role = $request->role;
             $user->password = Hash::make($request->password);
             $user->save();
 
