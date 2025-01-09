@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Menu;
 use App\Models\Product;
 use App\Models\ProductImage;
 use App\Models\SubCategory;
@@ -19,9 +20,9 @@ class ProductController extends Controller
 {
 
     public function index(Request $request){
+        $data = [];
         $products = Product::latest('id')->with('product_images');
-        $categories = Category::orderBy('name','ASC')->get();
-       
+        $categories = Category::orderBy('name','ASC')->get();        
 
         if ($request->get('keyword') != ""){
             $products = $products->where('title', 'like', '%'.$request->keyword.'%');
@@ -30,10 +31,13 @@ class ProductController extends Controller
         $products = $products->paginate();
 
         $data['products'] = $products;
-        $data['categories'] = $categories;
+        $data['categories'] = $categories;        
 
-        return view ('admin.products.list',$data);
+        return view ('admin.products.list', $data);
     }
+
+
+
 
     public function create(){
         $data = [];
@@ -44,6 +48,7 @@ class ProductController extends Controller
 
         return view('admin.products.create', $data);
     }
+
 
     public function store(Request $request){
         $rules = [
@@ -60,10 +65,11 @@ class ProductController extends Controller
 
             $product = new Product;
             $product->title = $request->title;            
+            $product->category_id = $request->category;
+            $product->menu_id = $request->menu;
             $product->description = $request->description;
-            $product->price = $request->price;            
-            // $product->category_id = $request->category;
-            // $product->sub_category_id = $request->sub_category;
+            $product->price = $request->price;
+            $product->veg_nonveg = $request->veg_nonveg;
             $product->save();
 
         if (!empty($request->image_array)) {
@@ -96,7 +102,7 @@ class ProductController extends Controller
                 $destPath = public_path().'/uploads/product/small/'.$imageName;
                 $manager = new ImageManager(new Driver());
                 $image = $manager->read($sourcePath);
-                $image->cover(300,300);
+                $image->cover(400,300);
                 $image->save($destPath);
             }
         }
@@ -116,8 +122,9 @@ class ProductController extends Controller
         }
     }
 
-    public function edit($id, Request $request){
 
+
+    public function edit($id, Request $request){
         $product = Product::find($id);
 
         if (empty($product)) {
@@ -126,24 +133,15 @@ class ProductController extends Controller
 
         //Fetch Product Images
         $productImages = ProductImage::where('product_id',$product->id)->get();
-        $subCategories = SubCategory::where('category_id',$product->category_id)->get();
-
-        //Fetch Related products
-        $relatedProducts = [];
-        if ($product->related_products != '') {
-            $productArray = explode(',',$product->related_products);
-            $relatedProducts = Product::whereIn('id',$productArray)->get();
-        }
+        $subCategories = Menu::where('category_id',$product->category_id)->get();
+        $categories = Category::orderBy('name','ASC')->get();
 
         $data = [];
-        $categories = Category::orderBy('name','ASC')->get();
-        $brands = Brand::orderBy('name','ASC')->get();
+        
         $data['categories'] = $categories;
-        $data['brands'] = $brands;
         $data['product'] = $product;
         $data['subCategories'] = $subCategories;
-        $data['productImages'] = $productImages;
-        $data['relatedProducts'] = $relatedProducts;
+        $data['productImages'] = $productImages;        
 
         return view('admin.products.edit',$data);
     }

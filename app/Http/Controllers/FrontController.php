@@ -11,11 +11,9 @@ use Illuminate\Support\Facades\Validator;
 
 class FrontController extends Controller
 {
-    public function index(){
-        $products = Product::where('is_featured','Yes')->orderBy('id','DESC')->take(4)->where('status',1)->get();
-        $latestProducts = Product::orderBy('id','DESC')->where('status',1)->take(4)->get();
-        $data['latestProducts'] = $latestProducts;
-        $data['featuredProducts'] = $products;        
+    public function index(){        
+        $latestProducts = Product::orderBy('id','DESC')->take(4)->get();
+        $data['latestProducts'] = $latestProducts;              
         return view("front.home.index",$data);
     }
 

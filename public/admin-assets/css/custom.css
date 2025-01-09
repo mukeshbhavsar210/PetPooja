@@ -1,6 +1,6 @@
 
 
-.content-header { padding:15px 10px;}
+.content-header { padding:5px 0 15px 0;}
 .content-header h1 { font-size: 1.6rem; }
 .btn { padding:7px 13px; font-size: 14px;;}
 
@@ -9,9 +9,14 @@
 .main-header { position: fixed; width: 82%; top:0; left:0;}
 .main-sidebar { position: fixed !important;}
 
-.content-wrapper { margin-top: 55px; }
-
-.nav-sidebar li { border-bottom: 1px #666 dotted; padding: 4px 0 1px 0;}
+.content-wrapper { margin-top: 55px; background-color: #ffffff; padding:10px 20px; }
+.sidebar { padding:10px 20px;}
+.sidebar-mini .main-sidebar .nav-link { width: 100%;}
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link { background-color: #6e62e5; }
+.nav-pills .nav-link:not(.active):hover { color: #fff; background-color: #6e62e5;  }
+.nav-sidebar .nav-link p { font-size: 14px; } 
+.main-sidebar { border-right:1px #ccc solid; }
+.nav-sidebar li { padding: 4px 0 1px 0;}
 .nav-sidebar li .nav-link { padding:8px;}
 
 .w-4 {
@@ -47,6 +52,17 @@
 
 .alert { position: absolute; top:-46px; left:40%; z-index:9999; width: 400px; padding:8px 13px;}
 .alert .close { padding:7px 10px;}
+
+
+.form-group { margin-bottom: 10px; }
+.form-group label { font-size: 12px; font-weight: normal !important; margin-bottom: 5px; text-transform: uppercase; }
+.form-group .req { color:red; margin-left: 5px; font-weight: bold;}
+
+.accordion .card-body { padding:25px 35px;}
+.accordion .card h4 { font-size: 20px; margin-bottom: 0; padding:8px 15px; cursor: pointer;}
+
+.accordion>.card>.card-header { border-bottom: 1px #ccc solid !important;;}
+
 
 
 .modal{
@@ -103,3 +119,16 @@
 
 
 }
+
+
+.btn-check {
+  position: absolute;
+  clip: rect(0, 0, 0, 0);
+  pointer-events: none;
+}
+
+.vegContainer .btn-group { width: 100%; display: flex; font-size: 14px;}
+.vegContainer .btn-group .btn { background-color: #ffffff; border-width: 2px;}
+.vegContainer .btn-group .active { border:2px green solid; color: green; }
+.vegContainer .btn-group .innerView { display: flex; justify-content:space-evenly;}
+.vegContainer .btn-group .innerView img { width: 10px;}
