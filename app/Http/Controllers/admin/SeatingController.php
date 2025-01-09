@@ -3,45 +3,51 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Area;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Category;
-use App\Models\Menu;
+use App\Models\Seating;
+use App\Models\Table;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
 
-class TableController extends Controller
+class SeatingController extends Controller
 {
     public function index(Request $request){
-        $categories = Category::orderBy('name','ASC')->get();
-        $menus = Menu::orderBy('name','ASC')->get();        
+        $seatings = Seating::orderBy('name','ASC')->get();
+        $areas = Area::orderBy('name','ASC')->with('seating')->get();
 
         $data = [];
-        $data['categories'] = $categories;
-        $data['menus'] = $menus;
-
-        //dd($subCategories);
-
-        return view('admin.sub_category.list', $data);      
+        $data['seatings'] = $seatings;
+        $data['areas'] = $areas;
+        
+        return view('admin.seatings.list', $data);      
     }
 
+
+    function getAreas(){
+        return Area::orderBy('name','ASC')->with('seating')->take(4)->orderBy('id','DESC')->get();
+    }
 
 
     public function store(Request $request){
         $validator = Validator::make($request->all(), [
-            'name' => 'required',           
+            'name' => 'required',    
+            'area_id' => 'uniq',         
         ]);
 
         if ($validator->passes()) {
-            $menu = new Menu();
-            $menu->name = $request->name;
-            $menu->category_id = $request->category;
+            $menu = new Seating();
+            $menu->area_id = $request->area;
+            $menu->name = $request->name;            
+            $menu->seating_capacity = $request->seating_capacity;
             $menu->save();
 
-            $request->session()->flash('success', 'Menu added successfully');
+            $request->session()->flash('success', 'Table added successfully');
 
             return response([
                 'status' => true,
-                'message' => 'Menu added successfully',
+                'message' => 'Table added successfully',
             ]);
 
         } else {
@@ -64,7 +70,7 @@ class TableController extends Controller
         $categories = Category::orderBy('name','ASC')->get();
         $data['categories'] = $categories;
         $data['subCategory'] = $subCategory;
-        return view("admin.sub_category.edit", $data);
+        return view("admin.seatings.edit", $data);
     }
 
     public function update($id, Request $request){

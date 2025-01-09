@@ -5,11 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Category extends Model
+class Seating extends Model
 {
-    use HasFactory;
+    use HasFactory;    
 
-    public function menu(){
-        return $this->hasMany(Menu::class);
+    public function area(){
+        return $this->belongsTo(Area::class);
     }
 }

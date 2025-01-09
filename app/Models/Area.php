@@ -9,7 +9,11 @@ class Area extends Model
 {
     use HasFactory;
 
-    public function table(){
-        return $this->hasMany(SubCategory::class);
+    public function seating(){
+        return $this->hasMany(Seating::class);
+    }
+
+    public function menu(){
+        return $this->hasMany(Menu::class);
     }
 }

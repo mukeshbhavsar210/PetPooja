@@ -23,29 +23,29 @@
                         <div class="card-body">
                             <div class="accordion accordion-flush" id="accordionExample">                    
                                 @if ($categories->isNotEmpty())
-                                    @foreach ($categories as $key => $category)
+                                    @foreach ($categories as $key => $value)
                                         <div class="accordion-item">
-                                            @if ($category->sub_category->isNotEmpty())
+                                            @if ($value->menu->isNotEmpty())
                                                 <h2 class="accordion-header" id="headingOne">
                                                     <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne-{{ $key }}" aria-expanded="false" aria-controls="collapseOne-{{ $key }}">
-                                                        {{ $category->name }}
+                                                        {{ $value->name }}
                                                     </button>
                                                 </h2>
                                             @else
                                                 <a href="{{ route("front.shop",$category->slug) }}" class="nav-item nav-link  {{ ($categorySelected == $category->id) ? 'text-primary' : '' }}">{{ $category->name }}</a>
                                             @endif
                     
-                                            @if ($category->sub_category->isNotEmpty())
+                                            {{-- @if ($categories->menu->isNotEmpty())
                                                 <div id="collapseOne-{{ $key }}" class="accordion-collapse collapse {{ ($categorySelected == $category->id) ? 'show' : ' '}}" aria-labelledby="headingOne" data-bs-parent="#accordionExample" style="">
                                                     <div class="accordion-body">
                                                         <div class="navbar-nav">
-                                                            @foreach ($category->sub_category as $subCategory)
+                                                            @foreach ($categories->menu as $subCategory)
                                                                 <a href="{{ route("front.shop",[$category->slug,$subCategory->slug]) }}" class="nav-item nav-link {{ ($subCategorySelected == $subCategory->id) ? 'text-primary' : '' }}">{{ $subCategory->name }}</a>
                                                             @endforeach
                                                         </div>
                                                     </div>
                                                 </div>
-                                            @endif
+                                            @endif --}}
                                         </div>
                                     @endforeach
                                 @endif
@@ -54,23 +54,7 @@
                     </div>
                     {{-- Categories filters end  --}}
                                         
-                    <div class="sub-title mt-5"><h2>Brand</h3></div>                    
-                    <div class="card">
-                        <div class="card-body">
-                            @if ($brands->isNotEmpty())
-                                @foreach ($brands as $brand)
-                                    <div class="form-check mb-2">
-                                        <input {{ (in_array($brand->id, $brandsArray)) ? 'checked' : '' }} class="form-check-input brand-label" type="checkbox" name="brand[]" value="{{ $brand->id }}" id="brand-{{ $brand->id }}">
-                                        <label class="form-check-label" for="brand-{{ $brand->id }}">
-                                            {{ $brand->name }}
-                                        </label>
-                                    </div>
-                                @endforeach
-                            @endif
-                        </div>
-                    </div>
-                    {{-- Brand filters end --}}                    
-                    
+                   
                     <div class="sub-title mt-5"><h2>Price</h3></div>                    
                     <div class="card">
                         <div class="card-body">
@@ -82,29 +66,17 @@
 
                 <div class="col-md-9">
                     <div class="row pb-3">
-                        <div class="col-12 pb-1">
-                            <div class="d-flex align-items-center justify-content-end mb-4">
-                                <div class="ml-2">
-                                    <select name="sort" id="sort" class="form-control">
-                                        <option value="Latest" {{ ($sort == 'latest') ? 'selected' : ' ' }}>Latest</option>
-                                        <option value="price_desc" {{ ($sort == 'price_desc') ? 'selected' : ' ' }}>Price High</option>
-                                        <option value="price_asc" {{ ($sort == 'price_asc') ? 'selected' : ' ' }}>Price Low</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    
                         @if ($products->isNotEmpty())
-                            @foreach ($products as $product)
+                            @foreach ($products as $value)
                                 @php
-                                    $productImage = $product->product_images->first();
+                                    $productImage = $value->product_images->first();
                                 @endphp
                     
                                 <div class="col-md-4">
                                     <div class="card product-card">
                                         <div class="product-image position-relative">
                     
-                                            <a href="{{ route('front.product',$product->slug) }}" class="product-img">
+                                            <a href="{{ route('front.product',$value->slug) }}" class="product-img">
                                                 @if (!empty($productImage->image))
                                                     <img class="card-img-top" src="{{ asset('uploads/product/small/'.$productImage->image) }}" >
                                                 @else
@@ -112,35 +84,9 @@
                                                 @endif
                                             </a>
                     
-                    
-                                            <a onclick="addToWishlist({{ $product->id }})" class="whishlist" href="javascript:void(0)"><i class="far fa-heart"></i></a>
-                    
-                                            <div class="product-action">
-                                                @if ($product->track_qty == 'Yes')
-                                                    @if ($product->qty > 0)
-                                                        <a class="btn btn-dark" href="javascript:void(0);" onclick="addToCart({{ $product->id }})">
-                                                            <i class="fa fa-shopping-cart"></i> Add To Cart
-                                                        </a>
-                                                    @else
-                                                        <a class="btn btn-dark" href="javascript:void(0);">
-                                                            <i class="fa fa-shopping-cart"></i> Out of Stock
-                                                        </a>
-                                                    @endif
-                                                @else
-                                                <a class="btn btn-dark" href="javascript:void(0);" onclick="addToCart({{ $product->id }})">
-                                                    <i class="fa fa-shopping-cart"></i> Add To Cart
-                                                </a>
-                                                @endif
-                                            </div>
                                         </div>
                                         <div class="card-body text-center mt-3">
                                             <a class="h6 link" href="product.php">{{ $product->title }}</a>
-                                            <div class="price mt-2">
-                                                <span class="h5"><strong>₹{{ $product->price }}</strong></span>
-                                                @if ($product->compare_price > 0)
-                                                    <span class="h6 text-underline"><del>₹{{ $product->compare_price }}</del></span>
-                                                @endif
-                                            </div>
                                         </div>
                                     </div>
                                 </div>

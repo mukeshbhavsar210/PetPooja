@@ -29,37 +29,21 @@
                                 <p></p>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="email">Email</label>
-                                <input type="text" name="email" id="email" class="form-control" placeholder="Email">
-                                <p></p>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="mb-3">
-                                <label for="password">Password</label>
-                                <input type="password" name="password" id="password" class="form-control" placeholder="Password">
-                                <p></p>
-                            </div>
-                        </div>
                         <div class="col-md-3">
                             <div class="mb-3">
-                                <label for="phone">Phone</label>
-                                <input type="text"  name="phone" id="phone" class="form-control" placeholder="Phone">
+                                <label for="role">Role</label>
+                                <select name="role" id="role" class="form-control">
+                                    <option value="">Select Role</option>
+                                    <option value="Admin">Admin</option>
+                                    <option value="Branch_head">Branch Head</option>
+                                    <option value="Chef">Chef</option>
+                                    <option value="Waiter">Waiter</option>
+                                </select>
                                 <p></p>
                             </div>
                         </div>
 
-                        <div class="col-md-3">
-                            <div class="mb-3">
-                                <label for="status">Status</label>
-                                <select name="status" id="status" class="form-control">
-                                    <option value="1">Active</option>
-                                    <option value="0">Block</option>
-                                </select>
-                            </div>
-                        </div>
+                        
                     </div>
                 </div>
             </div>
