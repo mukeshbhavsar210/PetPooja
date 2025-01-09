@@ -9,19 +9,11 @@ use App\Models\Menu;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
 
-class SubCategoryController extends Controller
+class TableController extends Controller
 {
     public function index(Request $request){
         $categories = Category::orderBy('name','ASC')->get();
-        $menus = Menu::orderBy('name','ASC')->get();
-        // $subCategories = SubCategory::select('sub_categories.*','categories.name as categoryName')
-        //     ->latest('sub_categories.id')
-        //     ->leftJoin('categories', 'categories.id', 'sub_categories.category_id');
-
-        // if(!empty($request->get('keyword'))){
-        //     $subCategories = $subCategories->where('sub_categories.name', 'like', '%'.$request->get('keyword').'%');
-        //     $subCategories = $subCategories->orWhere('categories.name', 'like', '%'.$request->get('keyword').'%');
-        // }
+        $menus = Menu::orderBy('name','ASC')->get();        
 
         $data = [];
         $data['categories'] = $categories;
@@ -32,12 +24,6 @@ class SubCategoryController extends Controller
         return view('admin.sub_category.list', $data);      
     }
 
-
-    // public function create(){
-    //     $categories = Category::orderBy('name','ASC')->get();
-    //     $data['categories'] = $categories;
-    //     return view("admin.sub_category.create", $data);
-    // }
 
 
     public function store(Request $request){

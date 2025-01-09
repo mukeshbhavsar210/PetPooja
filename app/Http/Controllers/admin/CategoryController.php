@@ -25,22 +25,18 @@ class CategoryController extends Controller
         return view('admin.category.list', compact('categories'));
     }
 
-    public function create(){
-        return view('admin.category.create');
-    }
+   
+
 
     public function store(Request $request){
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'slug' => 'required|unique:categories',
+            'name' => 'required',            
         ]);
 
         if ($validator->passes()) {
             $category = new Category();
             $category->name = $request->name;
-            $category->slug = $request->slug;
             $category->status = $request->status;
-            $category->showHome = $request->showHome;
             $category->save();
 
             // Save image here
@@ -58,7 +54,7 @@ class CategoryController extends Controller
                 $dPath = public_path().'/uploads/category/thumb/'.$newImageName;
                 $manager = new ImageManager(new Driver());
                 $image = $manager->read($sPath);
-                $image->cover(300,300);
+                $image->cover(400,300);
                 $image->save($dPath);
                 $image->save($dPath);                                  
                 $category->image = $newImageName;
