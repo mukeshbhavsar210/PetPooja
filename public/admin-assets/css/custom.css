@@ -148,7 +148,12 @@ ul, li { list-style-type: none; padding:0; margin: 0;}
 .tabs .active-tab a { color: #000; border:1px #ccc solid; border-radius: 4px 4px 0 0; background-color: #f7f7f8; }
 .tabs .active-tab a::after { content: "."; position:absolute; width: 100%; left:0; bottom:-2px; height: 2px; background-color: #f7f7f8; color: #fff;}
 .tabs .active-tab .showingTabs { padding:0 30px; display: block; position: absolute; top:40px; left:0; width: 100%; background-color: #f7f7f8; border: 1px #ccc solid; border-top:none; border-radius: 0 6px 6px 6px;}
+.tabs .active-tab .showingTabs .flexWrapper { display: flex; justify-content: space-between;} 
+.tabs .active-tab .showingTabs .flexWrapper h5 { margin: 0; font-size: 16px; margin-top: 4px; font-weight: bold; } 
+.tabs .active-tab .showingTabs .flexWrapper p { margin: 0; } 
+.tabs .active-tab .showingTabs .flexWrapper .seatCount { background-color: #6e62e5; padding:3px 10px; font-size: 12px; border-radius: 100px; color:#fff;;}
 .showingTabs { display: none;}
+.qr_code { padding-right: 20px; }
 
 .tableWrapper { position: relative;}
 .status { font-size: 12px; padding:1px 8px; border-radius: 10px; height: 20px; }

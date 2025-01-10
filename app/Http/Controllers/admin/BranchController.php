@@ -4,19 +4,22 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Area;
+use App\Models\Branch;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Flash;
+use App\Models\Category;
+use App\Models\TempImage;
+use Illuminate\Support\Facades\File;
+use Intervention\Image\ImageManager;
+use Intervention\Image\Drivers\Gd\Driver;
 
-class AreaController extends Controller {
+class BranchController extends Controller
+{
     public function index(Request $request){
-        $areas = Area::latest();
-
-        if(!empty($request->get('keyword'))){
-            $areas = $areas->where('name', 'like', '%'.$request->get('keyword').'%');
-        }
-
-        $areas = $areas->paginate(10);
-        return view('admin.areas.list', compact('areas'));
+        $branches = Branch::all();
+            
+        return view('admin.branches.index', compact('branches'));
     }
 
    

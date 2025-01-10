@@ -10,6 +10,7 @@ use App\Models\Seating;
 use App\Models\Table;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 
 class SeatingController extends Controller
 {
@@ -20,7 +21,6 @@ class SeatingController extends Controller
         $data = [];
         $data['seatings'] = $seatings;
         $data['areas'] = $areas;
-        
         return view('admin.seatings.list', $data);      
     }
 
@@ -29,8 +29,20 @@ class SeatingController extends Controller
         return Area::orderBy('name','ASC')->with('seating')->take(4)->orderBy('id','DESC')->get();
     }
 
+   
 
     public function store(Request $request){
+
+        //QR CODE
+        $number = mt_rand(1000000000, 9999999999);        
+        if($this->productCodeExists($number)){
+            $number = mt_rand(1000000000, 9999999999);
+        }
+        $request['product_code'] = $number;
+        Seating::create($request->all());
+
+
+        //Validation
         $validator = Validator::make($request->all(), [
             'name' => 'required',    
             'area_id' => 'uniq',         
@@ -59,9 +71,14 @@ class SeatingController extends Controller
     }
 
 
+    public function productCodeExists($number){
+        return Seating::whereProductCode($number)->exists();
+    }
+
+
     public function edit($id, Request $request){
 
-        $subCategory = Menu::find($id);
+        $subCategory = Seating::find($id);
         if(empty($subCategory)){
             $request->session()->flash('error','Record not found');
             return redirect()->route('sub-categories.index');
