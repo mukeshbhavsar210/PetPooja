@@ -20,7 +20,7 @@ class QrController extends Controller
         $data = [];
         $data['seatings'] = $seatings;
         $data['areas'] = $areas;
-        
+
         return view('admin.qr_codes.list', $data);      
     }
 

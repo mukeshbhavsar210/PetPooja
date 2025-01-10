@@ -104,7 +104,7 @@
                                 <div class="row">
                                     @if ($value->seating->isNotEmpty())
                                         @foreach ($value->seating as $value)
-                                        
+
                                         @if($value->status == 'Available')
                                             <div class="status available ">Available</div>
                                         @endif
@@ -124,6 +124,7 @@
                                         @if($value->seating_capacity == 2)                                      
                                             <div class="col">
                                                 <div class="tableWrapper">
+                                                   
                                                     {{ $value->name }}
                                                    <img src="{{ asset('admin-assets/img/2_chair.jpg') }}" alt="" >
                                                     {{-- <a href="{{ route('seatings.edit', $value->id ) }}">

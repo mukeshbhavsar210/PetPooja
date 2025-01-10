@@ -1,8 +1,10 @@
 <?php
 
+use App\Http\Controllers\AccountController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\AdminLoginController;
 use App\Http\Controllers\admin\AreaController;
+use App\Http\Controllers\admin\BranchController;
 use App\Http\Controllers\admin\BrandController;
 use App\Http\Controllers\admin\HomeController;
 use App\Http\Controllers\admin\CategoryController;
@@ -68,6 +70,7 @@ Route::group(['prefix' => 'account'], function(){
         Route::post('/update-address',[AuthController::class,'updateAddress'])->name('account.updateAddress');
         Route::get('/change-password',[AuthController::class,'changePasswordForm'])->name('account.changePassword');
         Route::post('/process-change-password',[AuthController::class,'changePassword'])->name('account.processChangePassword');
+        Route::post("/updatePassword",[AccountController::class, 'updatePassword'])->name('account.updatePassword');
 
         Route::get('/my-orders',[AuthController::class,'orders'])->name('account.orders');
         Route::get('/my-wishlist',[AuthController::class,'wishlist'])->name('account.wishlist');
@@ -80,7 +83,7 @@ Route::group(['prefix' => 'account'], function(){
 
 
 //Admin related
-Route::group(['prefix' => 'admin'], function(){
+Route::group(['prefix' => 'admin',], function(){
     Route::group(['middleware' => 'admin.guest'], function(){
         Route::get('/login', [AdminLoginController::class, 'index'])->name('admin.login');
         Route::post('/authenticate', [AdminLoginController::class, 'authenticate'])->name('admin.authenticate');
@@ -89,6 +92,10 @@ Route::group(['prefix' => 'admin'], function(){
     Route::group(['middleware' => 'admin.auth'], function(){
         Route::get('/dashboard', [HomeController::class, 'index'])->name('admin.dashboard');
         Route::get('/logout', [HomeController::class, 'logout'])->name('admin.logout');
+        Route::post("/updateProfilePic",[AccountController::class, 'updateProfilePic'])->name('profile.updatePic');
+        Route::post("/updateWebsite",[SettingController::class, 'update'])->name('website.update');
+        //Route::post("/updateWebsite",[SettingController::class, 'updateWebsite'])->name('website.update');
+        Route::post("/updateWebsiteLogo",[SettingController::class, 'update_logo'])->name('website.logo');
 
         //Category Routes
         Route::get('/categories', [CategoryController::class, 'index'])->name('categories.index');        
@@ -171,6 +178,20 @@ Route::group(['prefix' => 'admin'], function(){
         Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
         Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.delete');
 
+        //Settings Routes
+        Route::get('/settings', [SettingController::class, 'index'])->name('settings.index');        
+        Route::post('/settings/website_information', [SettingController::class, 'websiteInformation'])->name('settings.websiteInformation');                
+        Route::post('/settings/branch', [SettingController::class, 'branch'])->name('settings.branch');                
+
+       
+        
+        
+        //Password
+        Route::get('/change-password', [SettingController::class, 'showChangePasswordForm'])->name('admin.showChangePasswordForm');
+        Route::post('/process-change-password', [SettingController::class, 'processChangePassword'])->name('admin.processChangePassword');
+        
+        //Route::post('/process-website', [SettingController::class, 'websiteInformation'])->name('admin.website');
+
         //Pages Routes
         Route::get('/pages', [PageController::class, 'index'])->name('pages.index');
         Route::get('/pages/create', [PageController::class, 'create'])->name('pages.create');
@@ -182,9 +203,7 @@ Route::group(['prefix' => 'admin'], function(){
         //Temp image controller
         Route::post('/upload-temp-image', [TempImagesController::class, 'create'])->name('temp-images.create');
 
-        //Setting Route
-        Route::get('/change-password', [SettingController::class, 'showChangePasswordForm'])->name('admin.showChangePasswordForm');
-        Route::post('/process-change-password', [SettingController::class, 'processChangePassword'])->name('admin.processChangePassword');
+        
 
         Route::get('/getSlug', function(Request $request){
             $slug = '';

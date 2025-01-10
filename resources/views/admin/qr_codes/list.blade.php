@@ -15,7 +15,7 @@
 <section>
     <div class="container-fluid">
         @include('admin.message')
-       
+
         <ul class="tabs">
             @if (getAreas()->isNotEmpty())
                 @php
@@ -32,10 +32,23 @@
                                         @foreach ($value->seating as $value)
                                             <div class="col-md-3">
                                                 <div class="card">
-                                                    <div class="card-body">
-                                                        <h5>{{ $value->name }}</h5>
-                                                        <p>{{ $value->seating_capacity }} seats</p>
-                                                        QR CODE
+                                                    <div class="card-header">
+                                                        <div class="flexWrapper">
+                                                            <h5>{{ $value->name }}</h5>
+                                                           
+                                                            <p class="seatCount">{{ $value->seating_capacity }}</p>
+                                                        </div>
+                                                    </div>
+                                                    <div class="card-body">                                                        
+                                                        <div class="qr_code">                                                            
+                                                            {!! DNS2D::getBarcodeHTML('https://bhojan.atlasyes.com/restaurant/table/'.$value->name, 'QRCODE',6.7,6.7) !!}                                                            
+                                                        </div>                                                        
+                                                    </div>
+                                                    <div class="card-footer">
+                                                        <ul class="cardDownload">
+                                                            <li><a href="#">Download</a></li>
+                                                            <li><a href="#">View</a></li>
+                                                        </ul>                                                        
                                                     </div>
                                                 </div>
                                             </div>
