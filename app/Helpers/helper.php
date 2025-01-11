@@ -4,14 +4,19 @@ use App\Mail\OrderEmail;
 use App\Models\Area;
 use App\Models\Category;
 use App\Models\Country;
+use App\Models\Menu;
 use App\Models\Order;
 use App\Models\Page;
 use App\Models\ProductImage;
 use Illuminate\Support\Facades\Mail;
 
-    function getCategories(){
-        return Category::orderBy('name','ASC')->with('menu')->take(4)->orderBy('id','DESC')->get();
-    }    
+function getCategories(){
+    return Category::orderBy('name','ASC')->with('sub_category')->take(4)->orderBy('id','DESC')->get();
+}
+    
+    function getProducts(){
+        return Menu::orderBy('name','ASC')->orderBy('id','DESC')->get();
+    }  
 
     function getAreas(){
         return Area::orderBy('name','ASC')->with('seating')->get();

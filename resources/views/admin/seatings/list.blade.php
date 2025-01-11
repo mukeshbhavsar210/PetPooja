@@ -248,7 +248,7 @@ $(document).ready(function(){
 
     //DELETE
     function deleteMenuItem(id){
-        var url = '{{ route("sub-categories.delete","ID") }}'
+        var url = '{{ route("menu.delete","ID") }}'
         var newUrl = url.replace("ID",id)
 
         if(confirm("Are you sure you want to delete?")){
@@ -261,9 +261,9 @@ $(document).ready(function(){
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 success: function(response){
-                    window.location.href="{{ route('sub-categories.index') }}"
+                    window.location.href="{{ route('menu.index') }}"
                     /*if(response["status"]){
-                        window.location.href="{{ route('sub-categories.index') }}"
+                        window.location.href="{{ route('menu.index') }}"
                     }*/
                 }
             });

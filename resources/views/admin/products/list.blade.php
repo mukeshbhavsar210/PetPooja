@@ -14,7 +14,7 @@
     </div>
 </section>
 
-<section class="content">
+<section>
     <div class="container-fluid">
         @include('admin.message')
 
@@ -30,103 +30,109 @@
                 </div>
                 <form action="" method="post" name="productForm" id="productForm">
                     <div class="modal-body">
-                    <div class="form-group">
-                        <label for="title">Item Name</label>
-                        <input type="text" name="title" id="title" class="form-control" placeholder="Title">
-                        <p class="error"></p>
-                    </div>
-                
-                    <div class="form-group">
-                        <label for="description">Item Description</label>
-                        <textarea name="description" id="description" cols="10" rows="3" class="form-control" placeholder="Description"></textarea>
-                    </div>
-                    
-                    
-                    <div class="row">
-                        <div class="col-md-6">
-                            <div class="from-group">
-                                <label for="category">Choose Menu</label>
-                                <select name="category" id="category" class="form-control">
-                                    <option value="">Select a category</option>
-                                    @if ($categories->isNotEmpty())
-                                        @foreach ($categories as $category)
-                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                        @endforeach
-                                    @endif
-                                </select>
-                                <p class="error"></p>
+                        <div class="row">
+                            <div class="col-md-7">
+                                <div class="form-group">
+                                    <label for="title">Item Name</label>
+                                    <input type="text" name="title" id="title" class="form-control" placeholder="Title">
+                                    <p class="error"></p>
+                                </div>
+                                <input type="hidden" name="slug" id="slug" class="form-control" placeholder="slug">
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label for="price">Price</label>
+                                    <input type="number" name="price" id="price" class="form-control" placeholder="Price">
+                                    <p class="error"></p>
+                                </div>
+                            </div>
+                        
+                            <div class="col-md-7">
+                                <div class="form-group">
+                                    <label for="description">Item Description</label>
+                                    <textarea name="description" id="description" cols="5" rows="4" class="form-control" placeholder="Description"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label for="category">Choose Menu</label>
+                                    <select name="category" id="category" class="form-control">
+                                        <option value="">Select</option>
+                                        @if ($categories->isNotEmpty())
+                                            @foreach ($categories as $category)
+                                                <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                    <p class="error"></p>
+                                </div>
+                                <div class="form-group">
+                                    <label for="menu">Item category</label>
+                                    <select name="menu" id="sub_category" class="form-control">
+                                        <option value="">Select</option>
+                                    </select>
+                                </div>
+                            </div>                   
+                            <div class="col-md-7">
+                                <div class="form-group">                                                                
+                                    <label for="price">Photos</label>
+                                    <div id="image" class="dropzone dz-clickable" style="height: 100px;">
+                                        <div class="dz-message needsclick">
+                                            Drop files here or click to upload.
+                                        </div>
+                                    </div>
+                                </div>                                
+                                <div class="row" id="product-gallery"></div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="form-group">
+                                    <label for="compare_price">Office Price</label>
+                                    <input type="number" name="compare_price" id="compare_price" class="form-control" placeholder="Offer Price">
+                                    <p class="error"></p>
+                                </div>
+                                <div class="form-group">
+                                    <label for="menu">Veg/Non-Veg?</label>
+                                    <div class="vegContainer">
+                                        <div class="btn-group" name="veg_nonveg" id="options" data-toggle="buttons">
+                                            <label class="btn btn-default active">
+                                            <input type="radio" name="veg_nonveg" id="option1" class="btn-check" value="Veg">
+                                            <div class="innerView">
+                                                <img src="{{ asset('admin-assets/img/veg.svg') }}" alt="" >
+                                            </div>                                          
+                                            </label>
+        
+                                            <label class="btn btn-default" >
+                                            <input type="radio" name="veg_nonveg" id="option2" class="btn-check" value="Non-veg" >
+                                            <div class="innerView">
+                                                <img src="{{ asset('admin-assets/img/non-veg.svg') }}" alt="" >
+                                            </div>
+                                            </label>
+                                            
+                                            <label class="btn btn-default" >
+                                            <input type="radio" name="veg_nonveg" id="option3" class="btn-check" value="Egg" >
+                                            <div class="innerView">
+                                                <img src="{{ asset('admin-assets/img/egg.svg') }}" alt="" >
+                                            </div>
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="col-md-6">
-                            <div class="from-group">
-                                <label for="menu">Item category</label>
-                                <select name="menu" id="sub_category" class="form-control">
-                                    <option value="">Select a category</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="form-group">
-                        <div class="vegContainer">
-                            <div class="btn-group" name="veg_nonveg" id="options" data-toggle="buttons">
-                                <label class="btn btn-default active">
-                                  <input type="radio" name="veg_nonveg" id="option1" class="btn-check" value="Veg">
-                                  <div class="innerView">
-                                    <img src="{{ asset('admin-assets/img/veg.svg') }}" alt="" > Veg
-                                  </div>                                          
-                                </label>
 
-                                <label class="btn btn-default" >
-                                  <input type="radio" name="veg_nonveg" id="option2" class="btn-check" value="Non-veg" >
-                                  <div class="innerView">
-                                    <img src="{{ asset('admin-assets/img/non-veg.svg') }}" alt="" > Non-Veg
-                                  </div>
-                                </label>
-                                
-                                <label class="btn btn-default" >
-                                  <input type="radio" name="veg_nonveg" id="option3" class="btn-check" value="Egg" >
-                                  <div class="innerView">
-                                    <img src="{{ asset('admin-assets/img/egg.svg') }}" alt="" > Egg
-                                  </div>
-                                </label>
-                              </div>
-                        </div>
-
-                        {{-- <select name="veg_nonveg" id="veg_nonveg" class="form-control">
-                            <option value="">Select a category</option>
-                            <option value="veg">Veg</option>
-                            <option value="non-veg">Non-veg</option>
-                            <option value="egg">Egg</option>
-                        </select> --}}
+                        
                     </div>
-                    
-                    <div class="form-group">                                                                
-                        <div id="image" class="dropzone dz-clickable" style="height: 100px;">
-                            <div class="dz-message needsclick">
-                                Drop files here or click to upload.
-                            </div>
-                        </div>
-                    </div>                                
-                    <div class="row" id="product-gallery"></div>
-                    
-                    <div class="mb-2">
-                        <label for="price">Price</label>
-                        <input type="text" name="price" id="price" class="form-control" placeholder="Price">
-                        <p class="error"></p>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Create</button>
                     </div>
+                </form>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Create</button>
-                </div>
-            </form>
             </div>
         </div>
-    </div>
 
-        <div class="card">
-            <form action="" method="get" >
+        
+            {{-- <form action="" method="get" >
                 <div class="card-header">
                     <div class="card-title">
                         <button type="button" onclick="window.location.href='{{ route('products.index') }}'" class="btn btn-default btn-sm">Reset</button>
@@ -144,68 +150,64 @@
                         </div>
                     </div>
                 </div>
-            </form>
-            <div class="card-body table-responsive p-0">
-                <table class="table table-hover text-nowrap">
-                    <thead>
-                        <tr>
-                            <th width="360">Item Name</th>
-                            <th>Price</th>
-                            <th>Item Category</th>
-                            <th>Menu Name</th>
-                            <th width="100">Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if ($products->isNotEmpty())
-                            @foreach($products as $value)
-                            @php
-                                $productImage = $value->product_images->first();
-                            @endphp
-                            <tr>                                
-                                <td>
-                                    <div class="row">
-                                        <div class="col-md-3">
-                                            @if (!empty($productImage->image))
-                                                <img src="{{ asset('uploads/product/small/'.$productImage->image) }}" class="img-thumbnail" width="50" >
-                                                @else
-                                                <img src="{{ asset('admin-assets/img/default-150x150.png') }}" alt="" class="img-thumbnail" width="50"  />
-                                            @endif
-                                        </div>
-                                        <div class="col-md-9">
-                                            <p>{{ $value->title }}</p>
-                                            <p>{{ $value->description }}</p>
-                                        </div>
+            </form> --}}
+
+            <div class="row">
+                @if ($products->isNotEmpty())
+                @foreach($products as $value)
+                @php
+                    $productImage = $value->product_images->first();
+                @endphp
+              
+              <div class="col-md-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <a href="#" onclick="deleteProduct( {{ $value->id }} )" class="text-danger deleteProduct">
+                                <svg wire:loading.remove.delay="" wire:target="" class="filament-link-icon w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path	ath fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path>
+                                </svg>
+                            </a>
+                            @if (!empty($productImage->image))
+                                <img src="{{ asset('uploads/product/small/'.$productImage->image) }}" style="border-radius: 5px; width:100%;" >
+                                @else
+                                <img src="{{ asset('admin-assets/img/default-150x150.png') }}" alt="" width="200"  />
+                            @endif
+                            <div class="mt-3">
+                                <h4 class="m-0">{{ $value->title }}</h4>
+                                <p>{{ $value->description }}</p>
+                                <p class="m-0">{{ $value->category->name }}, {{ $value->menu->name }}</p>
+                            </div>
+                        </div>
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col-10">
+                                    <h4>₹{{ $value->price }}</h4>
+                                </div>
+                                <div class="col-2">
+                                    <div class="float-r">
+                                        <a href="{{ route('products.edit', $value->id) }}">
+                                            <svg class="filament-link-icon w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                                <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path>
+                                            </svg>
+                                        </a>                                        
                                     </div>
-                                </td>
-                                <td>₹{{ $value->price }}</td>                                                                
-                                <td>{{ $value->category->name }}</td>
-                                <td>{{ $value->menu->name }}</td>                               
-                                <td>
-                                    <a href="{{ route('products.edit', $value->id) }}">
-                                        <svg class="filament-link-icon w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                            <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path>
-                                        </svg>
-                                    </a>
-                                    <a href="#" onclick="deleteProduct( {{ $value->id }} )" class="text-danger w-4 h-4 mr-1">
-                                        <svg wire:loading.remove.delay="" wire:target="" class="filament-link-icon w-4 h-4 mr-1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                            <path	ath fill-rule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path>
-                                          </svg>
-                                    </a>
-                                </td>
-                            </tr>
-                            @endforeach
-                        @else
-                            <tr>
-                                <td>Records not found</td>
-                            </tr>
-                        @endif
-                    </tbody>
-                </table>
+                                </div>
+                            </div>                            
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            @else
+                <div class="card">
+                    <div class="card-body">
+                        Records not found
+                    </div>
+                </div>
+            @endif
             </div>
-            <div class="card-footer clearfix">
-                {{ $products->links() }}
-            </div>
+            
+            {{-- {{ $products->links() }} --}}
+            
         </div>
     </div>
     <!-- /.card -->
@@ -234,8 +236,22 @@
     // });
 
   
-
-
+    $('#title').change(function(){
+        element = $(this);
+        $("button[type=submit]").prop('disabled', true);
+        $.ajax({
+            url: '{{ route("getSlug") }}',
+            type: 'get',
+            data: {title: element.val()},
+            dataType: 'json',
+            success: function(response){
+                $("button[type=submit]").prop('disabled', false);
+                if(response["status"] == true){
+                    $("#slug").val(response["slug"]);
+                }
+            }
+        });
+    })
 
     //Product form add details in database
     $("#productForm").submit(function(event){
@@ -355,9 +371,5 @@
             });
         }
     }
-
-
 </script>
-
 @endsection
-

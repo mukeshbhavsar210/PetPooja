@@ -37,14 +37,10 @@ class ProductController extends Controller
     }
 
 
-
-
     public function create(){
         $data = [];
-        $categories = Category::orderBy('name','ASC')->get();
-        $brands = Brand::orderBy('name','ASC')->get();
+        $categories = Category::orderBy('name','ASC')->get();        
         $data['categories'] = $categories;
-        $data['brands'] = $brands;
 
         return view('admin.products.create', $data);
     }
@@ -62,13 +58,14 @@ class ProductController extends Controller
         $validator = Validator::make($request->all(),$rules);
 
         if ($validator->passes()) {
-
             $product = new Product;
             $product->title = $request->title;            
+            $product->slug = $request->slug;     
             $product->category_id = $request->category;
             $product->menu_id = $request->menu;
             $product->description = $request->description;
             $product->price = $request->price;
+            $product->compare_price = $request->compare_price;
             $product->veg_nonveg = $request->veg_nonveg;
             $product->save();
 
@@ -93,9 +90,9 @@ class ProductController extends Controller
                 $destPath = public_path().'/uploads/product/large/'.$imageName;
                 $manager = new ImageManager(new Driver());
                 $image = $manager->read($sourcePath);
-                $image->resize(1000, null, function ($constraint) {
-                    $constraint->aspectRatio();
-                });
+                // $image->resize(1000, null, function ($constraint) {
+                //     $constraint->aspectRatio();
+                // });
                 $image->save($destPath);
 
                 //Generate Thumnail
@@ -155,37 +152,20 @@ class ProductController extends Controller
             'title' => 'required',
             'slug' => 'required|unique:products,slug,'.$product->id.',id',
             'price' => 'required|numeric',
-            'sku' => 'required|unique:products,sku,'.$product->id.',id',
-            'track_qty' => 'required|in:Yes,No',
             'category' => 'required|numeric',
-            'is_featured' => 'required|in:Yes,No',
         ];
-
-        if (!empty($request->track_qty) && $request->track_qty == 'Yes') {
-            $rules['qty'] = 'required|numeric';
-        }
 
         $validator = Validator::make($request->all(),$rules);
 
         if ($validator->passes()) {
-
-            $product->title = $request->title;
-            $product->slug = $request->slug;
+            $product->title = $request->title;            
+            $product->slug = $request->slug;     
+            $product->category_id = $request->category;
+            $product->menu_id = $request->menu;
             $product->description = $request->description;
             $product->price = $request->price;
             $product->compare_price = $request->compare_price;
-            $product->sku = $request->sku;
-            $product->barcode = $request->barcode;
-            $product->track_qty = $request->track_qty;
-            $product->qty = $request->qty;
-            $product->status = $request->status;
-            $product->category_id = $request->category;
-            $product->sub_category_id = $request->sub_category;
-            $product->brand_id = $request->brand;
-            $product->is_featured = $request->is_featured;
-            $product->shipping_returns = $request->shipping_returns;
-            $product->short_description = $request->short_description;
-            $product->related_products = (!empty($request->related_products)) ? implode(',',$request->related_products) : '';
+            $product->veg_nonveg = $request->veg_nonveg;
             $product->save();
 
         $request->session()->flash('success','Product updated successfully');

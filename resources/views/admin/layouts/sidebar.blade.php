@@ -32,10 +32,10 @@
                             <a href="{{ route('categories.index') }}" class="nav-link {{ (\Request::route()->getName() == 'categories.index') ? 'active' : '' }}">Menu</a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('products.index') }}" class="nav-link {{ (\Request::route()->getName() == 'products.index') ? 'active' : '' }}">Menu Item</a>
+                            <a href="{{ route('menu.index') }}" class="nav-link {{ (\Request::route()->getName() == 'menu.index') ? 'active' : '' }}">Item Categories</a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('sub-categories.index') }}" class="nav-link {{ (\Request::route()->getName() == 'sub-categories.index') ? 'active' : '' }}">Item Categories</a>
+                            <a href="{{ route('products.index') }}" class="nav-link {{ (\Request::route()->getName() == 'products.index') ? 'active' : '' }}">Menu Item</a>
                         </li>
                     </ul>
                 </li>

@@ -9,6 +9,7 @@ use App\Http\Controllers\admin\BrandController;
 use App\Http\Controllers\admin\HomeController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\DiscountCodeController;
+use App\Http\Controllers\admin\MenuController;
 use App\Http\Controllers\admin\OrderController;
 use App\Http\Controllers\admin\PageController;
 use App\Http\Controllers\admin\ProductController;
@@ -32,7 +33,7 @@ use Illuminate\Support\Str;
 
 //Front pages routes
 Route::get('/',[FrontController::class,'index'])->name('front.home');
-Route::get('/shop/{categorySlug?}/{subCategorySlug?}',[ShopController::class,'index'])->name('front.shop');
+Route::get('/menu/{menuSlug?}',[ShopController::class,'index'])->name('front.shop');
 Route::get('/product/{slug}',[ShopController::class,'product'])->name('front.product');
 Route::get('/cart',[CartController::class,'cart'])->name('front.cart');
 Route::post('/add-to-cart',[CartController::class,'addToCart'])->name('front.addToCart');
@@ -105,11 +106,11 @@ Route::group(['prefix' => 'admin',], function(){
         Route::delete('/categories/{category}', [CategoryController::class, 'destroy'])->name('categories.delete');
 
         //Sub Category Routes
-        Route::get('/sub-categories', [SubCategoryController::class, 'index'])->name('sub-categories.index');        
-        Route::post('/sub-categories', [SubCategoryController::class, 'store'])->name('sub-categories.store');
-        Route::get('/sub-categories/{subCategory}/edit', [SubCategoryController::class, 'edit'])->name('sub-categories.edit');
-        Route::put('/sub-categories/{subCategory}', [SubCategoryController::class, 'update'])->name('sub-categories.update');
-        Route::delete('/sub-categories/{subCategory}', [SubCategoryController::class, 'destroy'])->name('sub-categories.delete');
+        Route::get('/menus', [MenuController::class, 'index'])->name('menu.index');        
+        Route::post('/menus', [MenuController::class, 'store'])->name('menu.store');
+        Route::get('/menus/{menu}/edit', [MenuController::class, 'edit'])->name('menu.edit');
+        Route::put('/menus/{menu}', [MenuController::class, 'update'])->name('menu.update');
+        Route::delete('/menus/{menu}', [MenuController::class, 'destroy'])->name('menu.delete');
 
 
         //Areas Routes

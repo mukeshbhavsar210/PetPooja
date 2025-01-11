@@ -118,10 +118,17 @@
                                 </div>
                             </div>
                             
-                            <div class="col-md-12">
+                            <div class="col-md-6">
                                 <div class="from-group">
                                     <label for="price">Price</label>
                                     <input type="text" name="price" id="price" class="form-control" placeholder="Price" value="{{ $product->price }}">
+                                    <p class="error"></p>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="from-group">
+                                    <label for="compare_price">Price</label>
+                                    <input type="text" name="compare_price" id="compare_price" class="form-control" placeholder="Office Price" value="{{ $product->compare_price }}">
                                     <p class="error"></p>
                                 </div>
                             </div>
