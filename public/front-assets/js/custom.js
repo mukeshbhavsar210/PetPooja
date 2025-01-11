@@ -1,6 +1,4 @@
-$(document).ready(function(){
-    var lazyLoadInstance = new LazyLoad({elements_selector:"img.lazy, video.lazy, div.lazy, section.lazy, header.lazy, footer.lazy,iframe.lazy"});
-    let bannerHeight = $(window).height();
+$(document).ready(function(){    
     $("#related-products").not('.slick-initialized').slick({
         centerMode: false,
         slidesToShow: 4,
@@ -53,18 +51,6 @@ $(document).ready(function(){
                 slidesToScroll: 1,      
             }
         }] 
-    
     });
-   
-
-   
 });
 
-
-$("#isShippingDiffernt").click(function(){
-    if ($(this).is(':checked') == true) {
-        $("#shippingForm").removeClass('d-none');
-    } else {
-        $("#shippingForm").addClass('d-none');
-    }
-});

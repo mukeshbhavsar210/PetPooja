@@ -170,3 +170,6 @@ ul, li { list-style-type: none; padding:0; margin: 0;}
 .progressStep li a span { background-color: #eeeef0; border-radius: 100px; padding:5px 3px; text-align: center; height: 32px; width: 32px; display: block; margin-right: 10px; position: relative; top:-5px; font-size: 14px;}
 
 
+.card-body { position: relative;}
+.card-body:hover .deleteProduct { display: block;}
+.card-body .deleteProduct { border:1px #ccc solid; position: absolute; top:30px; right:30px; background-color: #fff; padding:3px 3px 3px 7px; border-radius: 100px; height:32px; width: 32px; text-align: center; display: none;}
