@@ -2,19 +2,6 @@
 
 @section('content')
 
-    <section class="section-5 pt-3 pb-3 mb-3 bg-white">
-        <div class="container">
-            <div class="light-font">
-                <ol class="breadcrumb primary-color mb-0">
-                    <li class="breadcrumb-item"><a class="white-text" href="{{ route('front.home') }}">Home</a></li>
-                    <li class="breadcrumb-item"><a class="white-text" href="{{ route('front.shop') }}">Shop</a></li>
-                    <li class="breadcrumb-item">Cart</li>
-                </ol>
-            </div>
-        </div>
-    </section>
-
-
     <section class="section-9 pt-4">
         <div class="container">
             <div class="row">
@@ -37,84 +24,69 @@
                     </div>
                 @endif
 
-                @if (Cart::count() > 0)
-                    <div class="col-md-8">
-                        <div class="table-responsive">
-                            <table class="table" id="cart">
-                                <thead>
-                                    <tr>
-                                        <th>Item</th>
-                                        <th>Price</th>
-                                        <th>Quantity</th>
-                                        <th>Total</th>
-                                        <th>Remove</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($cartContent as $item)
-                                    <tr>
-                                        <td class="text-start">
-                                            <div class="d-flex">
-                                                @if (!empty($item->options->productImage->image))
-                                                    <img src="{{ asset('uploads/product/small/'.$item->options->productImage->image) }}" >
-                                                @else
-                                                    <img src="{{ asset('admin-assets/img/default-150x150.png') }}" alt="" />
-                                                @endif
-                                                <h2>{{ $item->name }}</h2>
-                                            </div>
-                                        </td>
-                                        <td>₹{{ $item->price }}</td>
-                                        <td>
-                                            <div class="input-group quantity mx-auto" style="width: 100px;">
-                                                <div class="input-group-btn">
-                                                    <button class="btn btn-sm btn-dark btn-minus p-2 pt-1 pb-1 sub" data-id="{{ $item->rowId }}">
-                                                        <i class="fa fa-minus"></i>
-                                                    </button>
-                                                </div>
-                                                <input type="text" class="form-control form-control-sm  border-0 text-center" value="{{ $item->qty }}">
-                                                <div class="input-group-btn">
-                                                    <button class="btn btn-sm btn-dark btn-plus p-2 pt-1 pb-1 add" data-id="{{ $item->rowId }}">
-                                                        <i class="fa fa-plus"></i>
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            ₹{{ $item->price*$item->qty }}
-                                        </td>
-                                        <td>
-                                            <button class="btn btn-sm btn-danger" onclick="deleteItem('{{ $item->rowId}}' );"><i class="fa fa-times"></i></button>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>                        
+                <nav>
+                    <div class="nav nav-tabs mb-3" id="nav-tab" role="tablist">
+                        <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Dinein</button>
+                        <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Takeaway</button>
+                        <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Delivery</button>
                     </div>
-                    <div class="col-md-4">
-                        <div class="card cart-summery">
-                            <div class="card-body">
-                        
-                                <div class="sub-title">
-                                    <h2 class="bg-white">Cart Summery</h3>
+                </nav>
+
+                @if (Cart::count() > 0)
+                    @foreach ($cartContent as $item)
+                        <div class="cartWrapper">
+                            <div class="row">
+                                <div class="col-4">
+                                    {{ $item->qty }} x {{ $item->name }}
                                 </div>
-                        
-                                @foreach (Cart::content() as $item)
-                                    <div class="d-flex justify-content-between pb-2">
-                                        <div class="h6">{{ $item->name }} X {{ $item->qty }}</div>
-                                            <div class="h6">₹{{ $item->price*$item->qty }}</div>
+                                <div class="col-4">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-sm btn-dark btn-minus p-2 pt-1 pb-1 sub" data-id="{{ $item->rowId }}">
+                                            <i class="fa fa-minus"></i>
+                                        </button>
                                     </div>
-                                @endforeach
-                        
-                                <div class="d-flex justify-content-between summary-end">
-                                    <div class="h6">Subtotal</div>
-                                    <div class="h6">₹{{ Cart::subtotal() }}</div>
+                                    <input type="hidden" class="form-control form-control-sm  border-0 text-center" value="{{ $item->qty }}">
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-sm btn-dark btn-plus p-2 pt-1 pb-1 add" data-id="{{ $item->rowId }}">
+                                            <i class="fa fa-plus"></i>
+                                        </button>
+                                    </div>
                                 </div>
-                                <div class="pt-5">
-                                    <a href="{{ route('front.checkout') }}" class="btn-dark btn btn-block w-100">Proceed to Checkout</a>
+                                <div class="col-4">
+                                    ₹{{ $item->price }}
                                 </div>
                             </div>
-                        </div>                        
+                                    
+                            ₹{{ $item->price*$item->qty }}
+                                {{-- <button class="btn btn-sm btn-danger" onclick="deleteItem('{{ $item->rowId}}' );"><i class="fa fa-times"></i></button> --}}
+                        @endforeach
+                       
+                        {{-- @foreach (Cart::content() as $item)
+                            <div class="d-flex justify-content-between pb-2">
+                                <div class="h6">{{ $item->name }} X {{ $item->qty }}</div>
+                                <div class="h6">₹{{ $item->price*$item->qty }}</div>
+                            </div>
+                        @endforeach --}}
+
+                        <div class="d-flex justify-content-between summary-end">
+                            <div class="h6">Total</div>
+                            <div class="h6">₹{{ Cart::subtotal() }}</div>
+                        </div>
+                        <div class="pt-5">
+                            <a href="{{ route('front.checkout') }}" class="btn-dark btn btn-block w-100">Proceed to Checkout</a>
+                        </div>
+
+                        <div class="tab-content p-3 " id="nav-tabContent">
+                            <div class="tab-pane fade active show" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                                content 1
+                            </div>
+                            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                                <p>2</p>
+                            </div>
+                            <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">
+                                <p>3</p>
+                            </div>
+                        </div>
                     </div>
                 @else
 

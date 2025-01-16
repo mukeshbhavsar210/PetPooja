@@ -2,23 +2,12 @@
 
 @section('content')
 
-    <section class="section-5 pt-3 pb-3 mb-3 bg-white">
-        <div class="container">
-            <div class="light-font">
-                <ol class="breadcrumb primary-color mb-0">
-                    <li class="breadcrumb-item"><a class="white-text" href="#">Home</a></li>
-                    <li class="breadcrumb-item"><a class="white-text" href="#">Shop</a></li>
-                    <li class="breadcrumb-item">Checkout</li>
-                </ol>
-            </div>
-        </div>
-    </section>
 
 <section class="section-9 pt-4">
     <div class="container">
         <form action=" " name="orderForm" id="orderForm" method="POST">
             <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-12">
                     <div class="sub-title"><h2>Shipping Address</h2></div>
                     <div class="card shadow-lg border-0">
                         <div class="card-body checkout-form">
@@ -103,10 +92,9 @@
                             </div>
                         </div>
                     </div>                    
-                </div>
+                </div> 
 
-                <div class="col-md-4">
-                    <div class="sub-title"><h2>Order Summery</h3></div>
+                <div class="col-md-12">                    
                     <div class="card cart-summery">
                         <div class="card-body">
                             @foreach (Cart::content() as $item)
@@ -117,31 +105,31 @@
                             @endforeach
                     
                             <div class="d-flex justify-content-between summery-end">
-                                <div class="h6"><strong>Subtotal</strong></div>
+                                <div class="h6"><strong>Total</strong></div>
                                 <div class="h6"><strong>₹{{ Cart::subtotal() }}</strong></div>
                             </div>
                     
-                            <div class="d-flex justify-content-between summery-end">
+                            {{-- <div class="d-flex justify-content-between summery-end">
                                 <div class="h6"><strong>Discount</strong></div>
                                 <div class="h6"><strong id="discount_value">₹{{ $discount }}</strong></div>
-                            </div>
+                            </div> 
                     
                             <div class="d-flex justify-content-between mt-2">
                                 <div class="h6"><strong>Shipping</strong></div>
                                 <div class="h6"><strong id="shippingAmount">₹ {{ number_format($totalShiipingCharge,2) }}</strong></div>
-                            </div>
+                            </div> --}}
                     
-                            <div class="d-flex justify-content-between mt-2 summery-end">
+                            {{-- <div class="d-flex justify-content-between mt-2 summery-end">
                                 <div class="h5"><strong>Total</strong></div>
-                                <div class="h5"><strong id="grandTotal">₹{{ number_format($grandTotal,2) }}</strong></div>
-                            </div>
+                                <div class="h5"><strong id="grandTotal">₹{{ number_format($grandTotal,2) }}</strong></div> 
+                            </div> --}}
                         </div>
                     </div>
                     
-                    <div class="input-group apply-coupan mt-4">
+                    {{-- <div class="input-group apply-coupan mt-4">
                         <input type="text" placeholder="Coupon Code" class="form-control" name="discount_code" id="discount_code">
                         <button class="btn btn-dark" type="button" id="apply-discount">Apply Coupon</button>
-                    </div>
+                    </div> --}}
                     
                     <div id="discount-response-wrapper">
                         @if (Session::has('code'))

@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 use App\Models\Payment;
+use Illuminate\Support\Facades\Session;
 use Razorpay\Api\Api;
 
 class CartController extends Controller
@@ -133,7 +134,6 @@ class CartController extends Controller
     }
 
     public function checkout(){
-
         $discount = 0;
 
         //if cart is empty redirect to cart page
@@ -142,65 +142,59 @@ class CartController extends Controller
         }
 
         //if user is not logged in then redirect to login page
-        if (Auth::check() == false) {
+        // if (Auth::check() == false) {
+        //     if (!session()->has('url.intended')) {
+        //         session(['url.intended' => url()->current()]);
+        //     }
+        //     return redirect()->route('account.login');
+        // }
 
-            if (!session()->has('url.intended')) {
-                session(['url.intended' => url()->current()]);
-            }
-
-            return redirect()->route('account.login');
-        }
-
-
-        $customerAddress = CustomerAddress::find(Auth::user()->id);
+        //$customerAddress = CustomerAddress::find(Auth::user()->id);
 
         session()->forget('url.intended');
 
         $countries = Country::orderBy('name','ASC')->get();
 
         //Calcuting shipping charges
-        if($customerAddress != '' ){
-            $userCountry = $customerAddress->country_id;
-            $shippingInfo = ShippingCharge::where('country_id', $userCountry)->first();
+        // if($customerAddress != '' ){
+        //     $userCountry = $customerAddress->country_id;
+        //     $shippingInfo = ShippingCharge::where('country_id', $userCountry)->first();
 
-            //echo $shippingInfo->amount;
-            $totalQty = 0;
-            $totalShiipingCharge = 0;
-            $grandTotal = 0;
-            foreach (Cart::content() as $item){
-                $totalQty += $item->qty;
-            }
+        //     //echo $shippingInfo->amount;
+        //     $totalQty = 0;
+        //     $totalShiipingCharge = 0;
+        //     $grandTotal = 0;
+        //     foreach (Cart::content() as $item){
+        //         $totalQty += $item->qty;
+        //     }
 
-            $totalShiipingCharge = $totalQty*$shippingInfo->amount;
-            $grandTotal = Cart::subtotal(2,'.','')+$totalShiipingCharge;
+        //     $totalShiipingCharge = $totalQty*$shippingInfo->amount;
+        //     $grandTotal = Cart::subtotal(2,'.','')+$totalShiipingCharge;
 
-        } else {
-            $grandTotal = Cart::subtotal(2,'.','');
-            $totalShiipingCharge = 0;
-        }
+        // } else {
+        //     $grandTotal = Cart::subtotal(2,'.','');
+        //     $totalShiipingCharge = 0;
+        // }
 
         return view('front.checkout.index',[
             'countries' => $countries,
-            'customerAddress' => $customerAddress,
-            'totalShiipingCharge' => $totalShiipingCharge,
+            //'customerAddress' => $customerAddress,
+            //'totalShiipingCharge' => $totalShiipingCharge,
             'discount' => $discount,
-            'grandTotal' => $grandTotal
+            //'grandTotal' => $grandTotal
         ]);
     }
 
-    public function processCheckout(Request $request){
 
+    //CHECKOUT
+    public function processCheckout(Request $request){
         //Step 1: apply validations while make orders
         $validator = Validator::make($request->all(),[
-            'first_name' => 'required|min:5',
-            'last_name' => 'required',
-            'mobile' => 'required',
-            'email' => 'required|email',
-            'country' => 'required',
-            'address' => 'required|min:30',
-            'city' => 'required',
-            'state' => 'required',
-            'zip' => 'required'
+            'name' => 'required|min:5',            
+            // 'mobile' => 'required',
+            // 'email' => 'required|email',
+            // 'country' => 'required',
+            // 'address' => 'required|min:30',            
         ]);
 
         if ($validator->fails()){
@@ -211,29 +205,24 @@ class CartController extends Controller
             ]);
         }
 
-        $user = Auth::user();
+        //$user = Auth::user();
+        $user = $request->session()->get('key');
 
         //Step 2: Save user address
         CustomerAddress::updateOrCreate(
             ['user_id' => $user->id ],
             [
                 'user_id' => $user->id,
-                'first_name' => $request->first_name,
-                'last_name' => $request->last_name,
-                'mobile' => $request->mobile,
-                'email' => $request->email,
-                'country_id' => $request->country,
-                'address' => $request->address,
-                'apartment' => $request->apartment,
-                'city' => $request->city,
-                'state' => $request->state,
-                'zip' => $request->zip
+                'name' => $request->name,
+                // 'mobile' => $request->mobile,
+                // 'email' => $request->email,
+                // 'country_id' => $request->country,
+                // 'address' => $request->address,                
             ]
         );
 
         //Step 3: Store data in orders table
         if($request->payment_method == 'cod'){
-
             $discountCodeId = NULL;
             $promoCode = '';
             $shipping = 0;
@@ -272,48 +261,41 @@ class CartController extends Controller
             }
 
             $order = new Order;
-            $order->subtotal = $subTotal;
-            $order->shipping = $shipping;
-            $order->grandtotal = $grandTotal;
-            $order->discount = $discount;
-            $order->coupon_code_id = $discountCodeId;
-            $order->coupon_code = $promoCode;
-            $order->payment_status = 'not paid';
-            $order->status = 'pending';
+            // $order->subtotal = $subTotal;
+            // $order->shipping = $shipping;
+            // $order->grandtotal = $grandTotal;
+            // $order->discount = $discount;
+            // $order->coupon_code_id = $discountCodeId;
+            // $order->coupon_code = $promoCode;
+            // $order->payment_status = 'not paid';
+            // $order->status = 'pending';
+
             $order->user_id = $user->id;
-            $order->first_name = $request->first_name;
-            $order->last_name = $request->last_name;
-            $order->email = $request->email;
-            $order->mobile = $request->mobile;
-            $order->address = $request->address;
-            $order->apartment = $request->apartment;
-            $order->state = $request->state;
-            $order->city = $request->city;
-            $order->zip = $request->zip;
-            $order->notes = $request->notes;
-            $order->country_id = $request->country;
+            $order->name = $request->name;
+            // $order->email = $request->email;
+            // $order->mobile = $request->mobile;
             $order->save();
 
             //Step 4: Store order items in order items table
             foreach (Cart::content() as $item) {
-                $orderItem = new OrderItem;
-                $orderItem->product_id = $item->id;
-                $orderItem->order_id = $order->id;
-                $orderItem->name = $item->name;
-                $orderItem->qty = $item->qty;
-                $orderItem->price = $item->price;
-                $orderItem->total = $item->price*$item->qty;
-                $orderItem->save();
+                // $orderItem = new OrderItem;
+                // $orderItem->product_id = $item->id;
+                // $orderItem->order_id = $order->id;
+                // $orderItem->name = $item->name;
+                // $orderItem->qty = $item->qty;
+                // $orderItem->price = $item->price;
+                // $orderItem->total = $item->price*$item->qty;
+                // $orderItem->save();
 
                 //Update product stock
-                $productData = Product::find($item->id);
+                //$productData = Product::find($item->id);
 
-                if($productData->track_qty == 'Yes'){
-                    $currentQty = $productData->qty;
-                    $updatedQty = $currentQty-$item->qty;
-                    $productData->qty = $updatedQty;
-                    $productData->save();
-                }
+                // if($productData->track_qty == 'Yes'){
+                //     $currentQty = $productData->qty;
+                //     $updatedQty = $currentQty-$item->qty;
+                //     $productData->qty = $updatedQty;
+                //     $productData->save();
+                // }
 
             }
 

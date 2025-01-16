@@ -15,7 +15,6 @@ class ShopController extends Controller
         $subCategorySelected = ' ';
 
         $categories = Category::orderBy("name","ASC")->with('menu')->get();        
-        //$products = Product::get();
         $products = Product::where('status',1);
 
         if(!empty($menuSlug)) {
@@ -58,7 +57,6 @@ class ShopController extends Controller
         $data['priceMax'] = (intval($request->get('price_max')) == 0 ? 1000 : $request->get('price_max'));
         $data['priceMin'] = intval($request->get('price_min'));
         
-
         return view('front.shop.index',$data);
     }
 
