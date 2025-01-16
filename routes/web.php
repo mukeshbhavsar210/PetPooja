@@ -26,18 +26,32 @@ use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\FrontController;
+use App\Http\Controllers\ItemController;
+use App\Http\Controllers\SessionController;
 use App\Http\Controllers\ShopController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 
+
+// In your routes/web.php
+
+
+Route::get('cart', [FrontController::class, 'showCartTable']);
+Route::get('add-to-cart/{id}', [FrontController::class, 'addToCart']);
+
+Route::delete('remove-from-cart', [FrontController::class, 'removeCartItem']);
+Route::get('clear-cart', [FrontController::class, 'clearCart']);
+
+
 //Front pages routes
-Route::get('/',[FrontController::class,'index'])->name('front.home');
-Route::get('/menu/{menuSlug?}',[ShopController::class,'index'])->name('front.shop');
-Route::get('/product/{slug}',[ShopController::class,'product'])->name('front.product');
+Route::get('/', [FrontController::class, 'show'])->name('front.home');
+//Route::get('/',[FrontController::class,'index'])->name('front.home');
+Route::get('/menu/{menuSlug?}',[ShopController::class,'index'])->name('front.menu');
+//Route::get('/product/{slug}',[ShopController::class,'product'])->name('front.product');
 Route::get('/cart',[CartController::class,'cart'])->name('front.cart');
 Route::post('/add-to-cart',[CartController::class,'addToCart'])->name('front.addToCart');
-Route::post('/update-cart',[CartController::class,'updateCart'])->name('front.updateCart');
+Route::post('/update-cart',[FrontController::class,'updateCart'])->name('front.updateCart');
 Route::post('/delete-item',[CartController::class,'deleteItem'])->name('front.deleteItem.cart');
 Route::get('/checkout',[CartController::class,'checkout'])->name('front.checkout');
 

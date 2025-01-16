@@ -2,7 +2,6 @@
 
 @section('content')
 
-@include('front.checkout.breadcrumb')
 
 <section class="section-9 pt-4">
     <div class="container">

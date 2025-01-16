@@ -9,49 +9,52 @@ use App\Models\Order;
 use App\Models\Page;
 use App\Models\ProductImage;
 use Illuminate\Support\Facades\Mail;
+use Gloudemans\Shoppingcart\Facades\Cart;
+
+
 
 function getCategories(){
     return Category::orderBy('name','ASC')->with('sub_category')->take(4)->orderBy('id','DESC')->get();
 }
     
-    function getProducts(){
-        return Menu::orderBy('name','ASC')->orderBy('id','DESC')->get();
-    }  
+function getProducts(){
+    return Menu::orderBy('name','ASC')->orderBy('id','DESC')->get();
+}  
 
-    function getAreas(){
-        return Area::orderBy('name','ASC')->with('seating')->get();
-    }  
+function getAreas(){
+    return Area::orderBy('name','ASC')->with('seating')->get();
+}  
 
-    function getProductImage($productId){
-        return ProductImage::where('product_id',$productId)->first();
+function getProductImage($productId){
+    return ProductImage::where('product_id',$productId)->first();
+}
+
+function orderEmail($orderId, $userType="customer"){
+    $order = Order::where('id',$orderId)->with('items')->first();
+
+    if($userType == 'customer'){
+        $subject = 'Thanks for your order';
+        $email = $order->email;
+    } else {
+        $subject = 'You have received an order';
+        $email = env('ADMIN_EMAIL');
     }
 
-    function orderEmail($orderId, $userType="customer"){
-        $order = Order::where('id',$orderId)->with('items')->first();
+    $mailData = [
+        'subject' => $subject,
+        'order' => $order,
+        'userType' => $userType,
+    ];
 
-        if($userType == 'customer'){
-            $subject = 'Thanks for your order';
-            $email = $order->email;
-        } else {
-            $subject = 'You have received an order';
-            $email = env('ADMIN_EMAIL');
-        }
+    Mail::to($email)->send(new OrderEmail($mailData));
+}
 
-        $mailData = [
-            'subject' => $subject,
-            'order' => $order,
-            'userType' => $userType,
-        ];
+function getCountryInfo($id){
+    return Country::where('id',$id)->first();
+}
 
-        Mail::to($email)->send(new OrderEmail($mailData));
-    }
-
-    function getCountryInfo($id){
-        return Country::where('id',$id)->first();
-    }
-
-    function staticPages(){
-        $pages = Page::orderBy('name','ASC')->get();
-        return $pages;
-    }
+function staticPages(){
+    $pages = Page::orderBy('name','ASC')->get();
+    return $pages;
+}
 ?>

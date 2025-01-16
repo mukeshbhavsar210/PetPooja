@@ -5,25 +5,155 @@ namespace App\Http\Controllers;
 use App\Models\Page;
 use App\Models\Product;
 use App\Models\Wishlist;
+use App\Models\Country;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Gloudemans\Shoppingcart\Facades\Cart;
 
 class FrontController extends Controller
 {
-    public function index(){        
-        $latestProducts = Product::orderBy('id','DESC')->take(4)->get();
-        $data['latestProducts'] = $latestProducts;              
-        return view("front.home.index",$data);
+
+    public function show() {
+        $products = Product::orderBy('id','DESC')->get();
+        return view('front.home.index', compact('products'));        
     }
 
-    public function addToWishlist(Request $request){
-        if(Auth::check() == false){
-            session(['url.intended' => url()->previous() ]);
-            return response()->json([
-                'status' => false,
-            ]);
+
+    // public function showCartTable(){
+    //     $products = Product::all();
+    //     return view('cart', compact('products'));
+    // }
+
+
+    public function addToCart($id){
+        $product = Product::with('product_images')->find($id);
+        
+        if (!$product) {
+            abort(404);
         }
+        $cart = session()->get('cart');
+        if (!$cart) {
+            $cart = [
+                $id => [
+                    "name" => $product->name,
+                    "quantity" => 1,
+                    "price" => $product->price,                    
+                ]
+            ];
+            session()->put('cart', $cart);
+            return redirect()->back()->with('success', 'Product added to cart successfully!');
+        }
+
+
+        if (isset($cart[$id])) {
+            $cart[$id]['quantity']++;
+            session()->put('cart', $cart);
+            return redirect()->back()->with('success', 'Product added to cart successfully!');
+        }
+
+        $cart[$id] = [
+            "name" => $product->name,
+            "quantity" => 1,
+            "price" => $product->price,            
+        ];
+
+        session()->put('cart', $cart);
+
+        if (request()->wantsJson()) {
+            return response()->json(['message' => 'Product added to cart successfully!']);
+        }
+
+        return redirect()->back()->with('success', 'Product added to cart successfully!');
+    }
+
+    
+    public function removeCartItem(Request $request) {
+        if ($request->id) {
+            $cart = session()->get('cart');
+            if (isset($cart[$request->id])) {
+                unset($cart[$request->id]);
+                session()->put('cart', $cart);
+            }
+
+            session()->flash('success', 'Product removed successfully');
+        }
+    }
+
+    public function clearCart(){
+        session()->forget('cart');
+        return redirect()->back();
+    }
+
+
+
+
+
+
+
+
+    // public function index(){        
+    //     $products = Product::orderBy('id','DESC')->take(4)->get();
+    //     $cartContent = Cart::content();
+    //     //$countries = Country::orderBy('name','ASC')->get();
+
+    //     $data['cartContent'] = $cartContent;
+    //     $data['products'] = $products;      
+    //     //$data['countries'] = $countries;          
+                
+    //     return view("front.home.index",$data);
+    // }
+
+
+    public function updateCart(Request $request){
+        $rowId = $request->rowId;
+        $qty = $request->qty;
+
+        $itemInfo = Cart::get($rowId);
+        $product = Product::find($itemInfo->id);
+
+        //check qty available in stock
+        if($product->track_qty == "Yes"){
+            if($qty <= $product->qty ){
+                Cart::update($rowId, $qty);
+                $message = 'Cart updated successfully';
+                $state = true;
+                session()->flash('success',$message);
+            } else {
+                $message = 'Requested qty('.$qty.') not available in stock.';
+                $state = false;
+                session()->flash('error',$message);
+            }
+        } else {
+            Cart::update($rowId, $qty);
+            $message = 'Cart updated successfully';
+            $state = true;
+            session()->flash('success',$message);
+        }
+
+        return response()->json([
+            "status"=> $state,
+            "message"=> $message
+        ]);
+    }
+
+
+  
+    public function addToWishlist(Request $request){
+        // if(Auth::check() == false){
+        //     session(['url.intended' => url()->previous() ]);
+        //     return response()->json([
+        //         'status' => false,
+        //     ]);
+        // }
+
+
+        
+        session(['url.intended' => url()->previous() ]);
+        return response()->json([
+            'status' => false,
+        ]);
+        
 
         //Product add in wishlist
         $product = Product::where('id', $request->id)->first();
