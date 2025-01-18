@@ -65,9 +65,6 @@
                                         </div>
                                     </div> 
                                 </div>
-                            
-                                
-
                                 <div class="product-title">
                                     <div class="row">
                                         <div class="col-9">
@@ -95,7 +92,6 @@
                         </div>
                     </div>
                 </div>
-            
         @endforeach
     @endif
 </div>

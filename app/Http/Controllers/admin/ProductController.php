@@ -48,7 +48,7 @@ class ProductController extends Controller
 
     public function store(Request $request){
         $rules = [
-            'title' => 'required',                            
+            'name' => 'required',                            
         ];
 
         // if (!empty($request->track_qty) && $request->track_qty == 'Yes') {
@@ -59,7 +59,7 @@ class ProductController extends Controller
 
         if ($validator->passes()) {
             $product = new Product;
-            $product->title = $request->title;            
+            $product->name = $request->name;            
             $product->slug = $request->slug;     
             $product->category_id = $request->category;
             $product->menu_id = $request->menu;
@@ -149,7 +149,7 @@ class ProductController extends Controller
     public function update($id, Request $request){
         $product = Product::find($id);
         $rules = [
-            'title' => 'required',
+            'name' => 'required',
             'slug' => 'required|unique:products,slug,'.$product->id.',id',
             'price' => 'required|numeric',
             'category' => 'required|numeric',
@@ -158,7 +158,7 @@ class ProductController extends Controller
         $validator = Validator::make($request->all(),$rules);
 
         if ($validator->passes()) {
-            $product->title = $request->title;            
+            $product->name = $request->name;            
             $product->slug = $request->slug;     
             $product->category_id = $request->category;
             $product->menu_id = $request->menu;

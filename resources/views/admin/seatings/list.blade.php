@@ -58,6 +58,13 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
+                                        <label for="product_code">QR code</label>
+                                        <input type="text" name="product_code" id="product_code" class="form-control" placeholder="e.g. Table_01">
+                                        <p></p>
+                                    </div>  
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
                                         <label for="seating_capacity">Seating Capacity</label>
                                         <select name="seating_capacity" id="seating_capacity" class="form-control">
                                             <option value="">Select table</option>

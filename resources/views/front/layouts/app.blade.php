@@ -17,7 +17,9 @@
 	<link rel="preconnect" href="https://fonts.googleapis.com">
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;500&family=Raleway:ital,wght@0,400;0,600;0,800;1,200&family=Roboto+Condensed:wght@400;700&family=Roboto:wght@300;400;700;900&display=swap" rel="stylesheet">
+
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
 </head>
 <body>
 	<div class="page">
@@ -46,8 +48,6 @@
 						</div>
 						@endforeach
 					@endif
-					
-					
 				</div>
 			</section>
 		</header>
@@ -73,9 +73,12 @@
         }
     });
 </script>
-
 <script>
 $(document).ready(function() {
+	
+
+
+
 	var slider_width = $('.orderDetails').height();
 	$('#cartDetails').click(function() {
 		if($(this).css("margin-bottom") == slider_width+"px" && !$(this).is(':animated')) {
@@ -106,47 +109,7 @@ $(document).ready(function() {
 	 });     
 	</script>
 
-
-{{-- <script>
-	let list = document.querySelector(".bottom-bar__list");
-	let activeItemIndex = 1;
-	let items = list.children;
-	const handleClick = (index) => {
-	if (index !== activeItemIndex) {
-		items[activeItemIndex].classList.remove("selected");
-		items[index].classList.add("selected");
-
-		let direction;
-		index - activeItemIndex > 0 ? (direction = 1) : (direction = -1);
-
-		let magnitude = Math.abs(index - activeItemIndex);
-
-		activeItemIndex = index;
-
-		items[0].style.transform =
-		"translate(" + (activeItemIndex - 1) * 100 + "%, -0.5rem)";
-
-		items[0].classList.add("active--" + magnitude);
-		items[0].classList.add(direction > 0 ? "active-right" : "active-left");
-		console.log(items[0].classList);
-
-		setTimeout(() => {
-		items[0].classList.remove("active--" + magnitude);
-		items[0].classList.remove(direction > 0 ? "active-right" : "active-left");
-		}, 200);
-	}
-	};
-
-	Object.keys(items).forEach((item, index) => {
-	items[index].addEventListener("click", () => {
-		handleClick(index);
-	});
-	});
-</script> --}}
-
 @yield('customJs')
-
-{{-- @yield('scripts') --}}
 
 </body>
 </html>

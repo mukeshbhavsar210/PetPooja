@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Area;
+use App\Models\Cart;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -23,6 +24,32 @@ class AreaController extends Controller {
 
 
     public function store(Request $request){
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',            
+        ]);
+
+        if ($validator->passes()) {
+            $area = new Area();
+            $area->name = $request->name;            
+            $area->save();
+
+            $request->session()->flash('success', 'Category added successfully');
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Category added successfully'
+            ]);
+
+        } else {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ]);
+        }
+    }
+
+
+    public function cart_store(Request $request){
         $validator = Validator::make($request->all(), [
             'name' => 'required',            
         ]);

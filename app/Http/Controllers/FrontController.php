@@ -9,10 +9,10 @@ use App\Models\Country;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use Gloudemans\Shoppingcart\Facades\Cart;
+//use Gloudemans\Shoppingcart\Facades\Cart;
+use App\Models\Cart;
 
-class FrontController extends Controller
-{
+class FrontController extends Controller {
 
     public function show() {
         $products = Product::orderBy('id','DESC')->get();
@@ -212,6 +212,102 @@ class FrontController extends Controller
         } else {
             return response()->json([
                 'status'=> false,
+                'errors' => $validator->errors()
+            ]);
+        }
+    }
+
+
+
+    public function dinening_store (Request $request){
+        $validator = Validator::make($request->all(), [
+                   
+        ]);
+
+        if ($validator->passes()) {
+            $customer = new Cart();
+            $customer->order_type = $request->order_type;
+            $customer->notes = $request->notes;
+            $customer->ready_time = $request->ready_time;
+            $customer->table_number = $request->table_number;
+            $customer->save();
+
+            $request->session()->flash('success', 'Dinening Order placed successfully');
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Dinening Order added successfully'
+            ]);
+
+        } else {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ]);
+        }
+    }
+
+
+    public function takeaway_store (Request $request){
+
+        //dd($request->all());
+        $validator = Validator::make($request->all(), [
+                   
+        ]);
+
+        if ($validator->passes()) {
+            $customer = new Cart();
+            $customer->order_type = $request->order_type;                   
+            $customer->notes = $request->notes;
+            $customer->ready_time = $request->ready_time;
+            $customer->takeaway_name = $request->takeaway_name;
+            $customer->takeaway_phone = $request->takeaway_phone;
+            $customer->takeaway_email = $request->takeaway_email;
+            $customer->save();
+
+            $request->session()->flash('success', 'Takeaway placed successfully');
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Takeaway added successfully'
+            ]);
+
+        } else {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ]);
+        }
+    }
+
+    public function delivery_store (Request $request){
+
+        //dd($request->all());
+        $validator = Validator::make($request->all(), [
+                   
+        ]);
+
+        if ($validator->passes()) {
+            $customer = new Cart();
+            $customer->order_type = $request->order_type;                   
+            $customer->notes = $request->notes;
+            $customer->ready_time = $request->ready_time;
+            $customer->address = $request->address;
+            $customer->delivery_name = $request->delivery_name;
+            $customer->delivery_phone = $request->delivery_phone;
+            $customer->delivery_email = $request->delivery_email;
+            $customer->save();
+
+            $request->session()->flash('success', 'Delivery placed successfully');
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Delivery added successfully'
+            ]);
+
+        } else {
+            return response()->json([
+                'status' => false,
                 'errors' => $validator->errors()
             ]);
         }

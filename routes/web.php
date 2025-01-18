@@ -25,6 +25,7 @@ use App\Http\Controllers\admin\TempImagesController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\SessionController;
@@ -35,14 +36,13 @@ use Illuminate\Support\Str;
 
 
 // In your routes/web.php
-
-
 Route::get('cart', [FrontController::class, 'showCartTable']);
+Route::post('dining',[FrontController::class, 'dinening_store'])->name('submit.dining');
+Route::post('takeaway',[FrontController::class, 'takeaway_store'])->name('submit.takeaway');
+Route::post('delivery',[FrontController::class, 'delivery_store'])->name('submit.delivery');
 Route::get('add-to-cart/{id}', [FrontController::class, 'addToCart']);
-
 Route::delete('remove-from-cart', [FrontController::class, 'removeCartItem']);
 Route::get('clear-cart', [FrontController::class, 'clearCart']);
-
 
 //Front pages routes
 Route::get('/', [FrontController::class, 'show'])->name('front.home');
@@ -133,6 +133,8 @@ Route::group(['prefix' => 'admin',], function(){
         Route::get('/areas/{area}/edit', [AreaController::class, 'edit'])->name('areas.edit');
         Route::put('/areas/{area}', [AreaController::class, 'update'])->name('areas.update');
         Route::delete('/areas/{area}', [AreaController::class, 'destroy'])->name('areas.delete');
+
+        
 
         //Table Routes
         Route::get('/seatings', [SeatingController::class, 'index'])->name('seatings.index');
