@@ -7,7 +7,6 @@ use App\Models\Area;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Category;
 use App\Models\Seating;
-use App\Models\Table;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -48,10 +47,12 @@ class SeatingController extends Controller
             'area_id' => 'uniq',         
         ]);
 
+       
         if ($validator->passes()) {
             $menu = new Seating();
             $menu->area_id = $request->area;
             $menu->name = $request->name;            
+            $menu->product_code = $request->product_code;            
             $menu->seating_capacity = $request->seating_capacity;
             $menu->save();
 

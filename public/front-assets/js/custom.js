@@ -54,6 +54,9 @@ $(document).ready(function(){
     });
 
 
+    
+
+
     //Sticky header
     const header = document.querySelector(".page-header");
     const toggleClass = "is-sticky";

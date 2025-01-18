@@ -33,8 +33,8 @@
                         <div class="row">
                             <div class="col-md-7">
                                 <div class="form-group">
-                                    <label for="title">Item Name</label>
-                                    <input type="text" name="title" id="title" class="form-control" placeholder="Title">
+                                    <label for="name">Item Name</label>
+                                    <input type="text" name="name" id="name" class="form-control" placeholder="Name">
                                     <p class="error"></p>
                                 </div>
                                 <input type="hidden" name="slug" id="slug" class="form-control" placeholder="slug">
@@ -173,7 +173,7 @@
                                 <img src="{{ asset('admin-assets/img/default-150x150.png') }}" alt="" width="200"  />
                             @endif
                             <div class="mt-3">
-                                <h4 class="m-0">{{ $value->title }}</h4>
+                                <h4 class="m-0">{{ $value->name }}</h4>
                                 <p>{{ $value->description }}</p>
                                 <p class="m-0">{{ $value->category->name }}, {{ $value->menu->name }}</p>
                             </div>
@@ -236,7 +236,7 @@
     // });
 
   
-    $('#title').change(function(){
+    $('#name').change(function(){
         element = $(this);
         $("button[type=submit]").prop('disabled', true);
         $.ajax({
