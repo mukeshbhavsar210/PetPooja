@@ -54,13 +54,7 @@
                                         <label for="name">Table Code</label>
                                         <input type="text" name="name" id="name" class="form-control" placeholder="e.g. Table_01">
                                         <p></p>
-                                    </div>  
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="product_code">QR code</label>
-                                        <input type="text" name="product_code" id="product_code" class="form-control" placeholder="e.g. Table_01">
-                                        <p></p>
+                                        <input type="hidden" name="qr_generate" id="qr_generate" class="form-control" placeholder="e.g. Table_01">
                                     </div>  
                                 </div>
                                 <div class="col-md-6">
@@ -188,6 +182,23 @@
 
 @section('customJs')
 <script>
+
+    $('#name').change(function(){
+        element = $(this);
+        $("button[type=submit]").prop('disabled', true);
+        $.ajax({
+            url: '{{ route("getSlug") }}',
+            type: 'get',
+            data: {title: element.val()},
+            dataType: 'json',
+            success: function(response){
+                $("button[type=submit]").prop('disabled', false);
+                if(response["status"] == true){
+                    $("#qr_generate").val(response["slug"]);
+                }
+            }
+        });
+    })
 
 $(document).ready(function(){
     $('.tabs li').click(function(event){

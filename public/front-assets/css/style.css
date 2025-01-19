@@ -523,6 +523,13 @@ html {
   padding: 0;
 }
 
+.basket-page__content__products {
+  border-top: 3px dashed #eee;
+  border-bottom: 3px dashed #eee;
+  margin-top: 10px;
+  padding: 10px 0;
+}
+
 .basket-page__content__delivery-content__table input[type=text], .basket-page__content__delivery-content__table input[type=tel], .basket-page__content__delivery-content__table input[type=email] {
   background-color: var(--ik-bg-low-contrast-color);
   color: var(--ik-bg-high-contrast-color);

@@ -12,7 +12,6 @@ use Illuminate\Support\Facades\Mail;
 use Gloudemans\Shoppingcart\Facades\Cart;
 
 
-
 function getCategories(){
     return Category::orderBy('name','ASC')->with('sub_category')->take(4)->orderBy('id','DESC')->get();
 }
