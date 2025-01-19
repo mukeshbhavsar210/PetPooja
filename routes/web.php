@@ -4,8 +4,6 @@ use App\Http\Controllers\AccountController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\admin\AdminLoginController;
 use App\Http\Controllers\admin\AreaController;
-use App\Http\Controllers\admin\BranchController;
-use App\Http\Controllers\admin\BrandController;
 use App\Http\Controllers\admin\HomeController;
 use App\Http\Controllers\admin\CategoryController;
 use App\Http\Controllers\admin\DiscountCodeController;
@@ -19,16 +17,11 @@ use App\Http\Controllers\admin\QrController;
 use App\Http\Controllers\admin\SeatingController;
 use App\Http\Controllers\admin\SettingController;
 use App\Http\Controllers\admin\ShippingController;
-use App\Http\Controllers\admin\SubCategoryController;
-use App\Http\Controllers\admin\TableController;
 use App\Http\Controllers\admin\TempImagesController;
 use App\Http\Controllers\admin\UserController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
-use App\Http\Controllers\ContactController;
 use App\Http\Controllers\FrontController;
-use App\Http\Controllers\ItemController;
-use App\Http\Controllers\SessionController;
 use App\Http\Controllers\ShopController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -40,12 +33,14 @@ Route::get('cart', [FrontController::class, 'showCartTable']);
 Route::post('dining',[FrontController::class, 'dinening_store'])->name('submit.dining');
 Route::post('takeaway',[FrontController::class, 'takeaway_store'])->name('submit.takeaway');
 Route::post('delivery',[FrontController::class, 'delivery_store'])->name('submit.delivery');
+Route::post('order',[FrontController::class, 'order_store'])->name('submit.order');
 Route::get('add-to-cart/{id}', [FrontController::class, 'addToCart']);
 Route::delete('remove-from-cart', [FrontController::class, 'removeCartItem']);
 Route::get('clear-cart', [FrontController::class, 'clearCart']);
 
 //Front pages routes
 Route::get('/', [FrontController::class, 'show'])->name('front.home');
+Route::get('/{areaSlug?}',[FrontController::class,'index'])->name('front.restaurant');
 //Route::get('/',[FrontController::class,'index'])->name('front.home');
 Route::get('/menu/{menuSlug?}',[ShopController::class,'index'])->name('front.menu');
 //Route::get('/product/{slug}',[ShopController::class,'product'])->name('front.product');
@@ -54,8 +49,6 @@ Route::post('/add-to-cart',[CartController::class,'addToCart'])->name('front.add
 Route::post('/update-cart',[FrontController::class,'updateCart'])->name('front.updateCart');
 Route::post('/delete-item',[CartController::class,'deleteItem'])->name('front.deleteItem.cart');
 Route::get('/checkout',[CartController::class,'checkout'])->name('front.checkout');
-
-Route::post('/process-checkout',[CartController::class,'processCheckout'])->name('front.processCheckout');
 
 Route::get('/thanks/{orderId}',[CartController::class,'thankyou'])->name('front.checkout.thankyou');
 Route::post('/get-order-summary',[CartController::class,'getOrderSummary'])->name('front.getOrderSummary');
@@ -96,7 +89,6 @@ Route::group(['prefix' => 'account'], function(){
     });
 });
 
-
 //Admin related
 Route::group(['prefix' => 'admin',], function(){
     Route::group(['middleware' => 'admin.guest'], function(){
@@ -126,7 +118,6 @@ Route::group(['prefix' => 'admin',], function(){
         Route::put('/menus/{menu}', [MenuController::class, 'update'])->name('menu.update');
         Route::delete('/menus/{menu}', [MenuController::class, 'destroy'])->name('menu.delete');
 
-
         //Areas Routes
         Route::get('/areas', [AreaController::class, 'index'])->name('areas.index');        
         Route::post('/areas', [AreaController::class, 'store'])->name('areas.store');
@@ -134,7 +125,11 @@ Route::group(['prefix' => 'admin',], function(){
         Route::put('/areas/{area}', [AreaController::class, 'update'])->name('areas.update');
         Route::delete('/areas/{area}', [AreaController::class, 'destroy'])->name('areas.delete');
 
-        
+        //Orders Routes
+        Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+        Route::get('/orders/{id}', [OrderController::class, 'detail'])->name('orders.detail');
+        Route::post('/order/change-status/{id}', [OrderController::class, 'changeOrderStatus'])->name('orders.changeOrderStatus');
+        Route::post('/order/send-email/{id}', [OrderController::class, 'sendInvoiceEmail'])->name('orders.sendInvoiceEmail');
 
         //Table Routes
         Route::get('/seatings', [SeatingController::class, 'index'])->name('seatings.index');
@@ -181,11 +176,7 @@ Route::group(['prefix' => 'admin',], function(){
         Route::put('/coupons/{coupon}', [DiscountCodeController::class, 'update'])->name('coupons.update');
         Route::delete('/coupons/{coupon}', [DiscountCodeController::class, 'destroy'])->name('coupons.delete');
 
-        //Orders Routes
-        Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
-        Route::get('/orders/{id}', [OrderController::class, 'detail'])->name('orders.detail');
-        Route::post('/order/change-status/{id}', [OrderController::class, 'changeOrderStatus'])->name('orders.changeOrderStatus');
-        Route::post('/order/send-email/{id}', [OrderController::class, 'sendInvoiceEmail'])->name('orders.sendInvoiceEmail');
+        
 
         //Users Routes
         Route::get('/users', [UserController::class, 'index'])->name('users.index');

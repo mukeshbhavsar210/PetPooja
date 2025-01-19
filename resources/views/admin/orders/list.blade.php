@@ -43,53 +43,150 @@
                 </div>
             </form>
 
-            <div class="card-body table-responsive p-0">
-                <table class="table table-hover text-nowrap">
-                    <thead>
-                        <tr>
-                            <th width="60">Order#</th>
-                            <th>Customer</th>
-                            <th>Email</th>
-                            <th>Mobile</th>
-                            <th>Status</th>
-                            <th>Amount</th>
-                            <th>Date Purchased</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @if ($orders->isNotEmpty())
-                            @foreach ($orders as $order)
+            <div class="card-body table-responsive mt-3 p-0">
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#tabs-1" role="tab">Dinein</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#tabs-2" role="tab">Takeaway</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">Delivery</a>
+                    </li>
+                </ul>
+
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tabs-1" role="tabpanel">
+                        <table class="table table-hover text-nowrap">
+                            <thead>
                                 <tr>
-                                    <td><a href="{{ route('orders.detail',$order->id) }}">{{ $order->id }}</a></td>
-                                    <td>{{ $order->name }}</td>
-                                    <td>{{ $order->email }}</td>
-                                    <td>{{ $order->mobile }}</td>
-                                    <td>
-                                        @if ($order->status == 'pending')
-                                            <span class="badge bg-danger">Pending</span>
-                                        @elseif ($order->status == 'shipped')
-                                            <span class="badge bg-info">Shipped</span>
-                                        @elseif ($order->status == 'delivered')
-                                            <span class="badge bg-success">Delivered</span>
-                                        @else
-                                            <span class="badge bg-danger">Cancelled</span>
-                                        @endif
-                                    </td>
-                                    <td>₹ {{ number_format($order->grandtotal,2) }}</td>
-                                    <td>{{ \Carbon\Carbon::parse($order->created_at->format('d M, Y')) }}</td>
+                                    <th>Order#</th>
+                                    <th>Ordered items</th>
+                                    <th>Ready time</th>
+                                    <th>Table</th>
+                                    <th>Notes</th>                                    
+                                    <th>Amount</th>
+                                    <th>Total</th>
+                                    <th>Date</th>
                                 </tr>
-                            @endforeach
-                        @else
-                            <tr>
-                                <td colspan="5">Records not found</td>
-                            </tr>
-                        @endif
-                    </tbody>
-                </table>
+                            </thead>
+                            <tbody>
+                                @if ($orders->isNotEmpty())
+                                    @foreach ($orders as $value)
+                                        @if($value->orders->order_type == 'Dinein')
+                                            <tr>
+                                                <td><a href="{{ route('orders.detail',$value->order_id) }}">{{ $value->order_id }}</a></td>
+                                                <td>{{ $value->name }} - {{ $value->qty }}</td>
+                                                <td>{{ $value->orders->ready_time }}</td>
+                                                <td>Table no. {{ $value->orders->table_number }}</td>
+                                                <td>{{ $value->orders->notes }}</td>
+                                                <td>₹ {{ number_format($value->price,2) }}</td>
+                                                <td>₹ {{ number_format($value->price*$value->qty,2) }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($value->created_at->format('d M, Y')) }}</td>
+                                            </tr>
+                                        @endif
+                                    @endforeach 
+                                @else
+                                    <tr>
+                                        <td colspan="5">Records not found</td>
+                                    </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="tab-pane" id="tabs-2" role="tabpanel">
+                        <table class="table table-hover text-nowrap">
+                            <thead>
+                                <tr>
+                                    <th>Order#</th>
+                                    <th>Ordered items</th>
+                                    <th>Name</th>
+                                    <th>Phone</th>
+                                    <th>Email</th>
+                                    <th>Ready time</th>
+                                    <th>Notes</th>                                    
+                                    <th>Amount</th>
+                                    <th>Total</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if ($orders->isNotEmpty())
+                                    @foreach ($orders as $value)
+                                        @if($value->orders->order_type == 'Takeaway')
+                                            <tr>
+                                                <td><a href="{{ route('orders.detail',$value->id) }}">{{ $value->id }}</a></td>
+                                                <td>{{ $value->name }} ({{ $value->qty }})</td>
+                                                <td>{{ $value->orders->takeaway_name }}</td>
+                                                <td>{{ $value->orders->takeaway_phone }}</td>
+                                                <td>{{ $value->orders->takeaway_email }}</td>
+                                                <td>{{ $value->orders->ready_time }}</td>
+                                                <td>{{ $value->orders->notes }}</td>
+                                                <td>₹ {{ number_format($value->price,2) }}</td>
+                                                <td>₹ {{ number_format($value->price*$value->qty,2) }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($value->created_at->format('d M, Y')) }}</td>
+                                            </tr>
+                                        @endif
+                                    @endforeach 
+                                @else
+                                    <tr>
+                                        <td colspan="5">Records not found</td>
+                                    </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="tab-pane" id="tabs-3" role="tabpanel">
+                        <table class="table table-hover text-nowrap">
+                            <thead>
+                                <tr>
+                                    <th>Order#</th>
+                                    <th>Ordered items</th>
+                                    <th>Name</th>
+                                    <th>Phone</th>
+                                    <th>Email</th>
+                                    <th>Ready time</th>
+                                    <th>Notes</th>                                    
+                                    <th>Amount</th>
+                                    <th>Total</th>
+                                    <th>Payment</th>
+                                    <th>Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if ($orders->isNotEmpty())
+                                    @foreach ($orders as $value)
+                                        @if($value->orders->order_type == 'Delivery')
+                                            <tr>
+                                                <td><a href="{{ route('orders.detail',$value->id) }}">{{ $value->id }}</a></td>
+                                                <td>{{ $value->name }} ({{ $value->qty }})</td>
+                                                <td>{{ $value->orders->delivery_name }}</td>
+                                                <td>{{ $value->orders->delivery_phone }}</td>
+                                                <td>{{ $value->orders->delivery_email }}</td>
+                                                <td>{{ $value->orders->ready_time }}</td>
+                                                <td>{{ $value->orders->notes }}</td>
+                                                <td>₹ {{ number_format($value->price,2) }}</td>
+                                                <td>₹ {{ number_format($value->price*$value->qty,2) }}</td>
+                                                <td>Pending</td>
+                                                <td>{{ \Carbon\Carbon::parse($value->created_at->format('d M, Y')) }}</td>
+                                            </tr>
+                                        @endif
+                                    @endforeach 
+                                @else
+                                    <tr>
+                                        <td colspan="5">Records not found</td>
+                                    </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
 
             <div class="card-footer clearfix">
-                {{ $orders->links() }}
+                {{-- {{ $orders->links() }} --}}
             </div>
         </div>
     </div>

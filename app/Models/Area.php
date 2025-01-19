@@ -17,7 +17,4 @@ class Area extends Model
         return $this->hasMany(Menu::class);
     }
 
-    public function seat(){
-        return $this->belongsTo(Seating::class);
-    }
 }

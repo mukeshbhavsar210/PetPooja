@@ -1,6 +1,6 @@
-<form action="" method="POST" id="diningForm" name="diningForm">
-    @csrf
-   
+{{-- <form action="" method="POST" id="diningForm" name="diningForm">
+    @csrf --}}
+    
     <input type="hidden" name="order_type" value="Dinein">
 
     <div class="basket-page__content__notes">
@@ -23,13 +23,45 @@
         </select>                                            
     </div>
 
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <!-- <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="index.php" title="Products">Home</a>
+        </li> -->
 
-    
-    <select class="form-select" aria-label="Default select example" name="table_number">
-        <option selected>Select Table</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-    </select>
-    <button type="submit" class="btn btn-primary">Order 1</button>
+        @if ($areas->isNotEmpty())
+            @foreach ($areas as $value )
+                <li class="nav-item dropdown">
+                    <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        {{ $value->name }}
+                    </button>
+
+                    @if ($value->seating->isNotEmpty())
+                        <ul class="dropdown-menu dropdown-menu-dark">
+                            @foreach ($value->seating as $seat)
+                                <li><a class="dropdown-item nav-link" href="{{ route('front.restaurant',[$value->areaSlug, $seat->areaSlug])}}">{{ $seat->name }} {{ $seat->areaSlug }}</a></li>
+                            @endforeach
+                        </ul>
+                    @endif
+                </li>
+            @endforeach
+        @endif
+      </ul>
+
+    {{-- <select class="form-select" aria-label="Default select example" name="table_number">
+        @if ($areas->isNotEmpty())
+            @foreach ($areas as $value )
+                <option>{{ $value->name }}
+                    @if ($value->seating->isNotEmpty())
+                        <select class="form-select" aria-label="Default select example" name="table_number">
+                            @foreach ($value->seating as $seat)
+                                <option>{{ $seat->name }}</option>
+                            @endforeach
+                        </select>
+                    @endif
+                </option>
+            @endforeach
+        @endif
+    </select> --}}
+
+    <button type="submit" class="btn btn-primary">Order</button>
 </form>

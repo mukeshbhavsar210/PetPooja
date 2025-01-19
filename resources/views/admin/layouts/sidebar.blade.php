@@ -84,7 +84,7 @@
                             <a href="{{ route('areas.index') }}" class="nav-link {{ (\Request::route()->getName() == 'areas.index') ? 'active' : '' }}">KOT</a>
                         </li>
                         <li class="nav-item">
-                            <a href="{{ route('seatings.index') }}" class="nav-link {{ (\Request::route()->getName() == 'seatings.index') ? 'active' : '' }}">Orders</a>
+                            <a href="{{ route('orders.index') }}" class="nav-link {{ (\Request::route()->getName() == 'orders.index') ? 'active' : '' }}">Orders</a>
                         </li>
                         
                     </ul>

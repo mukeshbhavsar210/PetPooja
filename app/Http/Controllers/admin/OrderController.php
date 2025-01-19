@@ -10,18 +10,12 @@ use Illuminate\Http\Request;
 class OrderController extends Controller
 {
     public function index(Request $request){
+        $orders = OrderItem::latest('order_items.created_at')->with('orders')->get();
+        //$orderCount = OrderItem::get()->count();
 
-        $orders = Order::latest('orders.created_at')->select('orders.*','users.name','users.email');
-        $orders = $orders->leftJoin('users','users.id','orders.user_id');
-
-        if($request->get('keyword') != ""){
-            $orders = $orders->where('users.name','like','%'.$request->keyword.'%');
-            $orders = $orders->orWhere('users.email','like','%'.$request->keyword.'%');
-            $orders = $orders->orWhere('orders.id','like','%'.$request->keyword.'%');
-        }
-
-        $orders = $orders->paginate(10);
-
+        //dd($orderCount);
+      
+        //$orders = $orders->paginate(10);
         return view('admin.orders.list',[
             'orders' => $orders
         ]);
@@ -29,10 +23,12 @@ class OrderController extends Controller
 
     public function detail($orderId){
 
-        $order = Order::select('orders.*','countries.name as countryName' )
-            ->where('orders.id',$orderId)
-            ->leftJoin('countries','countries.id','orders.country_id')
-            ->first();
+        $order = Order::where('orders.id',$orderId)->get();
+
+        // $order = Order::select('orders.*','countries.name as countryName' )
+        //     ->where('orders.id',$orderId)
+        //     ->leftJoin('countries','countries.id','orders.country_id')
+        //     ->first();
 
         $orderItems = OrderItem::where('order_id',$orderId)->get();
 
