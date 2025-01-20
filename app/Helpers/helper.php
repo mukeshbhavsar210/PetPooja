@@ -20,10 +20,6 @@ function getProducts(){
     return Menu::orderBy('name','ASC')->orderBy('id','DESC')->get();
 }  
 
-function getAreas(){
-    return Area::orderBy('name','ASC')->with('seating')->get();
-}  
-
 function getProductImage($productId){
     return ProductImage::where('product_id',$productId)->first();
 }

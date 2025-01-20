@@ -1,15 +1,8 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-
     <title>@yield('title')</title>
-
-   
-
-	
 	<link rel="stylesheet" type="text/css" href="{{ asset('front-assets/css/style.min.css') }}" />
 	<link rel="stylesheet" type="text/css" href="{{ asset('front-assets/css/style.css') }}" />
 	
@@ -75,10 +68,6 @@
 </script>
 <script>
 $(document).ready(function() {
-	
-
-
-
 	var slider_width = $('.orderDetails').height();
 	$('#cartDetails').click(function() {
 		if($(this).css("margin-bottom") == slider_width+"px" && !$(this).is(':animated')) {

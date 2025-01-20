@@ -37,7 +37,8 @@ class SeatingController extends Controller
         if($this->productCodeExists($number)){
             $number = mt_rand(1000000000, 9999999999);
         }
-        $request['qr_generate'] = $number;
+        $request['product_code'] = $number;
+       
         //Seating::create($request->all());
 
         //Validation
@@ -45,13 +46,12 @@ class SeatingController extends Controller
             'name' => 'required',    
             'area_id' => 'uniq',         
         ]);
-
        
         if ($validator->passes()) {
             $menu = new Seating();
             $menu->area_id = $request->area;
             $menu->name = $request->name;            
-            $menu->product_code = $request->qr_generate;            
+            $menu->product_code = $request->product_code;            
             $menu->seating_capacity = $request->seating_capacity;
             $menu->save();
 
@@ -70,11 +70,9 @@ class SeatingController extends Controller
         }
     }
 
-
     public function productCodeExists($number){
         return Seating::whereProductCode($number)->exists();
     }
-
 
     public function edit($id, Request $request){
 
