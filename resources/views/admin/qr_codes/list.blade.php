@@ -17,11 +17,11 @@
         @include('admin.message')
 
         <ul class="tabs">
-            @if (getAreas()->isNotEmpty())
+            @if ($areas->isNotEmpty())
                 @php
                     $count=1;
                 @endphp
-                @foreach (getAreas() as $value )
+                @foreach ($areas as $value )
                     <li>
                         <a data-toggle="tab" href="#tabs-{{ $count }}" role="tab">{{ $value->name }}</a>
 
@@ -40,14 +40,14 @@
                                                         </div>
                                                     </div>
                                                     <div class="card-body">                                                        
-                                                        <div class="qr_code">                                                            
-                                                            {!! DNS2D::getBarcodeHTML('https://bhojan.atlasyes.com/restaurant/table/'.$value->name, 'QRCODE',6.7,6.7) !!}                                                            
+                                                        <div class="qr_code">   
+                                                            {!! DNS2D::getBarcodeHTML('http://127.0.0.1:8000/'.$value->area->slug.'/'.$value->name, 'QRCODE',6.7,6.7) !!}
                                                         </div>                                                        
                                                     </div>
                                                     <div class="card-footer">
                                                         <ul class="cardDownload">
                                                             <li><a href="#">Download</a></li>
-                                                            <li><a href="#">View</a></li>
+                                                            <li><a target="_blank" href="{{ route('front.restaurant',[$value->area->slug.'/'.$value->name]) }}">View</a></li>
                                                         </ul>                                                        
                                                     </div>
                                                 </div>
