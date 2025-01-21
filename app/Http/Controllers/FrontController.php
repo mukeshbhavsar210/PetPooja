@@ -28,6 +28,16 @@ class FrontController extends Controller {
         return view('front.home.index', $data);        
     }
 
+    public function wishlist() {
+        $products = Product::orderBy('id','DESC')->get();        
+        $data = [
+            'products'=> $products,            
+        ];
+
+        dd($products);
+        return view('front.home.wishlist', $data);        
+    }
+
     public function index(Request $request, $areaSlug = null,) {
         $areaSlug = ' ';
 
@@ -59,11 +69,11 @@ class FrontController extends Controller {
         $seatings = Seating::orderBy("name","ASC")->with('area')->get(); 
         $areas = Area::where('status',1);
 
-        if(!empty($areaSlug)) {
-            $restaurant = Area::where('slug',$areaSlug)->first();
-            $seatings = $seatings->where('area_id',$restaurant->id);
-            $areaSelected = $restaurant->id;
-        }
+        // if(!empty($areaSlug)) {
+        //     $restaurant = Area::where('slug',$areaSlug)->first();
+        //     $seatings = $seatings->where('area_id',$restaurant->id);
+        //     $areaSelected = $restaurant->id;
+        // }
 
         $data['seatings'] = $seatings;  
         $data['products'] = $products;  
@@ -117,7 +127,6 @@ class FrontController extends Controller {
         return redirect()->back()->with('success', 'Product added to cart successfully!');
     }
 
-    
     public function removeCartItem(Request $request) {
         if ($request->id) {
             $cart = session()->get('cart');
@@ -134,6 +143,117 @@ class FrontController extends Controller {
         session()->forget('cart');
         return redirect()->back();
     }
+
+
+
+    public function addToWish($id){
+        $product = Product::with('product_images')->find($id);
+        
+        if (!$product) {
+            abort(404);
+        }
+
+        $cart = session()->get('wishlist');
+
+        if (!$cart) {
+            $cart = [
+                $id => [
+                    "name" => $product->name,
+                    "quantity" => 1,
+                    "price" => $product->price,                    
+                ]
+            ];
+
+            session()->put('wishlist', $cart);
+            return redirect()->back()->with('success', 'Product added to wishlist successfully!');
+        }
+
+        if (isset($cart[$id])) {
+            $cart[$id]['quantity']++;
+            session()->put('wishlist', $cart);
+            return redirect()->back()->with('success', 'Product added to wishlist successfully!');
+        }
+
+        $cart[$id] = [
+            "name" => $product->name,
+            "quantity" => 1,
+            "price" => $product->price,                        
+        ];
+
+        session()->put('wishlist', $cart);
+
+        if (request()->wantsJson()) {
+            return response()->json(['message' => 'Product added to wishlist successfully!']);
+        }
+        return redirect()->back()->with('success', 'Product added to wishlist successfully!');
+    }
+
+
+    public function removeWishlistItem(Request $request) {
+        if ($request->id) {
+            $cart = session()->get('wishlist');
+            if (isset($cart[$request->id])) {
+                unset($cart[$request->id]);
+                session()->put('wishlist', $cart);
+            }
+
+            session()->flash('success', 'Product removed successfully');
+        }
+    }
+
+    public function clearWishlist(){
+        session()->forget('wishlist');
+        return redirect()->back();
+    }
+
+
+    // public function addToWishlist(Request $request){
+    //     if(Auth::check() == false){
+    //         session(['url.intended' => url()->previous() ]);
+    //         return response()->json([
+    //             'status' => false,
+    //         ]);
+    //     }
+
+    //     // if(Auth::check() == false){
+    //     //     session(['url.intended' => url()->previous() ]);
+    //     //     return response()->json([
+    //     //         'status' => false,
+    //     //     ]);
+    //     // }
+
+    //     //Product add in wishlist
+    //     $product = Product::where('id', $request->id)->first();
+
+    //     if ($product == null){
+    //         return response()->json([
+    //             'status' => true,
+    //             'message' => '<div class="alert alert-danger">Product not found.</div>'
+    //         ]);
+    //     }
+
+
+    //     Wishlist::updateOrCreate(
+    //         [
+    //             'user_id' => Auth::user()->id,
+    //             'product_id' => $request->id,
+    //         ],
+    //         [
+    //             'user_id' => Auth::user()->id,
+    //             'product_id' => $request->id,
+    //         ],
+    //     );
+
+    //     //$wishlist = new Wishlist;
+    //     //$wishlist->user_id = Auth::user()->id;
+    //     //$wishlist->product_id = $request->id;
+    //     //$wishlist->save();
+
+    //     return response()->json([
+    //         'status' => true,
+    //         'message' => '<div class="alert alert-success"><strong>"'.$product->title.'"</strong> added in yout wishlist!</div>'
+    //     ]);
+    // }
 
 
 

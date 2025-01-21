@@ -27,26 +27,34 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
 
-
 // In your routes/web.php
-Route::get('cart', [FrontController::class, 'showCartTable']);
 Route::post('dining',[FrontController::class, 'dinening_store'])->name('submit.dining');
 Route::post('takeaway',[FrontController::class, 'takeaway_store'])->name('submit.takeaway');
 Route::post('delivery',[FrontController::class, 'delivery_store'])->name('submit.delivery');
 Route::post('order',[FrontController::class, 'order_store'])->name('submit.order');
+
+//add to cart
+Route::get('cart', [FrontController::class, 'showCartTable']);
 Route::get('add-to-cart/{id}', [FrontController::class, 'addToCart']);
 Route::delete('remove-from-cart', [FrontController::class, 'removeCartItem']);
 Route::get('clear-cart', [FrontController::class, 'clearCart']);
 
+//add to wishlist
+Route::get('wishlist',[FrontController::class,'wishlist'])->name('front.wishlist');
+Route::get('add-to-wishlist/{id}', [FrontController::class, 'addToWish']);
+Route::delete('remove-from-wishlist', [FrontController::class, 'removeWishlistItem']);
+Route::get('clear-wishlist', [FrontController::class, 'clearWishlist']);
+
+
 //Front pages routes
-//Route::get('/', [FrontController::class, 'show'])->name('front.home');
+Route::get('/', [FrontController::class, 'show'])->name('front.home');
 Route::get('/menu/{menuSlug?}',[ShopController::class,'index'])->name('front.menu');
 Route::get('/{areaSlug?}',[FrontController::class,'restaurant'])->name('front.restaurant');
-Route::get('/cart',[CartController::class,'cart'])->name('front.cart');
-Route::post('/add-to-cart',[CartController::class,'addToCart'])->name('front.addToCart');
-Route::post('/update-cart',[FrontController::class,'updateCart'])->name('front.updateCart');
-Route::post('/delete-item',[CartController::class,'deleteItem'])->name('front.deleteItem.cart');
-Route::get('/checkout',[CartController::class,'checkout'])->name('front.checkout');
+//Route::get('/cart',[CartController::class,'cart'])->name('front.cart');
+//Route::post('/add-to-cart',[CartController::class,'addToCart'])->name('front.addToCart');
+//Route::post('/update-cart',[FrontController::class,'updateCart'])->name('front.updateCart');
+//Route::post('/delete-item',[CartController::class,'deleteItem'])->name('front.deleteItem.cart');
+//Route::get('/checkout',[CartController::class,'checkout'])->name('front.checkout');
 
 Route::get('/thanks/{orderId}',[CartController::class,'thankyou'])->name('front.checkout.thankyou');
 Route::post('/get-order-summary',[CartController::class,'getOrderSummary'])->name('front.getOrderSummary');
