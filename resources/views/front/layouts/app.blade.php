@@ -26,7 +26,7 @@
 		<header class="page-header" >
 			<div class="header">
 				<div class="header__restaurant-name">
-					<a href="{{ route('front.home') }}" class="logo"><img style="width: 120px" src="{{ asset('front-assets/images/logo.jpg') }} " alt=""></a>
+					<a href="{{ route('front.restaurant') }}" class="logo"><img style="width: 120px" src="{{ asset('front-assets/images/logo.jpg') }} " alt=""></a>
 				</div>
 			</div>	
 

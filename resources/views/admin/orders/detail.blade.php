@@ -12,33 +12,42 @@
                 </div>
             </div>
         </div>
-        <!-- /.container-fluid -->
     </section>
-    <!-- Main content -->
+    
     <section class="content">
-        <!-- Default box -->
         <div class="container-fluid">
             <div class="row">
                 @include('admin.message')
                 <div class="col-md-9">
                     <div class="card">
                         <div class="card-header pt-3">
-                            <h1 class="h5 mb-3">Shipping Address</h1>
                             <div class="row invoice-info">
                                 <div class="col-sm-8 invoice-col">
+                            
+                                @if($order->order_type == "Dinein")
+                                    <h1 class="h5 mb-3">Dinein Order</h1>
+                                @elseif ($order->order_type == "Takeaway")
+                                    <h1 class="h5 mb-3">Takeaway Order</h1>
                                     <address>
-                                        <h4>{{ $order->first_name.' '.$order->last_name.'' }} </h4>
-                                        {{ $order->address }}<br>
-                                        {{ $order->city }}, {{ $order->state }}-{{ $order->zip }}, {{ $order->countryName }}.<br>
-                                        Phone: {{ $order->mobile }}<br>
-                                        Email: {{ $order->email }}
+                                        <p><b>{{ $order->takeaway_name }}</b><br>
+                                        Phone: {{ $order->takeaway_phone }}<br>
+                                        Email: {{ $order->takeaway_email }}</p>
                                     </address>
+                                @else
+                                    <h1 class="h5 mb-3">Shipping Address</h1>
+                                    <address>
+                                        <p><b>{{ $order->delivery_name }}</b><br>
+                                        {{ $order->address }}<br>
+                                        Phone: {{ $order->delivery_phone }}<br>
+                                        Email: {{ $order->delivery_email }}</p>
+                                    </address>
+                                @endif
                                 </div>
 
                                 <div class="col-sm-4">
                                     <div class="row">
                                         <div class="col-sm-6 text-right">Invoice</div>
-                                        <div class="col-sm-6"><b>#007612</b></div>
+                                        <div class="col-sm-6"><b>#000{{ $order->id }}</b></div>
                                     </div>
 
                                     <div class="row">
@@ -48,7 +57,7 @@
 
                                     <div class="row">
                                         <div class="col-sm-6 text-right"><span>Total:</span></div>
-                                        <div class="col-sm-6"><b>₹ {{ number_format($order->grandtotal,2) }}</b></div>
+                                        <div class="col-sm-6"><b>₹ {{ number_format($order->total,2) }}</b></div>
                                     </div>
 
                                     <div class="row">
@@ -94,33 +103,29 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($orderItems as $item)
-
+                                        @foreach ($orderItems as $value)
+                                            <tr>
+                                                <td>{{ $value->name }}</td>
+                                                <td class="text-right">₹ {{ number_format($value->price,2) }}</td>
+                                                <td class="text-center">{{ $value->qty }}</td>
+                                                <td class="text-right">₹ {{ number_format($value->total,2) }}</td>
+                                            </tr>
                                         @endforeach
                                         <tr>
-                                            <td>{{ $item->name }}</td>
-                                            <td class="text-right">₹ {{ number_format($item->price,2) }}</td>
-                                            <td class="text-center">{{ $item->qty }}</td>
-                                            <td class="text-right">₹ {{ number_format($item->total,2) }}</td>
-                                        </tr>
-
-                                        <tr>
                                             <td colspan="3" class="text-right">Subtotal:</td>
-                                            <td class="text-right">₹ {{ number_format($order->subtotal,2) }}</td>
+                                            <td class="text-right">₹ {{ number_format($order->total,2) }}</td>
                                         </tr>
-
-                                        <tr>
+                                        {{-- <tr>
                                             <td colspan="3" class="text-right">Discount: {{ (!empty($order->coupon_code)) ? '('.$order->coupon_code.')' : '' }}</td>
                                             <td class="text-right">₹ {{ number_format($order->discount,2) }}</td>
-                                        </tr>
-
+                                        </tr> --}}
                                         <tr>
                                             <td colspan="3" class="text-right">Shipping:</td>
                                             <td class="text-right">₹ {{ number_format($order->shipping,2) }}</td>
                                         </tr>
                                         <tr>
                                             <td colspan="3" class="text-right">Grand Total:</td>
-                                            <th class="text-right">₹ {{ number_format($order->grandtotal,2) }}</th>
+                                            <th class="text-right">₹ {{ number_format($order->shipping+$order->total,2) }}</th>
                                         </tr>
                                     </tbody>
                                 </table>

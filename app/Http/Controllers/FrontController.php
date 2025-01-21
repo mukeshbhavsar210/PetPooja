@@ -65,15 +65,11 @@ class FrontController extends Controller {
             $areaSelected = $restaurant->id;
         }
 
-        //$seatings = $seatings->paginate(10);
-        
         $data['seatings'] = $seatings;  
         $data['products'] = $products;  
         $data['areas'] = $areas;        
         $data['areaSelected'] = $areaSelected;
         
-        //dd($seatings);
-
         return view('front.shop.test',$data);
     }
     
@@ -157,7 +153,8 @@ class FrontController extends Controller {
             $dinein->order_type = $request->order_type;
             $dinein->notes = $request->notes;
             $dinein->ready_time = $request->ready_time;
-            $dinein->table_number = $request->table_number;            
+            $dinein->table_number = $request->table_number;
+            $dinein->total = $request->total;
             $dinein->save();
 
             foreach ($cart as $data) {     
@@ -166,6 +163,7 @@ class FrontController extends Controller {
                 $order->name = $data['name'];
                 $order->price = $data['price'];
                 $order->qty = $data['quantity'];
+                $order->total = $data['price']*$data['quantity'];
                 $order->save();
             }
 
@@ -195,6 +193,8 @@ class FrontController extends Controller {
         $session_id = Str::random(10);
         Session::put('session_id',$session_id);
 
+        $cart = Session::get('cart');
+
         if ($validator->passes()) {
             $takeway = new Order();
             $takeway->session_id = session('session_id'); 
@@ -204,16 +204,20 @@ class FrontController extends Controller {
             $takeway->takeaway_name = $request->takeaway_name;
             $takeway->takeaway_phone = $request->takeaway_phone;
             $takeway->takeaway_email = $request->takeaway_email;
+            $takeway->total = $request->total;
             $takeway->save();
 
-            $order = new OrderItem();
-            $order->order_id = $takeway->id;
-            $order->product_id = $request->id;
-            $order->name = $request->name;
-            $order->qty = $request->qty;
-            $order->price = $request->price;
-            $order->total = $request->total;
-            $order->save();
+            foreach ($cart as $data) {     
+                $order = new OrderItem;
+                $order->order_id = $takeway->id;
+                $order->name = $data['name'];
+                $order->price = $data['price'];
+                $order->qty = $data['quantity'];
+                $order->total = $data['price']*$data['quantity'];
+                $order->save();
+            }
+
+            Session::forget('cart');
 
             $request->session()->flash('success', 'Takeaway placed successfully');
 
@@ -239,6 +243,8 @@ class FrontController extends Controller {
         $session_id = Str::random(10);
         Session::put('session_id',$session_id);
 
+        $cart = Session::get('cart');
+
         if ($validator->passes()) {
             $delivery = new Order();
             $delivery->session_id = session('session_id'); 
@@ -249,17 +255,20 @@ class FrontController extends Controller {
             $delivery->delivery_name = $request->delivery_name;
             $delivery->delivery_phone = $request->delivery_phone;
             $delivery->delivery_email = $request->delivery_email;
+            $delivery->total = $request->total;
             $delivery->save();
 
-            $order = new OrderItem();
-            $order->order_id = $delivery->id;
-            $order->product_id = $request->id;
-            $order->name = $request->name;
-            $order->qty = $request->qty;
-            $order->price = $request->price;
-            $order->total = $request->total;
-            $order->save();
+            foreach ($cart as $data) {     
+                $order = new OrderItem;
+                $order->order_id = $delivery->id;
+                $order->name = $data['name'];
+                $order->price = $data['price'];
+                $order->qty = $data['quantity'];
+                $order->total = $data['price']*$data['quantity'];
+                $order->save();
+            }
 
+            Session::forget('cart');
             $request->session()->flash('success', 'Delivery placed successfully');
 
             return response()->json([

@@ -39,7 +39,7 @@ Route::delete('remove-from-cart', [FrontController::class, 'removeCartItem']);
 Route::get('clear-cart', [FrontController::class, 'clearCart']);
 
 //Front pages routes
-Route::get('/', [FrontController::class, 'show'])->name('front.home');
+//Route::get('/', [FrontController::class, 'show'])->name('front.home');
 Route::get('/menu/{menuSlug?}',[ShopController::class,'index'])->name('front.menu');
 Route::get('/{areaSlug?}',[FrontController::class,'restaurant'])->name('front.restaurant');
 Route::get('/cart',[CartController::class,'cart'])->name('front.cart');
