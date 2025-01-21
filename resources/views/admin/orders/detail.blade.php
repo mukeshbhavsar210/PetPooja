@@ -23,26 +23,6 @@
                         <div class="card-header pt-3">
                             <h1 class="h5 mb-3">Shipping Address</h1>
 
-                            @if ($products->isNotEmpty())
-                            @foreach($products as $value)
-                                @php
-                                    $productImage = $value->product_images->first();
-                                @endphp
-                                    @if (!empty($productImage->image))
-                                        <img src="{{ asset('uploads/product/small/'.$productImage->image) }}" style="border-radius: 5px; width:100%;" >
-                                        @else
-                                        <img src="{{ asset('admin-assets/img/default-150x150.png') }}" alt="" width="200"  />
-                                    @endif
-                                   @endforeach
-                                @else
-                                    <div class="card">
-                                        <div class="card-body">
-                                            Records not found
-                                        </div>
-                                    </div>
-                                @endif
-                            </div>
-
                             <div class="row invoice-info">
                                 <div class="col-sm-8 invoice-col">
                                     @if($order->order_type == "Dinein")
