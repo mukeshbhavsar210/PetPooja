@@ -21,14 +21,9 @@ class OrderController extends Controller
         ]);
     }
 
+
     public function detail($orderId){
-
         $order = Order::where('orders.id',$orderId)->get();
-
-        // $order = Order::select('orders.*','countries.name as countryName' )
-        //     ->where('orders.id',$orderId)
-        //     ->leftJoin('countries','countries.id','orders.country_id')
-        //     ->first();
 
         $orderItems = OrderItem::where('order_id',$orderId)->get();
 
@@ -37,6 +32,16 @@ class OrderController extends Controller
             'orderItems' => $orderItems,
         ]);
     }
+
+    // public function detail($orderId){
+    //     $order = Order::where('orders.id',$orderId)->get();
+    //     $orderItems = OrderItem::where('order_id',$orderId)->get();
+
+    //     return view('admin.orders.detail',[
+    //         'order' => $order,
+    //         'orderItems' => $orderItems,
+    //     ]);
+    // }
 
     public function changeOrderStatus(Request $request, $orderId){
         $order = Order::find($orderId);

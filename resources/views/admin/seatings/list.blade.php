@@ -54,7 +54,8 @@
                                         <label for="name">Table Code</label>
                                         <input type="text" name="name" id="name" class="form-control" placeholder="e.g. Table_01">
                                         <p></p>
-                                        <input type="hidden" name="qr_generate" id="qr_generate" class="form-control" placeholder="e.g. Table_01">
+                                        <input type="hidden" name="qr_generate" id="qr_generate">
+                                        <input type="hidden" name="slug" id="slug">
                                     </div>  
                                 </div>
                                 <div class="col-md-6">
@@ -194,7 +195,7 @@
             success: function(response){
                 $("button[type=submit]").prop('disabled', false);
                 if(response["status"] == true){
-                    $("#qr_generate").val(response["slug"]);
+                    $("#slug").val(response["slug"]);
                 }
             }
         });

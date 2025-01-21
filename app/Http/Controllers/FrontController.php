@@ -51,6 +51,32 @@ class FrontController extends Controller {
         return view('front.shop.index',$data);
     }
 
+
+    public function restaurant(Request $request, $areaSlug = null) {       
+        $areaSelected = ' ';
+
+        $products = Product::orderBy('id','DESC')->get();
+        $seatings = Seating::orderBy("name","ASC")->with('area')->get(); 
+        $areas = Area::where('status',1);
+
+        if(!empty($areaSlug)) {
+            $restaurant = Area::where('slug',$areaSlug)->first();
+            $seatings = $seatings->where('area_id',$restaurant->id);
+            $areaSelected = $restaurant->id;
+        }
+
+        //$seatings = $seatings->paginate(10);
+        
+        $data['seatings'] = $seatings;  
+        $data['products'] = $products;  
+        $data['areas'] = $areas;        
+        $data['areaSelected'] = $areaSelected;
+        
+        //dd($seatings);
+
+        return view('front.shop.test',$data);
+    }
+    
     
     public function addToCart($id){
         $product = Product::with('product_images')->find($id);

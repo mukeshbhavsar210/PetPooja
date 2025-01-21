@@ -40,10 +40,8 @@ Route::get('clear-cart', [FrontController::class, 'clearCart']);
 
 //Front pages routes
 Route::get('/', [FrontController::class, 'show'])->name('front.home');
-Route::get('/{areaSlug?}',[FrontController::class,'index'])->name('front.restaurant');
-//Route::get('/',[FrontController::class,'index'])->name('front.home');
 Route::get('/menu/{menuSlug?}',[ShopController::class,'index'])->name('front.menu');
-//Route::get('/product/{slug}',[ShopController::class,'product'])->name('front.product');
+Route::get('/{areaSlug?}',[FrontController::class,'restaurant'])->name('front.restaurant');
 Route::get('/cart',[CartController::class,'cart'])->name('front.cart');
 Route::post('/add-to-cart',[CartController::class,'addToCart'])->name('front.addToCart');
 Route::post('/update-cart',[FrontController::class,'updateCart'])->name('front.updateCart');
