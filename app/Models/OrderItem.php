@@ -9,6 +9,11 @@ class OrderItem extends Model
 {
     use HasFactory;
 
+    public function product_images(){
+        return $this->hasMany(ProductImage::class);
+    }
+
+
     public function orders(){
         return $this->belongsTo(Order::class, 'order_id', );
     }

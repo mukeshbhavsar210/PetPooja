@@ -12,11 +12,9 @@
                 </div>
             </div>
         </div>
-        <!-- /.container-fluid -->
     </section>
-    <!-- Main content -->
+    
     <section class="content">
-        <!-- Default box -->
         <div class="container-fluid">
             <div class="row">
                 @include('admin.message')
@@ -24,21 +22,47 @@
                     <div class="card">
                         <div class="card-header pt-3">
                             <h1 class="h5 mb-3">Shipping Address</h1>
+
+                            @if ($products->isNotEmpty())
+                            @foreach($products as $value)
+                                @php
+                                    $productImage = $value->product_images->first();
+                                @endphp
+                                    @if (!empty($productImage->image))
+                                        <img src="{{ asset('uploads/product/small/'.$productImage->image) }}" style="border-radius: 5px; width:100%;" >
+                                        @else
+                                        <img src="{{ asset('admin-assets/img/default-150x150.png') }}" alt="" width="200"  />
+                                    @endif
+                                   @endforeach
+                                @else
+                                    <div class="card">
+                                        <div class="card-body">
+                                            Records not found
+                                        </div>
+                                    </div>
+                                @endif
+                            </div>
+
                             <div class="row invoice-info">
                                 <div class="col-sm-8 invoice-col">
-                                    <address>
-                                        <h4>{{ $order->first_name.' '.$order->last_name.'' }} </h4>
-                                        {{ $order->address }}<br>
-                                        {{ $order->city }}, {{ $order->state }}-{{ $order->zip }}, {{ $order->countryName }}.<br>
-                                        Phone: {{ $order->mobile }}<br>
-                                        Email: {{ $order->email }}
-                                    </address>
+                                    @if($order->order_type == "Dinein")
+                                        Dinein Order
+                                    @elseif ($order->order_type == "Dinein")
+                                        Takeaway Order
+                                    @else
+                                        <address>
+                                            <h4>{{ $order->delivery_name }} </h4>
+                                            {{ $order->address }}<br>
+                                            Phone: {{ $order->delivery_phone }}<br>
+                                            Email: {{ $order->delivery_email }}
+                                        </address>
+                                    @endif
                                 </div>
 
                                 <div class="col-sm-4">
                                     <div class="row">
                                         <div class="col-sm-6 text-right">Invoice</div>
-                                        <div class="col-sm-6"><b>#007612</b></div>
+                                        <div class="col-sm-6"><b>#000{{ $order->id }}</b></div>
                                     </div>
 
                                     <div class="row">
@@ -48,7 +72,7 @@
 
                                     <div class="row">
                                         <div class="col-sm-6 text-right"><span>Total:</span></div>
-                                        <div class="col-sm-6"><b>₹ {{ number_format($order->grandtotal,2) }}</b></div>
+                                        <div class="col-sm-6"><b>₹ {{ number_format($order->total,2) }}</b></div>
                                     </div>
 
                                     <div class="row">
@@ -94,33 +118,29 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($orderItems as $item)
-
+                                        @foreach ($orderItems as $value)
+                                            <tr>
+                                                <td>{{ $value->name }}</td>
+                                                <td class="text-right">₹ {{ number_format($value->price,2) }}</td>
+                                                <td class="text-center">{{ $value->qty }}</td>
+                                                <td class="text-right">₹ {{ number_format($value->total,2) }}</td>
+                                            </tr>
                                         @endforeach
                                         <tr>
-                                            <td>{{ $item->name }}</td>
-                                            <td class="text-right">₹ {{ number_format($item->price,2) }}</td>
-                                            <td class="text-center">{{ $item->qty }}</td>
-                                            <td class="text-right">₹ {{ number_format($item->total,2) }}</td>
-                                        </tr>
-
-                                        <tr>
                                             <td colspan="3" class="text-right">Subtotal:</td>
-                                            <td class="text-right">₹ {{ number_format($order->subtotal,2) }}</td>
+                                            <td class="text-right">₹ {{ number_format($order->total,2) }}</td>
                                         </tr>
-
-                                        <tr>
+                                        {{-- <tr>
                                             <td colspan="3" class="text-right">Discount: {{ (!empty($order->coupon_code)) ? '('.$order->coupon_code.')' : '' }}</td>
                                             <td class="text-right">₹ {{ number_format($order->discount,2) }}</td>
-                                        </tr>
-
+                                        </tr> --}}
                                         <tr>
                                             <td colspan="3" class="text-right">Shipping:</td>
                                             <td class="text-right">₹ {{ number_format($order->shipping,2) }}</td>
                                         </tr>
                                         <tr>
                                             <td colspan="3" class="text-right">Grand Total:</td>
-                                            <th class="text-right">₹ {{ number_format($order->grandtotal,2) }}</th>
+                                            <th class="text-right">₹ {{ number_format($order->shipping+$order->total,2) }}</th>
                                         </tr>
                                     </tbody>
                                 </table>

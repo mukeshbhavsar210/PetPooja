@@ -23,11 +23,8 @@
         </select>                                            
     </div>
 
-    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <!-- <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="index.php" title="Products">Home</a>
-        </li> -->
-
+    {{-- <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+       
         @if ($areas->isNotEmpty())
             @foreach ($areas as $value )
                 <li class="nav-item dropdown">
@@ -45,7 +42,7 @@
                 </li>
             @endforeach
         @endif
-      </ul>
+      </ul> --}}
 
     {{-- <select class="form-select" aria-label="Default select example" name="table_number">
         @if ($areas->isNotEmpty())

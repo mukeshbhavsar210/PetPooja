@@ -131,7 +131,8 @@ class FrontController extends Controller {
             $dinein->order_type = $request->order_type;
             $dinein->notes = $request->notes;
             $dinein->ready_time = $request->ready_time;
-            $dinein->table_number = $request->table_number;            
+            $dinein->table_number = $request->table_number;   
+            $dinein->total = $request->total;   
             $dinein->save();
 
             foreach ($cart as $data) {     
@@ -139,7 +140,8 @@ class FrontController extends Controller {
                 $order->order_id = $dinein->id;
                 $order->name = $data['name'];
                 $order->price = $data['price'];
-                $order->qty = $data['quantity'];
+                $order->qty = $data['quantity'];                
+                $order->total = $data['price']*$data['quantity']; 
                 $order->save();
             }
 

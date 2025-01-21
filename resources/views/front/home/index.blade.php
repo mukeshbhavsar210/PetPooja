@@ -40,8 +40,8 @@
                         @foreach(session('cart') as $id => $details)
                             @include('front.layouts.message')
 
-                            <form action="" method="POST" id="diningForm" name="diningForm">
-                            {{-- <form action="dining" method="POST" > --}}
+                            {{-- <form action="" method="POST" id="diningForm" name="diningForm"> --}}
+                            <form action="dining" method="POST" >
                                 @csrf
 
                                 <div class="row mb-2">

@@ -5,16 +5,14 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
     public function index(Request $request){
         $orders = OrderItem::latest('order_items.created_at')->with('orders')->get();
-        //$orderCount = OrderItem::get()->count();
-
-        //dd($orderCount);
-      
+        
         //$orders = $orders->paginate(10);
         return view('admin.orders.list',[
             'orders' => $orders
@@ -22,21 +20,17 @@ class OrderController extends Controller
     }
 
     public function detail($orderId){
-
-        $order = Order::where('orders.id',$orderId)->get();
-
-        // $order = Order::select('orders.*','countries.name as countryName' )
-        //     ->where('orders.id',$orderId)
-        //     ->leftJoin('countries','countries.id','orders.country_id')
-        //     ->first();
-
+        $order = Order::findOrFail($orderId);
+        $products = Product::latest('id')->with('product_images');
         $orderItems = OrderItem::where('order_id',$orderId)->get();
 
         return view('admin.orders.detail',[
             'order' => $order,
             'orderItems' => $orderItems,
+            'products' => $products,
         ]);
     }
+
 
     public function changeOrderStatus(Request $request, $orderId){
         $order = Order::find($orderId);
