@@ -1,6 +1,7 @@
 @extends('front.layouts.app')
 
 @section('content')
+
 <div class="menu-content--categories-medium-photo menu-content">
     <section class="menu-products-section menu-products-section--grid">
         <div class="menu-grid">
@@ -53,7 +54,7 @@
                     </a>
 
                     <!-- Modal -->
-                    {{-- <div class="modal fade" id="{{ $value->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="{{ $value->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="menuContainer">
@@ -105,7 +106,7 @@
                                     </div>
                                 </div>
                             </div>
-                        </div> --}}
+                        </div>
                 @endforeach
             @endif
         </div>
@@ -122,10 +123,10 @@
 
 <div class="mainCartWrapper">
     <div class="row" id="cartDetails">
-        <div class="col-9">
-            <a>Order {{ count((array) session('cart')) }} for ₹ {{ $total }}</a>            
+        <div class="col-11">
+            <a>Order {{ count((array) session('cart')) }} for ₹ {{ $total }}</a>
         </div>
-        <div class="col-3">
+        <div class="col-1">
             <a href="{{ url('clear-wishlist') }}" >Clear Wishlist</a>
             <a href="{{ url('clear-cart') }}" class="cart-icon"><i class="fa fa-trash"></i></a>
         </div>
@@ -139,12 +140,6 @@
                 <button class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">Delivery</button>
             </div>
             
-            @if(session('wishlist'))
-                @foreach(session('wishlist') as $id => $details)
-                    <p>{{ $details['quantity'] }} x {{ $details['name'] }}</p>
-                @endforeach
-            @endif
-
             <?php $total = 0 ?>
                 @if(session('cart'))
                     <div class="basket-page__content__products">
@@ -159,56 +154,65 @@
                                     <div class="col-7">
                                         <p class="my-2"> {{ $details['quantity'] }} x {{ $details['name'] }} </p>
                                         <input type="hidden" multiple name="name" value="{{ $details['name'] }}">
+                                        <input type="hidden" multiple name="qty" value="{{ $details['quantity'] }}">
+                                    </div>
+                                    <div class="col-3 p-0">
+                                        <div class="flex">
+                                            <?php 
+                                                $isEmpty = $details['quantity'];   
+                                            ?>
 
-                                        @if($isEmpty > 1)
+                                            <input type="hidden" multiple name="name" value="{{ $details['name'] }}">
+
+                                            @if($isEmpty > 1)
+                                                <div class="input-group-btn">
+                                                    <button class="btn--icon sub" data-id=" ">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                                            class="bi bi-dash-lg" viewBox="0 0 16 16">
+                                                            <path fill-rule="evenodd"
+                                                                d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8Z"></path>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            @else
+                                                <div class="input-group-btn">
+                                                    <button class="btn--icon delete" data-id="{{ $id }}" title="Delete">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                                            class="bi bi-dash-lg" viewBox="0 0 16 16">
+                                                            <path fill-rule="evenodd"
+                                                                d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8Z"></path>
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            @endif
+
                                             <div class="input-group-btn">
-                                                <button class="btn--icon sub" data-id=" ">
+                                                <button class="btn--icon add" data-id=" ">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                                        class="bi bi-dash-lg" viewBox="0 0 16 16">
+                                                        class="bi bi-plus-lg" viewBox="0 0 16 16">
                                                         <path fill-rule="evenodd"
-                                                            d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8Z"></path>
+                                                            d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z">
+                                                        </path>
                                                     </svg>
                                                 </button>
                                             </div>
-                                        @else
-                                            <div class="input-group-btn">
-                                                <button class="btn--icon delete" data-id="{{ $id }}" title="Delete">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                                        class="bi bi-dash-lg" viewBox="0 0 16 16">
-                                                        <path fill-rule="evenodd"
-                                                            d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8Z"></path>
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        @endif
-
-                                        <div class="input-group-btn">
-                                            <button class="btn--icon add" data-id=" ">
-                                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                                    class="bi bi-plus-lg" viewBox="0 0 16 16">
-                                                    <path fill-rule="evenodd"
-                                                        d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z">
-                                                    </path>
-                                                </svg>
-                                            </button>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-2">
-                                    <div class="right">
-                                        <p class="my-2">₹{{ $details['price'] }}</p>
-                                        <input type="hidden" multiple name="price" value="{{ $details['price'] }}">
+                                    <div class="col-2">
+                                        <div class="right">
+                                            <p class="my-2">₹{{ $details['price'] }}</p>
+                                            <input type="hidden" multiple name="price" value="{{ $details['price'] }}">
+                                        </div>
                                     </div>
+                                    <?php $total += $details['price'] * $details['quantity'] ?>
+                                    {{-- <input type="number" value="{{ $details['quantity'] }}" class="form-control quantity" />
+                                    Rs.{{ $details['price'] * $details['quantity'] }} --}}
                                 </div>
-                                <?php $total += $details['price'] * $details['quantity'] ?>
-                                {{-- <input type="number" value="{{ $details['quantity'] }}" class="form-control quantity" />
-                                Rs.{{ $details['price'] * $details['quantity'] }} --}}
-                            </div>
-                    @endforeach
-                </div>
-            @endif
+                        @endforeach
+                    </div>
+                @endif
 
-            <input type="hidden" name="total" value="{{ $total }}">
+                <input type="hidden" name="total" value="{{ $total }}">
 
             <div class="basket-page__content__total">
                 @if(!empty($details))
@@ -245,7 +249,7 @@
         </div>
     </div>
 </div>
-<div class="overlay"></div>
+<div class="orderOverlay"></div>
 
 @endsection
 
@@ -265,7 +269,7 @@
                 $("button[type=submit]").prop('disabled', false);
 
                 if(response["status"] == true){
-                    window.location.href="{{ route('front.restaurant') }}"
+                    window.location.href="{{ route('front.home') }}"
                 } else {
                     var errors = response['errors']
                 }
@@ -290,7 +294,7 @@
                 $("button[type=submit]").prop('disabled', false);
 
                 if(response["status"] == true){
-                    window.location.href="{{ route('front.restaurant') }}"
+                    window.location.href="{{ route('front.home') }}"
                 } else {
                     var errors = response['errors']
                 }
@@ -314,7 +318,7 @@
                 $("button[type=submit]").prop('disabled', false);
 
                 if(response["status"] == true){
-                    window.location.href="{{ route('front.restaurant') }}"
+                    window.location.href="{{ route('front.home') }}"
                 } else {
                     var errors = response['errors']
                 }
@@ -338,7 +342,7 @@
                 $("button[type=submit]").prop('disabled', false);
 
                 if(response["status"] == true){
-                    window.location.href="{{ route('front.restaurant') }}"
+                    window.location.href="{{ route('front.home') }}"
                 } else {
                     var errors = response['errors']
                 }
@@ -367,27 +371,30 @@
             });
         }
     });
-        //Hide alert 
-        $(function() {
-            setTimeout(function() { $(".alert").fadeOut(1500); }, 1500)
-        })
 
-        $(document).ready(function() {
-            $('.add-to-cart-button').on('click', function() {
-                var productId = $(this).data('product-id');
+    $('.add').click(function(){
+        var qtyElement = $(this).parent().prev(); // Qty Input
+        var qtyValue = parseInt(qtyElement.val());
+        if (qtyValue < 10) {
+            qtyElement.val(qtyValue+1);
 
-                $.ajax({
-                    type: 'GET',
-                    url: '/add-to-cart/' + productId,
-                    success: function(data) {
-                        $("#adding-cart-" + productId).show();
-                        $("#add-cart-btn-" + productId).hide();
-                        window.location.href='{{ route("front.restaurant") }}';
-                    },
-                    error: function(error) {
-                        console.error('Error adding to cart:', error);
-                    }
-                });
+            var rowId = $(this).data('id');
+            var newQty = qtyElement.val();
+            updateCart(rowId,newQty)
+        }            
+    });
+
+    $('.sub').click(function(){
+        var qtyElement = $(this).parent().next();
+        var qtyValue = parseInt(qtyElement.val());
+        if (qtyValue > 1) {
+            qtyElement.val(qtyValue-1);
+
+            var rowId = $(this).data('id');
+            var newQty = qtyElement.val();
+            updateCart(rowId,newQty)
+        }
+    });
 
 
     //Hide alert 
@@ -411,22 +418,22 @@
                     console.error('Error adding to cart:', error);
                 }
             });
+        });
 
-            $('.add-to-wishlist-button').on('click', function() {
-                var productId = $(this).data('product-id');
+        $('.add-to-wishlist-button').on('click', function() {
+            var productId = $(this).data('product-id');
 
-                $.ajax({
-                    type: 'GET',
-                    url: '/add-to-wishlist/' + productId,
-                    success: function(data) {
-                        $("#adding-wishlist-" + productId).show();
-                        $("#add-wish-btn-" + productId).hide();
-                        window.location.href='{{ route("front.restaurant") }}';
-                    },
-                    error: function(error) {
-                        console.error('Error adding to wishlist:', error);
-                    }
-                });
+            $.ajax({
+                type: 'GET',
+                url: '/add-to-wishlist/' + productId,
+                success: function(data) {
+                    $("#adding-wishlist-" + productId).show();
+                    $("#add-wish-btn-" + productId).hide();
+                    window.location.href='{{ route("front.restaurant") }}';
+                },
+                error: function(error) {
+                    console.error('Error adding to wishlist:', error);
+                }
             });
         });
     });
