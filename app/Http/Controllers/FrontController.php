@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\DB;
 class FrontController extends Controller {
 
     public function show() {
-        $products = Product::orderBy('id','DESC')->get();
+        $products = Product::with('product_images')->orderBy('id','DESC')->get();
         $areas = Area::orderBy('id','DESC')->with('seating')->orderBy('id','DESC')->get();
         $seat_number = Seating::orderBy('id','DESC')->get();
         $data = [
@@ -30,12 +30,10 @@ class FrontController extends Controller {
 
 
     public function wishlist() {
-        $products = Product::orderBy('id','DESC')->get();        
+        $products = Product::with('product_images')->orderBy('id','DESC')->get();        
         $data = [
             'products'=> $products,            
         ];
-
-        dd($products);
         return view('front.home.wishlist', $data);        
     }
 
@@ -48,11 +46,11 @@ class FrontController extends Controller {
 
         $products = Product::where('status',1);
 
-        // if(!empty($areaSlug)) {
-        //     $areas = Area::where('slug',$areaSlug)->first();
-        //     $seat_number = $seat_number->where('area_id',$areas->id);
-        //     $areaSlug = $areas->id;
-        // }
+        if(!empty($areaSlug)) {
+            $areas = Area::where('slug',$areaSlug)->first();
+            $seat_number = $seat_number->where('area_id',$areas->id);
+            $areaSlug = $areas->id;
+        }
 
         $products = $products->paginate(10);
 
@@ -88,9 +86,6 @@ class FrontController extends Controller {
     }
 
 
-    
-    
-    
     public function addToCart($id){
         $product = Product::with('product_images')->find($id);
         
@@ -100,12 +95,15 @@ class FrontController extends Controller {
 
         $cart = session()->get('cart');
 
+        //$image = Product::with('product_images')->find($id);
+
         if (!$cart) {
             $cart = [
                 $id => [
                     "name" => $product->name,
                     "quantity" => 1,
                     "price" => $product->price,                    
+                    "product_image" => $product->product_image,
                 ]
             ];
 
@@ -122,7 +120,8 @@ class FrontController extends Controller {
         $cart[$id] = [
             "name" => $product->name,
             "quantity" => 1,
-            "price" => $product->price,                        
+            "price" => $product->price,
+            "product_image" => $product->product_image,
         ];
 
         session()->put('cart', $cart);
@@ -167,7 +166,8 @@ class FrontController extends Controller {
                 $id => [
                     "name" => $product->name,
                     "quantity" => 1,
-                    "price" => $product->price,                    
+                    "price" => $product->price,
+                    "product_image" => $product->product_image,
                 ]
             ];
 
@@ -184,7 +184,8 @@ class FrontController extends Controller {
         $cart[$id] = [
             "name" => $product->name,
             "quantity" => 1,
-            "price" => $product->price,                        
+            "price" => $product->price, 
+            "product_image" => $product->product_image,                       
         ];
 
         session()->put('wishlist', $cart);
@@ -235,8 +236,6 @@ class FrontController extends Controller {
             $dinein->table_number = $request->table_number;
             $dinein->total = $request->total;
             $dinein->save();
-
-            $order_id = DB::getPdo()->lastInsertId();
 
             foreach ($cart as $data) {     
                 $order = new OrderItem;

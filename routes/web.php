@@ -34,13 +34,13 @@ Route::post('delivery',[FrontController::class, 'delivery_store'])->name('submit
 Route::post('order',[FrontController::class, 'order_store'])->name('submit.order');
 
 //add to cart
-Route::get('cart', [FrontController::class, 'showCartTable']);
+//Route::get('cart', [FrontController::class, 'showCartTable']);
 Route::get('add-to-cart/{id}', [FrontController::class, 'addToCart']);
 Route::delete('remove-from-cart', [FrontController::class, 'removeCartItem']);
 Route::get('clear-cart', [FrontController::class, 'clearCart']);
 
 //add to wishlist
-Route::get('wishlist',[FrontController::class,'wishlist'])->name('front.wishlist');
+Route::get('favorites',[FrontController::class,'wishlist'])->name('front.wishlist');
 Route::get('add-to-wishlist/{id}', [FrontController::class, 'addToWish']);
 Route::delete('remove-from-wishlist', [FrontController::class, 'removeWishlistItem']);
 Route::get('clear-wishlist', [FrontController::class, 'clearWishlist']);

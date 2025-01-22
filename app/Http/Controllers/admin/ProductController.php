@@ -60,7 +60,7 @@ class ProductController extends Controller
         if ($validator->passes()) {
             $product = new Product;
             $product->name = $request->name;            
-            $product->slug = $request->slug;     
+            $product->slug = $request->slug;                 
             $product->category_id = $request->category;
             $product->menu_id = $request->menu;
             $product->description = $request->description;
@@ -71,7 +71,6 @@ class ProductController extends Controller
 
         if (!empty($request->image_array)) {
             foreach ($request->image_array as $temp_image_id) {
-
                 $tempImageInfo = TempImage::find($temp_image_id);
                 $extArray = explode('.',$tempImageInfo->name);
                 $ext = last($extArray);
