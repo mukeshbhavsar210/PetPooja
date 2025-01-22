@@ -50,8 +50,9 @@ class SeatingController extends Controller
         if ($validator->passes()) {
             $menu = new Seating();
             $menu->area_id = $request->area;
-            $menu->name = $request->name;            
-            $menu->product_code = $request->product_code;            
+            $menu->name = $request->name;
+            $menu->slug = $request->slug;
+            $menu->product_code = $request->qr_generate;            
             $menu->seating_capacity = $request->seating_capacity;
             $menu->save();
 

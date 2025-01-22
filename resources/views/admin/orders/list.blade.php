@@ -117,12 +117,12 @@
                                     @foreach ($orders as $value)
                                         @if($value->orders->order_type == 'Takeaway')
                                             <tr>
-                                                <td><a href="{{ route('orders.detail',$value->id) }}">{{ $value->id }}</a></td>
-                                                <td>{{ $value->name }} ({{ $value->qty }})</td>
+                                                <td><a href="{{ route('orders.detail',$value->order_id) }}">{{ $value->order_id }}</a></td>
+                                                <td>{{ $value->name }} - {{ $value->qty }}</td>
+                                                <td>{{ $value->orders->ready_time }}</td>
                                                 <td>{{ $value->orders->takeaway_name }}</td>
                                                 <td>{{ $value->orders->takeaway_phone }}</td>
                                                 <td>{{ $value->orders->takeaway_email }}</td>
-                                                <td>{{ $value->orders->ready_time }}</td>
                                                 <td>{{ $value->orders->notes }}</td>
                                                 <td>₹ {{ number_format($value->price,2) }}</td>
                                                 <td>₹ {{ number_format($value->price*$value->qty,2) }}</td>
@@ -160,16 +160,16 @@
                                     @foreach ($orders as $value)
                                         @if($value->orders->order_type == 'Delivery')
                                             <tr>
-                                                <td><a href="{{ route('orders.detail',$value->id) }}">{{ $value->id }}</a></td>
-                                                <td>{{ $value->name }} ({{ $value->qty }})</td>
+                                                <td><a href="{{ route('orders.detail',$value->order_id) }}">{{ $value->order_id }}</a></td>
+                                                <td>{{ $value->name }} - {{ $value->qty }}</td>
                                                 <td>{{ $value->orders->delivery_name }}</td>
                                                 <td>{{ $value->orders->delivery_phone }}</td>
                                                 <td>{{ $value->orders->delivery_email }}</td>
                                                 <td>{{ $value->orders->ready_time }}</td>
+                                                <td>Table no. {{ $value->orders->table_number }}</td>
                                                 <td>{{ $value->orders->notes }}</td>
                                                 <td>₹ {{ number_format($value->price,2) }}</td>
                                                 <td>₹ {{ number_format($value->price*$value->qty,2) }}</td>
-                                                <td>Pending</td>
                                                 <td>{{ \Carbon\Carbon::parse($value->created_at->format('d M, Y')) }}</td>
                                             </tr>
                                         @endif
@@ -194,4 +194,3 @@
 </section>
 <!-- /.content -->
 @endsection
-

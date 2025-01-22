@@ -1,10 +1,114 @@
 @extends('front.layouts.app')
 
 @section('content')
-
 <div class="menu-content--categories-medium-photo menu-content">
     <section class="menu-products-section menu-products-section--grid">
-        @include('front.home.products')
+        <div class="menu-grid">
+            @if(!empty($products))
+                @foreach($products as $value)
+                    @php
+                        $productImage = $value->product_images->first();
+                    @endphp  
+                            
+                    <a href="javascript:void(0);" >
+                        <div class="menu-product">
+                            <div class="menu-product__item">
+                                <div class="menu-product__item__ordered_qty">1</div>
+                                <div class="wishlist">
+                                    {{-- <buton href="javascript:void(0);" data-product-id="{{ $value->id }}" id="add-cart-btn-{{ $value->id }}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#222222" stroke-width="1.2px" x="0px" y="0px" viewBox="-1 -2 14 13" xml:space="preserve"><path d="M11,1c-0.6-0.6-1.5-1-2.3-1C7.8,0,7,0.4,6.3,1L6,1.3L5.7,1C5,0.3,4.2,0,3.3,0S1.6,0.3,1,1C0.3,1.6,0,2.4,0,3.3S0.3,5,1,5.7
+                                            l4.8,4.8C5.9,10.6,6,10.6,6,10.6c0.1,0,0.2,0,0.2-0.1L11,5.7c0.6-0.6,1-1.5,1-2.4S11.7,1.6,11,1z"></path></svg>
+                                    </buton> --}}
+                                    <button href="javascript:void(0);" data-product-id="{{ $value->id }}" id="add-wish-btn-{{ $value->id }}" class="add-to-wishlist-button">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#222222" stroke-width="1.2px" x="0px" y="0px" viewBox="-1 -2 14 13" xml:space="preserve"><path d="M11,1c-0.6-0.6-1.5-1-2.3-1C7.8,0,7,0.4,6.3,1L6,1.3L5.7,1C5,0.3,4.2,0,3.3,0S1.6,0.3,1,1C0.3,1.6,0,2.4,0,3.3S0.3,5,1,5.7
+                                            l4.8,4.8C5.9,10.6,6,10.6,6,10.6c0.1,0,0.2,0,0.2-0.1L11,5.7c0.6-0.6,1-1.5,1-2.4S11.7,1.6,11,1z"></path></svg>
+                                    </button>
+                                </div>
+                                <div class="menu-product__item__img">
+                                    @if (!empty($productImage->image))
+                                        <img src="{{ asset('uploads/product/small/'.$productImage->image) }}" >
+                                    @else
+                                        <img src="{{ asset('admin-assets/img/default-150x150.png') }}" alt="" />
+                                    @endif
+                                </div>
+                                <div class="menu-product__item__top-block">
+                                    <div class="menu-product__item__name text-overflow">{{ $value->name }}</div>
+                                    
+                                    <div class="menu-product__item__price no-wrap">
+                                        ₹ {{ $value->price }}
+                                        @if ($value->compare_price > 0)
+                                            <span class="text-underline"><del>₹ {{ $value->compare_price }}</del></span>
+                                        @endif
+                                    </div>
+
+                                    <div class="product-details">
+                                        <button href="javascript:void(0);" data-product-id="{{ $value->id }}" id="add-cart-btn-{{ $value->id }}" class="add-to-cart-button product-add">Add</button>
+                                        
+                                        <span id="adding-cart-{{ $value->id }}" style="display:none;">Added.</span>
+                                        <span id="adding-wishlist-{{ $value->id }}" style="display:none;">Added Wishlist.</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+
+                    <!-- Modal -->
+                    {{-- <div class="modal fade" id="{{ $value->id }}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="menuContainer">
+                                    <div class="product-pic">
+                                        @if (!empty($productImage->image))
+                                            <img class="card-img-top" src="{{ asset('uploads/product/small/'.$productImage->image) }}" >
+                                        @else
+                                            <img class="card-img-top" src="{{ asset('admin-assets/img/default-150x150.png') }}" alt="" />
+                                        @endif
+                                    </div>
+        
+                                        <div class="btnControl">
+                                            <div class="row p-3">
+                                                <div class="col-9">
+                                                    <a type="button" class="link" data-bs-dismiss="modal" aria-label="Close">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-chevron-left" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M11.354 1.646a.5.5 0 0 1 0 .708L5.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"></path></svg>
+                                                    </a>
+                                                </div>
+                                                <div class="col-3">
+                                                    <a href="#" class="link right" >
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-suit-heart-fill" viewBox="0 0 16 16"><path d="M4 1c2.21 0 4 1.755 4 3.92C8 2.755 9.79 1 12 1s4 1.755 4 3.92c0 3.263-3.234 4.414-7.608 9.608a.513.513 0 0 1-.784 0C3.234 9.334 0 8.183 0 4.92 0 2.755 1.79 1 4 1z"></path></svg>
+                                                    </a>
+                                                </div>
+                                            </div> 
+                                        </div>
+                                        <div class="product-title">
+                                            <div class="row">
+                                                <div class="col-9">
+                                                    <h3>{{ $value->name }}</h3>
+                                                </div>
+                                                <div class="col-3">
+                                                    <div class="product-price">
+                                                        <span class="price"> ₹{{ $value->price }}</span>
+                                                        @if ($value->compare_price > 0)
+                                                            <span class="price text-secondary"><del> ₹{{ $value->compare_price }}</del></span>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+        
+                                        <div class="product-details">
+                                            <a href="javascript:void(0);" data-product-id="{{ $value->id }}" id="add-cart-btn-{{ $value->id }}" class="add-to-cart-button product-add">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z"></path></svg>
+                                            </a>
+                                            <span id="adding-cart-{{ $value->id }}" style="display:none;">Added.</span>
+                                            <p>{{ \Illuminate\Support\Str::limit(strtolower($value->description), 50) }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> --}}
+                @endforeach
+            @endif
+        </div>
     </section>
 </div>
 
@@ -18,10 +122,11 @@
 
 <div class="mainCartWrapper">
     <div class="row" id="cartDetails">
-        <div class="col-11">
-            <a>Order {{ count((array) session('cart')) }} for ₹ {{ $total }}</a>
+        <div class="col-9">
+            <a>Order {{ count((array) session('cart')) }} for ₹ {{ $total }}</a>            
         </div>
-        <div class="col-1">
+        <div class="col-3">
+            <a href="{{ url('clear-wishlist') }}" >Clear Wishlist</a>
             <a href="{{ url('clear-cart') }}" class="cart-icon"><i class="fa fa-trash"></i></a>
         </div>
     </div>
@@ -34,6 +139,12 @@
                 <button class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">Delivery</button>
             </div>
             
+            @if(session('wishlist'))
+                @foreach(session('wishlist') as $id => $details)
+                    <p>{{ $details['quantity'] }} x {{ $details['name'] }}</p>
+                @endforeach
+            @endif
+
             <?php $total = 0 ?>
                 @if(session('cart'))
                     <div class="basket-page__content__products">
@@ -48,65 +159,56 @@
                                     <div class="col-7">
                                         <p class="my-2"> {{ $details['quantity'] }} x {{ $details['name'] }} </p>
                                         <input type="hidden" multiple name="name" value="{{ $details['name'] }}">
-                                        <input type="hidden" multiple name="qty" value="{{ $details['quantity'] }}">
-                                    </div>
-                                    <div class="col-3 p-0">
-                                        <div class="flex">
-                                            <?php 
-                                                $isEmpty = $details['quantity'];   
-                                            ?>
 
-                                            <input type="hidden" multiple name="name" value="{{ $details['name'] }}">
-
-                                            @if($isEmpty > 1)
-                                                <div class="input-group-btn">
-                                                    <button class="btn--icon sub" data-id=" ">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                                            class="bi bi-dash-lg" viewBox="0 0 16 16">
-                                                            <path fill-rule="evenodd"
-                                                                d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8Z"></path>
-                                                        </svg>
-                                                    </button>
-                                                </div>
-                                            @else
-                                                <div class="input-group-btn">
-                                                    <button class="btn--icon delete" data-id="{{ $id }}" title="Delete">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                                            class="bi bi-dash-lg" viewBox="0 0 16 16">
-                                                            <path fill-rule="evenodd"
-                                                                d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8Z"></path>
-                                                        </svg>
-                                                    </button>
-                                                </div>
-                                            @endif
-
+                                        @if($isEmpty > 1)
                                             <div class="input-group-btn">
-                                                <button class="btn--icon add" data-id=" ">
+                                                <button class="btn--icon sub" data-id=" ">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
-                                                        class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                                        class="bi bi-dash-lg" viewBox="0 0 16 16">
                                                         <path fill-rule="evenodd"
-                                                            d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z">
-                                                        </path>
+                                                            d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8Z"></path>
                                                     </svg>
                                                 </button>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-2">
-                                        <div class="right">
-                                            <p class="my-2">₹{{ $details['price'] }}</p>
-                                            <input type="hidden" multiple name="price" value="{{ $details['price'] }}">
-                                        </div>
-                                    </div>
-                                    <?php $total += $details['price'] * $details['quantity'] ?>
-                                    {{-- <input type="number" value="{{ $details['quantity'] }}" class="form-control quantity" />
-                                    Rs.{{ $details['price'] * $details['quantity'] }} --}}
-                                </div>
-                        @endforeach
-                    </div>
-                @endif
+                                        @else
+                                            <div class="input-group-btn">
+                                                <button class="btn--icon delete" data-id="{{ $id }}" title="Delete">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                                        class="bi bi-dash-lg" viewBox="0 0 16 16">
+                                                        <path fill-rule="evenodd"
+                                                            d="M2 8a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11A.5.5 0 0 1 2 8Z"></path>
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        @endif
 
-                <input type="hidden" name="total" value="{{ $total }}">
+                                        <div class="input-group-btn">
+                                            <button class="btn--icon add" data-id=" ">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                                                    class="bi bi-plus-lg" viewBox="0 0 16 16">
+                                                    <path fill-rule="evenodd"
+                                                        d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2Z">
+                                                    </path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-2">
+                                    <div class="right">
+                                        <p class="my-2">₹{{ $details['price'] }}</p>
+                                        <input type="hidden" multiple name="price" value="{{ $details['price'] }}">
+                                    </div>
+                                </div>
+                                <?php $total += $details['price'] * $details['quantity'] ?>
+                                {{-- <input type="number" value="{{ $details['quantity'] }}" class="form-control quantity" />
+                                Rs.{{ $details['price'] * $details['quantity'] }} --}}
+                            </div>
+                    @endforeach
+                </div>
+            @endif
+
+            <input type="hidden" name="total" value="{{ $total }}">
 
             <div class="basket-page__content__total">
                 @if(!empty($details))
@@ -143,7 +245,7 @@
         </div>
     </div>
 </div>
-<div class="orderOverlay"></div>
+<div class="overlay"></div>
 
 @endsection
 
@@ -163,7 +265,7 @@
                 $("button[type=submit]").prop('disabled', false);
 
                 if(response["status"] == true){
-                    window.location.href="{{ route('front.home') }}"
+                    window.location.href="{{ route('front.restaurant') }}"
                 } else {
                     var errors = response['errors']
                 }
@@ -188,7 +290,7 @@
                 $("button[type=submit]").prop('disabled', false);
 
                 if(response["status"] == true){
-                    window.location.href="{{ route('front.home') }}"
+                    window.location.href="{{ route('front.restaurant') }}"
                 } else {
                     var errors = response['errors']
                 }
@@ -212,7 +314,7 @@
                 $("button[type=submit]").prop('disabled', false);
 
                 if(response["status"] == true){
-                    window.location.href="{{ route('front.home') }}"
+                    window.location.href="{{ route('front.restaurant') }}"
                 } else {
                     var errors = response['errors']
                 }
@@ -236,7 +338,7 @@
                 $("button[type=submit]").prop('disabled', false);
 
                 if(response["status"] == true){
-                    window.location.href="{{ route('front.home') }}"
+                    window.location.href="{{ route('front.restaurant') }}"
                 } else {
                     var errors = response['errors']
                 }
@@ -265,30 +367,27 @@
             });
         }
     });
+        //Hide alert 
+        $(function() {
+            setTimeout(function() { $(".alert").fadeOut(1500); }, 1500)
+        })
 
-    $('.add').click(function(){
-        var qtyElement = $(this).parent().prev(); // Qty Input
-        var qtyValue = parseInt(qtyElement.val());
-        if (qtyValue < 10) {
-            qtyElement.val(qtyValue+1);
+        $(document).ready(function() {
+            $('.add-to-cart-button').on('click', function() {
+                var productId = $(this).data('product-id');
 
-            var rowId = $(this).data('id');
-            var newQty = qtyElement.val();
-            updateCart(rowId,newQty)
-        }            
-    });
-
-    $('.sub').click(function(){
-        var qtyElement = $(this).parent().next();
-        var qtyValue = parseInt(qtyElement.val());
-        if (qtyValue > 1) {
-            qtyElement.val(qtyValue-1);
-
-            var rowId = $(this).data('id');
-            var newQty = qtyElement.val();
-            updateCart(rowId,newQty)
-        }
-    });
+                $.ajax({
+                    type: 'GET',
+                    url: '/add-to-cart/' + productId,
+                    success: function(data) {
+                        $("#adding-cart-" + productId).show();
+                        $("#add-cart-btn-" + productId).hide();
+                        window.location.href='{{ route("front.restaurant") }}';
+                    },
+                    error: function(error) {
+                        console.error('Error adding to cart:', error);
+                    }
+                });
 
 
     //Hide alert 
@@ -311,6 +410,23 @@
                 error: function(error) {
                     console.error('Error adding to cart:', error);
                 }
+            });
+
+            $('.add-to-wishlist-button').on('click', function() {
+                var productId = $(this).data('product-id');
+
+                $.ajax({
+                    type: 'GET',
+                    url: '/add-to-wishlist/' + productId,
+                    success: function(data) {
+                        $("#adding-wishlist-" + productId).show();
+                        $("#add-wish-btn-" + productId).hide();
+                        window.location.href='{{ route("front.restaurant") }}';
+                    },
+                    error: function(error) {
+                        console.error('Error adding to wishlist:', error);
+                    }
+                });
             });
         });
     });

@@ -40,8 +40,9 @@
                                                         </div>
                                                     </div>
                                                     <div class="card-body">                                                        
-                                                        <div class="qr_code">   
-                                                            {!! DNS2D::getBarcodeHTML('http://127.0.0.1:8000/'.$value->area->slug.'/'.$value->name, 'QRCODE',6.7,6.7) !!}
+
+                                                        <div class="qr_code">                                                            
+                                                            {!! DNS2D::getBarcodeHTML('http://127.0.0.1:8000/'.$value->area->slug.'/'.$value->slug, 'QRCODE',6.7,6.7) !!}
                                                         </div>                                                        
                                                     </div>
                                                     <div class="card-footer">
