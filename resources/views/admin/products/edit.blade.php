@@ -23,8 +23,8 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <div class="form-group">
-                                    <label for="title">Item Name</label>
-                                    <input type="text" name="title" id="title" class="form-control" placeholder="Title" value="{{ $product->title }}">
+                                    <label for="name">Item Name</label>
+                                    <input type="text" name="name" id="name" class="form-control" placeholder="Title" value="{{ $product->name }}">
                                     <p class="error"></p>
                                 </div>
                             </div>

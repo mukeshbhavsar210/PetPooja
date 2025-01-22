@@ -28,7 +28,9 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
                 </div>
-                <form action="" method="post" name="productForm" id="productForm">
+                {{-- <form action="" method="post" name="productForm" id="productForm"> --}}
+                <form action="products" method="post">
+                    @csrf
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-md-7">

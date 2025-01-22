@@ -8,7 +8,7 @@
             @if(!empty($products))
                 @foreach($products as $value)
                     @php
-                        $productImage = $value->product_images->first();
+                        $picture = $value->product_images->first();
                     @endphp  
                             
                     <a href="javascript:void(0);" >
@@ -26,15 +26,14 @@
                                     </button>
                                 </div>
                                 <div class="menu-product__item__img">
-                                    @if (!empty($productImage->image))
-                                        <img src="{{ asset('uploads/product/small/'.$productImage->image) }}" >
+                                    @if (!empty($picture->image))
+                                        <img src="{{ asset('uploads/product/small/'.$picture->image) }}" >
                                     @else
                                         <img src="{{ asset('admin-assets/img/default-150x150.png') }}" alt="" />
                                     @endif
                                 </div>
                                 <div class="menu-product__item__top-block">
-                                    <div class="menu-product__item__name text-overflow">{{ $value->name }}</div>
-                                    
+                                    <div class="menu-product__item__name text-overflow">{{ $value->name }}, {{ $value->product_image->image }}</div>
                                     <div class="menu-product__item__price no-wrap">
                                         ₹ {{ $value->price }}
                                         @if ($value->compare_price > 0)
@@ -44,7 +43,6 @@
 
                                     <div class="product-details">
                                         <button href="javascript:void(0);" data-product-id="{{ $value->id }}" id="add-cart-btn-{{ $value->id }}" class="add-to-cart-button product-add">Add</button>
-                                        
                                         <span id="adding-cart-{{ $value->id }}" style="display:none;">Added.</span>
                                         <span id="adding-wishlist-{{ $value->id }}" style="display:none;">Added Wishlist.</span>
                                     </div>
@@ -114,20 +112,12 @@
 </div>
 
 <?php $total = 0 ?>
-
-@if(session('cart'))
-    @foreach(session('cart') as $id => $details)
-        <?php $total += $details['price']  ?>
-    @endforeach
-@endif
-
 <div class="mainCartWrapper">
     <div class="row" id="cartDetails">
         <div class="col-11">
             <a>Order {{ count((array) session('cart')) }} for ₹ {{ $total }}</a>
         </div>
         <div class="col-1">
-            <a href="{{ url('clear-wishlist') }}" >Clear Wishlist</a>
             <a href="{{ url('clear-cart') }}" class="cart-icon"><i class="fa fa-trash"></i></a>
         </div>
     </div>
@@ -139,7 +129,7 @@
                 <button class="nav-link" data-toggle="tab" href="#tabs-2" role="tab">Takeaway</button>
                 <button class="nav-link" data-toggle="tab" href="#tabs-3" role="tab">Delivery</button>
             </div>
-            
+
             <?php $total = 0 ?>
                 @if(session('cart'))
                     <div class="basket-page__content__products">
@@ -152,7 +142,7 @@
 
                                 <div class="row mb-2">
                                     <div class="col-7">
-                                        <p class="my-2"> {{ $details['quantity'] }} x {{ $details['name'] }} </p>
+                                        <p class="my-2"><img style="width:30px; height:30px; border-radius:100px;" src="{{ asset('uploads/product/small/'.$details['product_image']->image) }}" > {{ $details['quantity'] }} x {{ $details['name'] }} - </p>
                                         <input type="hidden" multiple name="name" value="{{ $details['name'] }}">
                                         <input type="hidden" multiple name="qty" value="{{ $details['quantity'] }}">
                                     </div>
