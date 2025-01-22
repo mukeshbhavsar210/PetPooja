@@ -53,11 +53,13 @@
                                     <div class="form-group">
                                         <label for="name">Table Code</label>
                                         <input type="text" name="name" id="name" class="form-control" placeholder="e.g. Table_01">
+                                        <input type="text" name="product_code" id="product_code" class="form-control">
                                         <p></p>
                                         <input type="hidden" name="qr_generate" id="qr_generate">
                                         <input type="hidden" name="slug" id="slug">
                                     </div>  
                                 </div>
+
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label for="seating_capacity">Seating Capacity</label>
@@ -183,7 +185,7 @@
 
 @section('customJs')
 <script>
-
+  
     $('#name').change(function(){
         element = $(this);
         $("button[type=submit]").prop('disabled', true);
@@ -196,6 +198,7 @@
                 $("button[type=submit]").prop('disabled', false);
                 if(response["status"] == true){
                     $("#slug").val(response["slug"]);
+                    $("#product_code").val(response["slug"]);
                 }
             }
         });

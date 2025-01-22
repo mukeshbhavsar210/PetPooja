@@ -2,17 +2,15 @@
 
 @section('content')
     <div class="product-card">
-      
-            {{-- <div class="col-md-3 sidebar">
-                <div class="sub-title mt-5"><h2>Price</h3></div>                    
-                <div class="card">
-                    <div class="card-body">
-                        <input type="text" class="js-range-slider" name="my_range" value="" />
-                    </div>
-                </div>                                        
-            </div> --}}
+        {{-- <div class="col-md-3 sidebar">
+            <div class="sub-title mt-5"><h2>Price</h3></div>                    
+            <div class="card">
+                <div class="card-body">
+                    <input type="text" class="js-range-slider" name="my_range" value="" />
+                </div>
+            </div>                                        
+        </div> --}}
 
-           
         <div class="row">
             @if ($products->isNotEmpty())
                 @foreach ($products as $value)

@@ -146,27 +146,18 @@
             @endif
 
             <?php $total = 0 ?>
-            @if(session('cart'))
-                <div class="basket-page__content__products">
-                    @foreach(session('cart') as $id => $details)
-                        @include('front.layouts.message')
+                @if(session('cart'))
+                    <div class="basket-page__content__products">
+                        @foreach(session('cart') as $id => $details)
+                            @include('front.layouts.message')
 
-                        <form action="" method="POST" id="diningForm" name="diningForm">
-                        {{-- <form action="dining" method="POST" > --}}
-                            @csrf
+                            {{-- <form action="" method="POST" id="diningForm" name="diningForm"> --}}
+                            <form action="dining" method="POST" >
+                                @csrf
 
-                            <div class="row mb-2">
-                                <div class="col-7">
-                                    <p class="my-2"> {{ $details['quantity'] }} x {{ $details['name'] }} </p>
-                                    <input type="hidden" multiple name="name" value="{{ $details['name'] }}">
-                                    <input type="hidden" multiple name="qty" value="{{ $details['quantity'] }}">
-                                </div>
-                                <div class="col-3 p-0">
-                                    <div class="flex">
-                                        <?php 
-                                            $isEmpty = $details['quantity'];   
-                                        ?>
-
+                                <div class="row mb-2">
+                                    <div class="col-7">
+                                        <p class="my-2"> {{ $details['quantity'] }} x {{ $details['name'] }} </p>
                                         <input type="hidden" multiple name="name" value="{{ $details['name'] }}">
 
                                         @if($isEmpty > 1)
@@ -397,6 +388,28 @@
                         console.error('Error adding to cart:', error);
                     }
                 });
+
+
+    //Hide alert 
+    $(function() {
+        setTimeout(function() { $(".alert").fadeOut(1500); }, 1500)
+    })
+
+    $(document).ready(function() {
+        $('.add-to-cart-button').on('click', function() {
+            var productId = $(this).data('product-id');
+
+            $.ajax({
+                type: 'GET',
+                url: '/add-to-cart/' + productId,
+                success: function(data) {
+                    $("#adding-cart-" + productId).show();
+                    $("#add-cart-btn-" + productId).hide();
+                    window.location.href='{{ route("front.home") }}';
+                },
+                error: function(error) {
+                    console.error('Error adding to cart:', error);
+                }
             });
 
             $('.add-to-wishlist-button').on('click', function() {
@@ -416,5 +429,6 @@
                 });
             });
         });
+    });
 </script>
 @endsection

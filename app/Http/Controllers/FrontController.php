@@ -28,6 +28,7 @@ class FrontController extends Controller {
         return view('front.home.index', $data);        
     }
 
+
     public function wishlist() {
         $products = Product::orderBy('id','DESC')->get();        
         $data = [
@@ -41,24 +42,30 @@ class FrontController extends Controller {
     public function index(Request $request, $areaSlug = null,) {
         $areaSlug = ' ';
 
+
+    public function restaurant(Request $request, $areaSlug = null) {       
+        $areaSelected = ' ';
+
         $products = Product::orderBy('id','DESC')->get();
-        $areas = Area::orderBy('id','DESC')->with('seating')->orderBy('id','DESC')->get();
-        $seat_number = Seating::orderBy('id','DESC')->get();
+        $seatings = Seating::orderBy("name","ASC")->with('area')->get(); 
+        $areas = Area::where('status',1);
 
-        $products = Product::where('status',1);
+        if(!empty($areaSlug)) {
+            $restaurant = Area::where('slug',$areaSlug)->first();
+            $seatings = $seatings->where('area_id',$restaurant->id);
+            $areaSelected = $restaurant->id;
+        }
 
-        // if(!empty($areaSlug)) {
-        //     $areas = Area::where('slug',$areaSlug)->first();
-        //     $seat_number = $seat_number->where('area_id',$areas->id);
-        //     $areaSlug = $areas->id;
-        // }
+        //$seatings = $seatings->paginate(10);
+        
+        $data['seatings'] = $seatings;  
+        $data['products'] = $products;  
+        $data['areas'] = $areas;        
+        $data['areaSelected'] = $areaSelected;
+        
+        //dd($seatings);
 
-        $products = $products->paginate(10);
-
-        $data['products'] = $products;
-        $data['areaSlug'] = $areaSlug;
-
-        return view('front.shop.index',$data);
+        return view('front.shop.test',$data);
     }
 
 
@@ -276,6 +283,8 @@ class FrontController extends Controller {
             $dinein->table_number = $request->table_number;
             $dinein->total = $request->total;
             $dinein->save();
+
+            $order_id = DB::getPdo()->lastInsertId();
 
             foreach ($cart as $data) {     
                 $order = new OrderItem;
