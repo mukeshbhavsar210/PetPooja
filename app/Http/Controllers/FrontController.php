@@ -42,6 +42,25 @@ class FrontController extends Controller {
     public function index(Request $request, $areaSlug = null,) {
         $areaSlug = ' ';
 
+        $products = Product::orderBy('id','DESC')->get();
+        $areas = Area::orderBy('id','DESC')->with('seating')->orderBy('id','DESC')->get();
+        $seat_number = Seating::orderBy('id','DESC')->get();
+
+        $products = Product::where('status',1);
+
+        // if(!empty($areaSlug)) {
+        //     $areas = Area::where('slug',$areaSlug)->first();
+        //     $seat_number = $seat_number->where('area_id',$areas->id);
+        //     $areaSlug = $areas->id;
+        // }
+
+        $products = $products->paginate(10);
+
+        $data['products'] = $products;
+        $data['areaSlug'] = $areaSlug;
+
+        return view('front.shop.index',$data);
+    }
 
     public function restaurant(Request $request, $areaSlug = null) {       
         $areaSelected = ' ';
@@ -69,26 +88,7 @@ class FrontController extends Controller {
     }
 
 
-    public function restaurant(Request $request, $areaSlug = null) {       
-        $areaSelected = ' ';
-
-        $products = Product::orderBy('id','DESC')->get();
-        $seatings = Seating::orderBy("name","ASC")->with('area')->get(); 
-        $areas = Area::where('status',1);
-
-        // if(!empty($areaSlug)) {
-        //     $restaurant = Area::where('slug',$areaSlug)->first();
-        //     $seatings = $seatings->where('area_id',$restaurant->id);
-        //     $areaSelected = $restaurant->id;
-        // }
-
-        $data['seatings'] = $seatings;  
-        $data['products'] = $products;  
-        $data['areas'] = $areas;        
-        $data['areaSelected'] = $areaSelected;
-        
-        return view('front.shop.test',$data);
-    }
+    
     
     
     public function addToCart($id){
@@ -213,54 +213,6 @@ class FrontController extends Controller {
         return redirect()->back();
     }
 
-
-    // public function addToWishlist(Request $request){
-    //     if(Auth::check() == false){
-    //         session(['url.intended' => url()->previous() ]);
-    //         return response()->json([
-    //             'status' => false,
-    //         ]);
-    //     }
-
-    //     // if(Auth::check() == false){
-    //     //     session(['url.intended' => url()->previous() ]);
-    //     //     return response()->json([
-    //     //         'status' => false,
-    //     //     ]);
-    //     // }
-
-    //     //Product add in wishlist
-    //     $product = Product::where('id', $request->id)->first();
-
-    //     if ($product == null){
-    //         return response()->json([
-    //             'status' => true,
-    //             'message' => '<div class="alert alert-danger">Product not found.</div>'
-    //         ]);
-    //     }
-
-
-    //     Wishlist::updateOrCreate(
-    //         [
-    //             'user_id' => Auth::user()->id,
-    //             'product_id' => $request->id,
-    //         ],
-    //         [
-    //             'user_id' => Auth::user()->id,
-    //             'product_id' => $request->id,
-    //         ],
-    //     );
-
-    //     //$wishlist = new Wishlist;
-    //     //$wishlist->user_id = Auth::user()->id;
-    //     //$wishlist->product_id = $request->id;
-    //     //$wishlist->save();
-
-    //     return response()->json([
-    //         'status' => true,
-    //         'message' => '<div class="alert alert-success"><strong>"'.$product->title.'"</strong> added in yout wishlist!</div>'
-    //     ]);
-    // }
 
 
 

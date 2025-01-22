@@ -31,10 +31,11 @@
 					@if(session('wishlist'))
 						<div class="menu-category">	
 							<div class="menu-category__img">
+								({{ count((array) session('wishlist')) }})
 								<a href="{{  route('front.wishlist') }}">
 									<img src="https://instalacarte.com/media/cache/emoji_small/emoji/favourite.png?v3" alt="Favourites">
 										<div class="menu-category__name no-wrap"><div>
-											Favourites ({{ count((array) session('wishlist')) }})
+											Favourites 
 										</div>
 									</a>
 								</div>
@@ -111,11 +112,8 @@ $(document).ready(function() {
 				}
 			}
 		});
-
-		
 	 });   
 	</script>
-
 @yield('customJs')
 
 </body>
