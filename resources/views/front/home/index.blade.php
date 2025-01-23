@@ -8,7 +8,7 @@
             @if(!empty($products))
                 @foreach($products as $value)
                     @php
-                        $picture = $value->product_images->first();
+                        $product_image = $value->product_images->first();
                     @endphp  
                             
                     <a href="javascript:void(0);" >
@@ -26,14 +26,19 @@
                                     </button>
                                 </div>
                                 <div class="menu-product__item__img">
-                                    @if (!empty($picture->image))
-                                        <img src="{{ asset('uploads/product/small/'.$picture->image) }}" >
+                                    @if (!empty($product_image->image))
+                                    
+                                        <img src="{{ asset('uploads/product/small/'.$product_image->image) }}" >
                                     @else
                                         <img src="{{ asset('admin-assets/img/default-150x150.png') }}" alt="" />
                                     @endif
                                 </div>
+
                                 <div class="menu-product__item__top-block">
-                                    <div class="menu-product__item__name text-overflow">{{ $value->name }}, {{ $value->product_image->image }}</div>
+                                    <div class="menu-product__item__name text-overflow">
+                                     {{ $value->name }} 
+                                    </div>
+                                    {{-- <p style="display:none;">{{ $value->product_image->image }}</p> --}}
                                     <div class="menu-product__item__price no-wrap">
                                         ₹ {{ $value->price }}
                                         @if ($value->compare_price > 0)
@@ -142,7 +147,9 @@
 
                                 <div class="row mb-2">
                                     <div class="col-7">
-                                        <p class="my-2"><img style="width:30px; height:30px; border-radius:100px;" src="{{ asset('uploads/product/small/'.$details['product_image']->image) }}" > {{ $details['quantity'] }} x {{ $details['name'] }} - </p>
+                                        <p class="my-2">
+                                            {{-- <img style="width:30px; height:30px; border-radius:100px;" src="{{ asset('uploads/product/small/'.$details['image']->image) }}" >  --}}
+                                        {{ $details['quantity'] }} x {{ $details['name'] }} - </p>
                                         <input type="hidden" multiple name="name" value="{{ $details['name'] }}">
                                         <input type="hidden" multiple name="qty" value="{{ $details['quantity'] }}">
                                     </div>

@@ -17,6 +17,12 @@ use Illuminate\Support\Facades\DB;
 class FrontController extends Controller {
 
     public function show() {
+
+        // $picture = DB::table('product_images')
+        //             ->leftJoin('products','product_images.product_id','=','products.id')
+        //             ->select('product_images.*','product_id')
+        //             ->get();
+
         $products = Product::with('product_images')->orderBy('id','DESC')->get();
         $areas = Area::orderBy('id','DESC')->with('seating')->orderBy('id','DESC')->get();
         $seat_number = Seating::orderBy('id','DESC')->get();
@@ -24,7 +30,11 @@ class FrontController extends Controller {
             'products'=> $products,
             'areas'=> $areas,
             'seat_number'=> $seat_number,
+            //'picture'=> $picture,
         ];
+
+        //dd($picture);
+
         return view('front.home.index', $data);        
     }
 
@@ -103,7 +113,8 @@ class FrontController extends Controller {
                     "name" => $product->name,
                     "quantity" => 1,
                     "price" => $product->price,                    
-                    "product_image" => $product->product_image,
+                    "image" => $product->image,
+                    //"product_image" => $product->product_image,
                 ]
             ];
 
@@ -121,7 +132,8 @@ class FrontController extends Controller {
             "name" => $product->name,
             "quantity" => 1,
             "price" => $product->price,
-            "product_image" => $product->product_image,
+            "image" => $product->image,
+            //"product_image" => $product->product_image,
         ];
 
         session()->put('cart', $cart);

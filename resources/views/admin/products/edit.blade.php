@@ -16,7 +16,7 @@
     <!-- Main content -->
 
     <section >
-        <form action="" method="post" name="productForm" id="productForm">
+        <form action="" method="post" name="productFormEdit" id="productFormEdit">
             <div class="container-fluid">                
                 <div class="card mb-3">
                     <div class="card-body">
@@ -181,7 +181,7 @@
 
 
     //Product form add details in database
-    $("#productForm").submit(function(event){
+    $("#productFormEdit").submit(function(event){
         event.preventDefault();
 
         var formArray = $(this).serializeArray();

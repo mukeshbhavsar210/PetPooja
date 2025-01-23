@@ -212,6 +212,13 @@
                 $(".summernote").summernote({
                     //height:250;
                 });
+
+				$('#showmenu').click(function() {
+                	$('.menu').addClass('active');
+        		});
+				$('#hideSmallForm').click(function() {
+                	$('.menu').removeClass('active');
+        		});
             })
 
             //Alert timeout

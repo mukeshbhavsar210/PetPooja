@@ -128,6 +128,7 @@ Route::group(['prefix' => 'admin',], function(){
         //Areas Routes
         Route::get('/areas', [AreaController::class, 'index'])->name('areas.index');        
         Route::post('/areas', [AreaController::class, 'store'])->name('areas.store');
+        Route::post('/seatings', [AreaController::class, 'store_table'])->name('seatings.store');
         Route::get('/areas/{area}/edit', [AreaController::class, 'edit'])->name('areas.edit');
         Route::put('/areas/{area}', [AreaController::class, 'update'])->name('areas.update');
         Route::delete('/areas/{area}', [AreaController::class, 'destroy'])->name('areas.delete');
@@ -140,17 +141,17 @@ Route::group(['prefix' => 'admin',], function(){
 
         //Table Routes
         Route::get('/seatings', [SeatingController::class, 'index'])->name('seatings.index');
-        Route::post('/seatings', [SeatingController::class, 'store'])->name('seatings.store');
+        //Route::post('/seatings', [SeatingController::class, 'store'])->name('seatings.store');
         Route::get('/seatings/{seating}/edit', [SeatingController::class, 'edit'])->name('seatings.edit');
         Route::put('/seatings/{seating}', [SeatingController::class, 'update'])->name('seatings.update');
         Route::delete('/seatings/{seating}', [SeatingController::class, 'destroy'])->name('seatings.delete');
 
         //QR Codes Routes
-        Route::get('/qr_codes', [QrController::class, 'index'])->name('qr_codes.index');
-        Route::post('/qr_codes', [QrController::class, 'store'])->name('qr_codes.store');
-        Route::get('/qr_codes/{seating}/edit', [QrController::class, 'edit'])->name('qr_codes.edit');
-        Route::put('/qr_codes/{seating}', [QrController::class, 'update'])->name('qr_codes.update');
-        Route::delete('/qr_codes/{seating}', [QrController::class, 'destroy'])->name('qr_codes.delete');
+        // Route::get('/qr_codes', [QrController::class, 'index'])->name('qr_codes.index');
+        // Route::post('/qr_codes', [QrController::class, 'store'])->name('qr_codes.store');
+        // Route::get('/qr_codes/{seating}/edit', [QrController::class, 'edit'])->name('qr_codes.edit');
+        // Route::put('/qr_codes/{seating}', [QrController::class, 'update'])->name('qr_codes.update');
+        // Route::delete('/qr_codes/{seating}', [QrController::class, 'destroy'])->name('qr_codes.delete');
 
         //Product Route
         Route::get('/products', [ProductController::class, 'index'])->name('products.index');

@@ -24,9 +24,4 @@ class Product extends Model
     public function menu(){
         return $this->belongsTo(Menu::class);
     }
-
-    public function product_image(){
-        return $this->belongsTo(ProductImage::class);
-    }
-    
 }
