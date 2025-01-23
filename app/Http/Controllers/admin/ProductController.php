@@ -15,18 +15,14 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
 
     public function index(Request $request){
-        $data = [];
         $products = Product::latest('id')->with('product_images');
         $categories = Category::orderBy('name','ASC')->get();        
-
-        if ($request->get('keyword') != ""){
-            $products = $products->where('title', 'like', '%'.$request->keyword.'%');
-        }
 
         $products = $products->paginate();
 
@@ -51,10 +47,6 @@ class ProductController extends Controller
             'name' => 'required',                            
         ];
 
-        // if (!empty($request->track_qty) && $request->track_qty == 'Yes') {
-        //     $rules['qty'] = 'required|numeric';
-        // }
-
         $validator = Validator::make($request->all(),$rules);
 
         if ($validator->passes()) {
@@ -69,6 +61,28 @@ class ProductController extends Controller
             $product->veg_nonveg = $request->veg_nonveg;
             $product->save();
 
+        // Save image here
+        if (!empty($request->image_id)) {
+            $tempImage = TempImage::find($request->image_id);
+            $extArray = explode('.',$tempImage->name);
+            $ext = last($extArray);
+
+            $newImageName = $product->id.'_'.$product->name.'.'.$ext;                
+            $sPath = public_path().'/temp/'.$tempImage->name;
+            $dPath = public_path().'/uploads/product/'.$newImageName;                
+            File::copy($sPath,$dPath);
+
+            //Generate thumbnail
+            $dPath = public_path().'/uploads/product/thumb/'.$newImageName;
+            $manager = new ImageManager(new Driver());
+            $image = $manager->read($sPath);
+            $image->cover(400,300);
+            $image->save($dPath);
+            $image->save($dPath);                                  
+            $product->image = $newImageName;
+            $product->save();
+        }
+
         if (!empty($request->image_array)) {
             foreach ($request->image_array as $temp_image_id) {
                 $tempImageInfo = TempImage::find($temp_image_id);
@@ -79,7 +93,6 @@ class ProductController extends Controller
                 $productImage->product_id = $product->id;
                 $productImage->image = "NULL";
                 $productImage->save();
-
                 $imageName = $product->id.'-'.$productImage->id.'-'.time().'.'.$ext;
                 $productImage->image = $imageName;
                 $productImage->save();
@@ -101,6 +114,7 @@ class ProductController extends Controller
                 $image->cover(400,300);
                 $image->save($destPath);
             }
+
         }
 
         $request->session()->flash('success','Menu added successfully');
@@ -149,9 +163,6 @@ class ProductController extends Controller
         $product = Product::find($id);
         $rules = [
             'name' => 'required',
-            'slug' => 'required|unique:products,slug,'.$product->id.',id',
-            'price' => 'required|numeric',
-            'category' => 'required|numeric',
         ];
 
         $validator = Validator::make($request->all(),$rules);
@@ -192,7 +203,7 @@ class ProductController extends Controller
                 'notFound' => true,
             ]);
         }
-
+        $product->delete();
         $productImages = ProductImage::where('product_id',$id)->get();
 
         if (!empty($productImages)) {
@@ -204,7 +215,7 @@ class ProductController extends Controller
             ProductImage::where('product_id',$id)->delete();
         }
 
-        $product->delete();
+        
 
         $request->session()->flash('success','Product deleted successfully');
 

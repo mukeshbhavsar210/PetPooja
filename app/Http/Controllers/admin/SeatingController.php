@@ -14,8 +14,8 @@ use Illuminate\Support\Collection;
 class SeatingController extends Controller
 {
     public function index(Request $request){
-        $seatings = Seating::orderBy('name','ASC')->get();
-        $areas = Area::orderBy('name','ASC')->with('seating')->get();
+        $seatings = Seating::orderBy('table_name','ASC')->get();
+        $areas = Area::orderBy('area_name','ASC')->with('seating')->get();
 
         $data = [];
         $data['seatings'] = $seatings;
@@ -25,7 +25,7 @@ class SeatingController extends Controller
 
 
     function getAreas(){
-        return Area::orderBy('name','ASC')->with('seating')->take(4)->orderBy('id','DESC')->get();
+        return Area::orderBy('area_name','ASC')->with('seating')->take(4)->orderBy('id','DESC')->get();
     }
 
    
@@ -43,14 +43,14 @@ class SeatingController extends Controller
 
         //Validation
         $validator = Validator::make($request->all(), [
-            'name' => 'required',    
+            'area_name' => 'required',    
             'area_id' => 'uniq',         
         ]);
        
         if ($validator->passes()) {
             $menu = new Seating();
             $menu->area_id = $request->area;
-            $menu->name = $request->name;
+            $menu->area_name = $request->name;
             $menu->slug = $request->slug;
             $menu->product_code = $request->qr_generate;            
             $menu->seating_capacity = $request->seating_capacity;

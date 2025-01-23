@@ -23,7 +23,7 @@
                 <div class="col-lg-4 col-6">
                     <div class="small-box card">
                         <div class="inner">
-                            <h3>150</h3>
+                            <h3>{{ $orders_count }}</h3>
                             <p>Total Orders</p>
                         </div>
                         <div class="icon">
@@ -36,7 +36,7 @@
                 <div class="col-lg-4 col-6">
                     <div class="small-box card">
                         <div class="inner">
-                            <h3>50</h3>
+                            <h3>{{ $users_count }}</h3>
                             <p>Total Customers</p>
                         </div>
                         <div class="icon">
@@ -49,7 +49,7 @@
                 <div class="col-lg-4 col-6">
                     <div class="small-box card">
                         <div class="inner">
-                            <h3>$1000</h3>
+                            <h3>Rs.{{ $total_sale }}</h3>
                             <p>Total Sale</p>
                         </div>
                         <div class="icon">

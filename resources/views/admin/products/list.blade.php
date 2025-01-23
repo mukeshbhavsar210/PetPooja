@@ -200,24 +200,24 @@
                 </div>
                 @endforeach
             @else
-                <div class="card">
-                    <div class="card-body">
-                        Records not found
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="center">
+                                    Records not found
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            @endif
+                @endif
             </div>
             
             {{-- {{ $products->links() }} --}}
             
         </div>
     </div>
-    <!-- /.card -->
 </section>
 @endsection
-
-@section('customJs')
-
 
 @section('customJs')
 <script>
@@ -334,7 +334,7 @@
                 $("#image_id").val(response.image_id);
                 console.log(response)
 
-               var html = `<div class="col-md-2" id="image-row-${response.image_id}">
+               var html = `<div class="col-md-4" id="image-row-${response.image_id}">
                     <div class="card">
                         <input type="hidden" name="image_array[]" value="${response.image_id}" >
                         <img src="${response.ImagePath}" />

@@ -51,9 +51,6 @@
                         <li class="nav-item">
                             <a href="{{ route('seatings.index') }}" class="nav-link {{ (\Request::route()->getName() == 'seatings.index') ? 'active' : '' }}">Tables</a>
                         </li>
-                        <li class="nav-item">
-                            <a href="{{ route('qr_codes.index') }}" class="nav-link {{ (\Request::route()->getName() == 'qr_codes.index') ? 'active' : '' }}">QR Code</a>
-                        </li>
                     </ul>
                 </li>
                 <li class="nav-item">
