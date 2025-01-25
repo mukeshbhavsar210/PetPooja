@@ -1,7 +1,6 @@
 @extends('admin.layouts.app')
 
 @section('content')
-    <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
@@ -13,44 +12,27 @@
                 </div>
             </div>
         </div>
-        <!-- /.container-fluid -->
     </section>
-    <!-- Main content -->
+
     <section class="content">
-        <!-- Default box -->
         <div class="container-fluid">
             <div class="row">
-                <div class="col-lg-4 col-6">
+                <div class="col-lg-3 col-6">
                     <div class="small-box card">
                         <div class="inner">
-                            <h3>{{ $orders_count }}</h3>
-                            <p>Total Orders</p>
+                            <h3>Orders <span class="count">{{ $orders_count }}</span></h3>
+                            <p><b></b> </p>
                         </div>
                         <div class="icon">
                             <i class="ion ion-bag"></i>
                         </div>
-                        <a href="#" class="small-box-footer text-dark">More info <i class="fas fa-arrow-circle-right"></i></a>
+                        <a href="{{ route('orders.index') }}" class="small-box-footer text-dark">Rs.{{ $total_sale }} <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
-
-                <div class="col-lg-4 col-6">
+                <div class="col-lg-3 col-6">
                     <div class="small-box card">
                         <div class="inner">
-                            <h3>{{ $users_count }}</h3>
-                            <p>Total Customers</p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-stats-bars"></i>
-                        </div>
-                        <a href="#" class="small-box-footer text-dark">More info <i class="fas fa-arrow-circle-right"></i></a>
-                    </div>
-                </div>
-
-                <div class="col-lg-4 col-6">
-                    <div class="small-box card">
-                        <div class="inner">
-                            <h3>Rs.{{ $total_sale }}</h3>
-                            <p>Total Sale</p>
+                            <h3>Categories <span class="count">{{ $total_categories }}</span></h3>
                         </div>
                         <div class="icon">
                             <i class="ion ion-person-add"></i>
@@ -58,11 +40,44 @@
                         <a href="javascript:void(0);" class="small-box-footer">&nbsp;</a>
                     </div>
                 </div>
+                <div class="col-lg-3 col-6">
+                    <div class="small-box card">
+                        <div class="inner">
+                            <h3>Products <span class="count">{{ $total_items }}</span></h3>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-person-add"></i>
+                        </div>
+                        <a href="javascript:void(0);" class="small-box-footer">&nbsp;</a>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-6">
+                    <div class="small-box card">
+                        <div class="inner">
+                            <h3>Menu items <span class="count">{{ $total_menu }}</span></h3>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-person-add"></i>
+                        </div>
+                        <a href="javascript:void(0);" class="small-box-footer">&nbsp;</a>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-6">
+                    <div class="small-box card">
+                        <div class="inner">
+                            <h3>Users <span class="count">{{ $users_count }}</span></h3>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+                        <a href="{{ route('users.index') }}" class="small-box-footer text-dark">More info <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                </div>
             </div>
         </div>
-        <!-- /.card -->
     </section>
-    <!-- /.content -->
 @endsection
 
 @section('customJs')

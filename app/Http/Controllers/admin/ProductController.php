@@ -15,8 +15,7 @@ use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 use Illuminate\Support\Facades\DB;
 
-class ProductController extends Controller
-{
+class ProductController extends Controller {
 
     public function index(Request $request){
         $products = Product::latest('id')->with('product_images');

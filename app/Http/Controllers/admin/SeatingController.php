@@ -27,7 +27,7 @@ class SeatingController extends Controller
         $data['areas'] = $areas;
         $data['areaCount'] = $areaCount;
 
-        return view('admin.seatings.list', $data);      
+        return view('admin.tables.list', $data);      
     }
 
 
@@ -93,7 +93,7 @@ class SeatingController extends Controller
         $categories = Category::orderBy('name','ASC')->get();
         $data['categories'] = $categories;
         $data['subCategory'] = $subCategory;
-        return view("admin.seatings.edit", $data);
+        return view("admin.tables.edit", $data);
     }
 
     public function update($id, Request $request){

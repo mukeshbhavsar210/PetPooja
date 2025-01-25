@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Flash;
 use App\Models\Category;
+use App\Models\Menu;
 use App\Models\TempImage;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\DB;
@@ -17,10 +18,15 @@ class CategoryController extends Controller
 {
     public function index(Request $request){
         $categories = Category::latest();
+        $menus = Menu::orderBy('name','ASC')->get();
 
         $totalMenu = DB::table('categories')
-                    ->select(DB::raw('count(*) as total_menu'))
-                    ->get()[0]->total_menu;
+                    ->select(DB::raw('count(*) as total'))
+                    ->get()[0]->total;
+
+        $menuCount = DB::table('menus')
+                    ->select(DB::raw('count(*) as total'))
+                    ->get()[0]->total;
 
         if(!empty($request->get('keyword'))){
             $categories = $categories->where('name', 'like', '%'.$request->get('keyword').'%');
@@ -30,9 +36,10 @@ class CategoryController extends Controller
 
         $data['categories'] = $categories;
         $data['totalMenu'] = $totalMenu;
-
+        $data['menus'] = $menus;
+        $data['menuCount'] = $menuCount;
+        
         return view('admin.category.list', $data);
-
     }
 
    
