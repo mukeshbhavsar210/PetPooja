@@ -213,11 +213,11 @@
                     //height:250;
                 });
 
-				$('#showmenu').click(function() {
-                	$('.menu').addClass('active');
+				$('.addBtn').click(function() {
+                	$(this).parent().addClass('active');
         		});
-				$('#hideSmallForm').click(function() {
-                	$('.menu').removeClass('active');
+				$('.removeBtn').click(function() {
+                	$(this).parent().removeClass('active');
         		});
             })
 

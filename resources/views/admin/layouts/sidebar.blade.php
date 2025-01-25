@@ -17,7 +17,7 @@
                 <!-- Add icons to the links using the .nav-icon class
                     with font-awesome or any other icon font library -->
                 <li class="nav-item">
-                    <a href="dashboard.html" class="nav-link">
+                    <a href="{{ route('admin.dashboard') }}" class="nav-link {{ (\Request::route()->getName() == 'admin.dashboard') ? 'active' : '' }}">
                         <i class="fa fa-home" aria-hidden="true"></i>
                         <p>Dashboard</p>
                     </a>
@@ -28,12 +28,12 @@
                         <p>Menu</p>
                     </a>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                     <a href="{{ route('menu.index') }}" class="nav-link {{ (\Request::route()->getName() == 'menu.index') ? 'active' : '' }}">
                         <i class="fa fa-home" aria-hidden="true"></i>
-                        <p>Item Categories</p>
+                        <p>Categories</p>
                     </a>
-                </li>
+                </li> --}}
                 <li class="nav-item">
                     <a href="{{ route('products.index') }}" class="nav-link {{ (\Request::route()->getName() == 'products.index') ? 'active' : '' }}">
                         <i class="fa fa-home" aria-hidden="true"></i>
@@ -46,14 +46,17 @@
                         <p>Areas</p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="{{ route('seatings.index') }}" class="nav-link {{ (\Request::route()->getName() == 'seatings.index') ? 'active' : '' }}">
+                {{-- <li class="nav-item">
+                    <a href="{{ route('tables.index') }}" class="nav-link {{ (\Request::route()->getName() == 'tables.index') ? 'active' : '' }}">
                         <i class="fa fa-home" aria-hidden="true"></i>
                         <p>Tables</p>
                     </a>
-                </li>
+                </li> --}}
                 <li class="nav-item">
-                    <a href="{{ route('orders.index') }}" class="nav-link {{ (\Request::route()->getName() == 'orders.index') ? 'active' : '' }}">Orders</a>
+                    <a href="{{ route('orders.index') }}" class="nav-link {{ (\Request::route()->getName() == 'orders.index') ? 'active' : '' }}">
+                        <i class="fa fa-home" aria-hidden="true"></i>
+                        <p>Orders</p>
+                    </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('users.index') }}" class="nav-link">

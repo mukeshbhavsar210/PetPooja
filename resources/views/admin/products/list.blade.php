@@ -8,7 +8,7 @@
                 <h1>Menu Item <span class="count">{{ $menuCount }}</span></h1>
             </div>
             <div class="col-sm-3">
-                <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModalRight">Add Menu</button>
+                <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#addProducts">Add Product</button>
             </div>
         </div>
     </div>
@@ -19,11 +19,11 @@
         @include('admin.message')
 
         <!-- Modal -->
-        <div class="modal fade drawer right-align" id="exampleModalRight" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade drawer right-align" id="addProducts" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Right Align Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Add Product</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -47,8 +47,7 @@
                                     <input type="number" name="price" id="price" class="form-control" placeholder="Price">
                                     <p class="error"></p>
                                 </div>
-                            </div>
-                        
+                            </div>                        
                             <div class="col-md-7">
                                 <div class="form-group">
                                     <label for="description">Item Description</label>
@@ -221,23 +220,6 @@
 
 @section('customJs')
 <script>
-
-    // $('.related-product').select2({
-    //     ajax: {
-    //         url: '{{ route('products.getProducts') }}',
-    //         dataType: 'json',
-    //         tags: true,
-    //         multiple: true,
-    //         minimumInputLength: 3,
-    //         processResults: function (data) {
-    //             return {
-    //                 results: data.tags
-    //             };
-    //         }
-    //     }
-    // });
-
-  
     $('#name').change(function(){
         element = $(this);
         $("button[type=submit]").prop('disabled', true);
@@ -298,8 +280,6 @@
             }
         });
     });
-
-
 
     $("#category").change(function(){
         var category_id = $(this).val();
