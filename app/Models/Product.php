@@ -24,4 +24,5 @@ class Product extends Model
     public function menu(){
         return $this->belongsTo(Menu::class);
     }
+
 }

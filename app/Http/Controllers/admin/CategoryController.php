@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Flash;
 use App\Models\Category;
 use App\Models\TempImage;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\DB;
 use Intervention\Image\ImageManager;
 use Intervention\Image\Drivers\Gd\Driver;
 
@@ -17,12 +18,21 @@ class CategoryController extends Controller
     public function index(Request $request){
         $categories = Category::latest();
 
+        $totalMenu = DB::table('categories')
+                    ->select(DB::raw('count(*) as total_menu'))
+                    ->get()[0]->total_menu;
+
         if(!empty($request->get('keyword'))){
             $categories = $categories->where('name', 'like', '%'.$request->get('keyword').'%');
         }
 
         $categories = $categories->paginate(10);
-        return view('admin.category.list', compact('categories'));
+
+        $data['categories'] = $categories;
+        $data['totalMenu'] = $totalMenu;
+
+        return view('admin.category.list', $data);
+
     }
 
    
@@ -40,26 +50,26 @@ class CategoryController extends Controller
             $category->save();
 
             // Save image here
-            if (!empty($request->image_id)) {
-                $tempImage = TempImage::find($request->image_id);
-                $extArray = explode('.',$tempImage->name);
-                $ext = last($extArray);
+            // if (!empty($request->image_id)) {
+            //     $tempImage = TempImage::find($request->image_id);
+            //     $extArray = explode('.',$tempImage->name);
+            //     $ext = last($extArray);
 
-                $newImageName = $category->id.'_'.$category->name.'.'.$ext;                
-                $sPath = public_path().'/temp/'.$tempImage->name;
-                $dPath = public_path().'/uploads/category/'.$newImageName;                
-                File::copy($sPath,$dPath);
+            //     $newImageName = $category->id.'_'.$category->name.'.'.$ext;                
+            //     $sPath = public_path().'/temp/'.$tempImage->name;
+            //     $dPath = public_path().'/uploads/category/'.$newImageName;                
+            //     File::copy($sPath,$dPath);
 
-                //Generate thumbnail
-                $dPath = public_path().'/uploads/category/thumb/'.$newImageName;
-                $manager = new ImageManager(new Driver());
-                $image = $manager->read($sPath);
-                $image->cover(400,300);
-                $image->save($dPath);
-                $image->save($dPath);                                  
-                $category->image = $newImageName;
-                $category->save();
-            }
+            //     //Generate thumbnail
+            //     $dPath = public_path().'/uploads/category/thumb/'.$newImageName;
+            //     $manager = new ImageManager(new Driver());
+            //     $image = $manager->read($sPath);
+            //     $image->cover(400,300);
+            //     $image->save($dPath);
+            //     $image->save($dPath);                                  
+            //     $category->image = $newImageName;
+            //     $category->save();
+            // }
 
             $request->session()->flash('success', 'Category added successfully');
 

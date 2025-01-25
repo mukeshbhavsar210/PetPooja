@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Seating;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 
 class SeatingController extends Controller
@@ -17,9 +18,15 @@ class SeatingController extends Controller
         $seatings = Seating::orderBy('table_name','ASC')->get();
         $areas = Area::orderBy('area_name','ASC')->with('seating')->get();
 
+        $areaCount = DB::table('areas')
+                    ->select(DB::raw('count(*) as total_tables'))
+                    ->get()[0]->total_tables;
+
         $data = [];
         $data['seatings'] = $seatings;
         $data['areas'] = $areas;
+        $data['areaCount'] = $areaCount;
+
         return view('admin.seatings.list', $data);      
     }
 

@@ -15,7 +15,7 @@
                         </a>
                     </div>
                     <div class="menu-product__item__img">
-                        <img src="{{ asset('uploads/product/small/'.$details['product_image']->image) }}" >
+                        <img src="{{ asset('uploads/product/small/'.$details['product_image']['image']) }}" > 
                     </div>
                     <div class="menu-product__item__top-block">
                         <div class="menu-product__item__name text-overflow">{{ $details['name'] }}</p></div>
