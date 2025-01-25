@@ -5,7 +5,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-9">
-                <h1>Menu Item</h1>
+                <h1>Menu Item <span class="count">{{ $menuCount }}</span></h1>
             </div>
             <div class="col-sm-3">
                 <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModalRight">Add Menu</button>

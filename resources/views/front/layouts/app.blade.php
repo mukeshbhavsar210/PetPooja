@@ -26,8 +26,7 @@
 		</header>
 
 			<section class="categories-section categories-section--medium-photo">
-				<div class="categories-section__container">		
-					
+				<div class="categories-section__container">							
 					@if(session('wishlist'))
 						<div class="menu-category">	
 							<div class="menu-category__img">
@@ -60,8 +59,6 @@
 					@endif
 				</div>
 			</section>
-			
-
     @yield('content')
 </div>
 </div>

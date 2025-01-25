@@ -8,6 +8,7 @@ use App\Models\Menu;
 use App\Models\Order;
 use App\Models\Page;
 use App\Models\ProductImage;
+use App\Models\Seating;
 use Illuminate\Support\Facades\Mail;
 use Gloudemans\Shoppingcart\Facades\Cart;
 
@@ -18,6 +19,10 @@ function getCategories(){
     
 function getProducts(){
     return Menu::orderBy('name','ASC')->orderBy('id','DESC')->get();
+}  
+
+function getSeats(){
+    return Seating::orderBy('table_name','ASC')->with('area')->orderBy('id','DESC')->get();
 }  
 
 function getProductImage($productId){

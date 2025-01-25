@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Models\TempImage;
 use Illuminate\Support\Facades\File;
 use Intervention\Image\ImageManager;
+use Illuminate\Support\Facades\DB;
 use Intervention\Image\Drivers\Gd\Driver;
 
 class MenuController extends Controller
@@ -18,6 +19,11 @@ class MenuController extends Controller
     public function index(Request $request){
         $categories = Category::orderBy('name','ASC')->get();
         $menus = Menu::orderBy('name','ASC')->get();
+
+        $menuCount = DB::table('menus')
+                    ->select(DB::raw('count(*) as total_menu'))
+                    ->get()[0]->total_menu;
+
         // $subCategories = SubCategory::select('sub_categories.*','categories.name as categoryName')
         //     ->latest('sub_categories.id')
         //     ->leftJoin('categories', 'categories.id', 'sub_categories.category_id');
@@ -30,6 +36,9 @@ class MenuController extends Controller
         $data = [];
         $data['categories'] = $categories;
         $data['menus'] = $menus;
+        $data['menuCount'] = $menuCount;
+        
+        //dd($menuCount);
 
         return view('admin.menu.list', $data);      
     }

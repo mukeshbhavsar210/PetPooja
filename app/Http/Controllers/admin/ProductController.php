@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Menu;
 use App\Models\Product;
 use App\Models\ProductImage;
-use App\Models\SubCategory;
 use App\Models\TempImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -22,12 +20,17 @@ class ProductController extends Controller
 
     public function index(Request $request){
         $products = Product::latest('id')->with('product_images');
-        $categories = Category::orderBy('name','ASC')->get();        
+        $categories = Category::orderBy('name','ASC')->get();  
+        
+        $menuCount = DB::table('products')
+                    ->select(DB::raw('count(*) as total_products'))
+                    ->get()[0]->total_products;
 
         $products = $products->paginate();
 
         $data['products'] = $products;
-        $data['categories'] = $categories;        
+        $data['categories'] = $categories;  
+        $data['menuCount'] = $menuCount;            
 
         return view ('admin.products.list', $data);
     }

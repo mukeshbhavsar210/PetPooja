@@ -7,16 +7,25 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
     public function index(Request $request){
         $orders = OrderItem::latest('order_items.created_at')->with('orders')->get();
+
+        $results = DB::table('users')
+                    ->join('orders', 'users.email', '=', 'orders.email')
+                    ->select('users.*', 'orders.table_number as name')
+                    ->get();
+
+        $data = [
+            'orders' => $orders,
+            'results'=> $results
+        ];
         
         //$orders = $orders->paginate(10);
-        return view('admin.orders.list',[
-            'orders' => $orders
-        ]);
+        return view('admin.orders.list', $data);
     }
 
     public function detail($orderId){

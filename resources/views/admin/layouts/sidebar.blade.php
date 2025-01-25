@@ -23,68 +23,37 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ (\Request::route()->getName() == 'categories.index') ? 'active' : '' }}">
-                        <i class="fa fa-cutlery" aria-hidden="true"></i>
-                        <p>Menu <i class="right fas fa-angle-left"></i> </p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ route('categories.index') }}" class="nav-link {{ (\Request::route()->getName() == 'categories.index') ? 'active' : '' }}">Menu</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('menu.index') }}" class="nav-link {{ (\Request::route()->getName() == 'menu.index') ? 'active' : '' }}">Item Categories</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('products.index') }}" class="nav-link {{ (\Request::route()->getName() == 'products.index') ? 'active' : '' }}">Menu Item</a>
-                        </li>
-                    </ul>
-                </li>
-
-                <li class="nav-item">
-                    <a class="nav-link {{ (\Request::route()->getName() == 'areas.index') ? 'active' : '' }}">
-                        <p>Tables <i class="right fas fa-angle-left"></i></p>
-                    </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ route('areas.index') }}" class="nav-link {{ (\Request::route()->getName() == 'areas.index') ? 'active' : '' }}">Areas</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('seatings.index') }}" class="nav-link {{ (\Request::route()->getName() == 'seatings.index') ? 'active' : '' }}">Tables</a>
-                        </li>
-                    </ul>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('users.index') }}" class="nav-link">
-                        <i class="fa fa-bell" aria-hidden="true"></i>
-
-                        <p>Waiter Requests</p>
+                    <a href="{{ route('categories.index') }}" class="nav-link {{ (\Request::route()->getName() == 'categories.index') ? 'active' : '' }}">
+                        <i class="fa fa-home" aria-hidden="true"></i>
+                        <p>Menu</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('users.index') }}" class="nav-link">
-                        <i class="fa fa-calendar-check" aria-hidden="true"></i>
-                        <p>Reservations</p>
+                    <a href="{{ route('menu.index') }}" class="nav-link {{ (\Request::route()->getName() == 'menu.index') ? 'active' : '' }}">
+                        <i class="fa fa-home" aria-hidden="true"></i>
+                        <p>Item Categories</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('users.index') }}" class="nav-link">
-                        <i class="nav-icon  fas fa-users"></i>
-                        <p>POS</p>
+                    <a href="{{ route('products.index') }}" class="nav-link {{ (\Request::route()->getName() == 'products.index') ? 'active' : '' }}">
+                        <i class="fa fa-home" aria-hidden="true"></i>
+                        <p>Menu Item</p>
+                        </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('areas.index') }}" class="nav-link {{ (\Request::route()->getName() == 'areas.index') ? 'active' : '' }}">
+                        <i class="fa fa-home" aria-hidden="true"></i>
+                        <p>Areas</p>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link {{ (\Request::route()->getName() == 'areas.index') ? 'active' : '' }}">
-                        <p>Orders <i class="right fas fa-angle-left"></i></p>
+                    <a href="{{ route('seatings.index') }}" class="nav-link {{ (\Request::route()->getName() == 'seatings.index') ? 'active' : '' }}">
+                        <i class="fa fa-home" aria-hidden="true"></i>
+                        <p>Tables</p>
                     </a>
-                    <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ route('areas.index') }}" class="nav-link {{ (\Request::route()->getName() == 'areas.index') ? 'active' : '' }}">KOT</a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('orders.index') }}" class="nav-link {{ (\Request::route()->getName() == 'orders.index') ? 'active' : '' }}">Orders</a>
-                        </li>
-                        
-                    </ul>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('orders.index') }}" class="nav-link {{ (\Request::route()->getName() == 'orders.index') ? 'active' : '' }}">Orders</a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('users.index') }}" class="nav-link">
@@ -93,55 +62,18 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('users.index') }}" class="nav-link">
-                        <i class="nav-icon  fas fa-users"></i>
-                        <p>Staff</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('users.index') }}" class="nav-link">
-                        <i class="nav-icon  fas fa-users"></i>
-                        <p>Delivery Executive</p>
-                    </a>
-                </li>
-                <li class="nav-item">
                     <a href="{{ route('settings.index') }}" class="nav-link">
                         <i class="fa fa-cog" aria-hidden="true"></i>
                         <p>Settings</p>
                     </a>
-                </li>
-               
-            
-                {{-- <li class="nav-item">
-                    <a href="{{ route('shipping.create') }}" class="nav-link">
-                        <i class="nav-icon fas fa-tag"></i>
-                        <i class="fas fa-truck nav-icon"></i>
-                        <p>Shipping</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('orders.index') }}" class="nav-link">
-                        <i class="nav-icon fas fa-shopping-bag"></i>
-                        <p>Orders</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('coupons.index') }}" class="nav-link">
-                        <i class="nav-icon  fa fa-percent" aria-hidden="true"></i>
-                        <p>Discount</p>
-                    </a>
-                </li> --}}
+                </li>               
                 <li class="nav-item">
                     <a href="{{ route('pages.index') }}" class="nav-link">
                         <i class="nav-icon  far fa-file-alt"></i>
                         <p>Pages</p>
                     </a>
                 </li>
-                
-                
             </ul>
         </nav>
-        <!-- /.sidebar-menu -->
     </div>
-    <!-- /.sidebar -->
  </aside>

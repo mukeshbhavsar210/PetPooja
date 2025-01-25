@@ -6,10 +6,31 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-sm-9">
-                <h1>Menu</h1>
+                <h1>Categories <span class="count">{{ $totalMenu }}</span></h1>
             </div>
             <div class="col-sm-3">
-                <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModalRight">Add Menu</button>
+                <button type="button" class="btn btn-primary float-right" >Add Menu</button>
+
+                <form action="" method="post" id="categoryForm" name="categoryForm">                       
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" name="name" id="name" class="form-control" placeholder="Name">
+                        <p></p>
+                    </div>
+
+                    <input type="hidden" name="slug" id="slug" class="form-control" placeholder="Slug">
+                        
+                    {{-- <div class="form-group">
+                        <input type="hidden" id="image_id" name="image_id" value=" ">
+                        <label for="image">Image</label>
+                        <div id="image" class="dropzone dz-clickable">
+                            <div class="dz-message needsclick">
+                                <br>Drop files here or click to upload.<br><br>
+                            </div>
+                        </div>
+                    </div> --}}
+                    <button type="submit" class="btn btn-primary">Create</button>
+                </form>     
             </div>
         </div>
     </div>
@@ -19,44 +40,8 @@
     <div class="container-fluid">
         @include('admin.message')
 
-        <div class="modal bd-example-modal-sm fade drawer right-align" id="exampleModalRight" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Add Menu</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <form action="" method="post" id="categoryForm" name="categoryForm">                       
-                        <div class="modal-body">                                 
-                            <div class="form-group">
-                                <label for="name">Name</label>
-                                <input type="text" name="name" id="name" class="form-control" placeholder="Name">
-                                <p></p>
-                            </div>
-
-                            <input type="hidden" name="slug" id="slug" class="form-control" placeholder="Slug">
-                            
-                            <div class="form-group">
-                                <input type="hidden" id="image_id" name="image_id" value=" ">
-                                <label for="image">Image</label>
-                                <div id="image" class="dropzone dz-clickable">
-                                    <div class="dz-message needsclick">
-                                        <br>Drop files here or click to upload.<br><br>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Create</button>
-                        </div>                                        
-                    </form>                    
-                </div>
-            </div>
-        </div>
-
+      
+{{-- 
         <form action="" method="get" >
             <button type="button" onclick="window.location.href='{{ route('categories.index') }}'" class="btn btn-default btn-sm">Reset</button>
             <div class="input-group input-group" style="width: 250px;">
@@ -67,7 +52,7 @@
                     </button>
                 </div>
             </div>
-        </form>
+        </form> --}}
 
         <div class="row">
             @if ($categories->isNotEmpty())
@@ -88,9 +73,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card-body">
+                        {{-- <div class="card-body">
                             <img style="border-radius: 100px; width:150px;" src="{{ asset('uploads/category/thumb/'.$value->image) }}" alt="" />
-                            </div>
+                        </div> --}}
                         </div>
                     </div>
                 @endforeach

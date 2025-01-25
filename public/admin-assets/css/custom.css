@@ -199,3 +199,5 @@ border-bottom-right-radius: 0;
 .menu.active form { display: block !important; }
 .menu.active #showmenu { display: none;}
 #addAreaForm { display: none;}
+
+.count { background-color: #666; font-size: 12px; position: relative; top:-3px; padding:4px 8px; text-align: center; color:#fff; border-radius: 100px;}

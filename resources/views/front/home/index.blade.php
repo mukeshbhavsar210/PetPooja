@@ -14,7 +14,9 @@
                     <a href="javascript:void(0);" >
                         <div class="menu-product">
                             <div class="menu-product__item">
-                                <div class="menu-product__item__ordered_qty">1</div>
+                                <div class="menu-product__item__ordered_qty">
+                                    1
+                                </div>
                                 <div class="wishlist">
                                     {{-- <buton href="javascript:void(0);" data-product-id="{{ $value->id }}" id="add-cart-btn-{{ $value->id }}">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="#222222" stroke-width="1.2px" x="0px" y="0px" viewBox="-1 -2 14 13" xml:space="preserve"><path d="M11,1c-0.6-0.6-1.5-1-2.3-1C7.8,0,7,0.4,6.3,1L6,1.3L5.7,1C5,0.3,4.2,0,3.3,0S1.6,0.3,1,1C0.3,1.6,0,2.4,0,3.3S0.3,5,1,5.7
@@ -27,7 +29,6 @@
                                 </div>
                                 <div class="menu-product__item__img">
                                     @if (!empty($product_image->image))
-                                    
                                         <img src="{{ asset('uploads/product/small/'.$product_image->image) }}" >
                                     @else
                                         <img src="{{ asset('admin-assets/img/default-150x150.png') }}" alt="" />
@@ -35,10 +36,7 @@
                                 </div>
 
                                 <div class="menu-product__item__top-block">
-                                    <div class="menu-product__item__name text-overflow">
-                                     {{ $value->name }} 
-                                    </div>
-                                    {{-- <p style="display:none;">{{ $value->product_image->image }}</p> --}}
+                                    <div class="menu-product__item__name text-overflow">{{ $value->name }} </div>
                                     <div class="menu-product__item__price no-wrap">
                                         ₹ {{ $value->price }}
                                         @if ($value->compare_price > 0)
@@ -139,6 +137,7 @@
                 @if(session('cart'))
                     <div class="basket-page__content__products">
                         @foreach(session('cart') as $id => $details)
+                            {{-- @dd($details); --}}
                             @include('front.layouts.message')
 
                             {{-- <form action="" method="POST" id="diningForm" name="diningForm"> --}}
@@ -148,8 +147,8 @@
                                 <div class="row mb-2">
                                     <div class="col-7">
                                         <p class="my-2">
-                                            {{-- <img style="width:30px; height:30px; border-radius:100px;" src="{{ asset('uploads/product/small/'.$details['image']->image) }}" >  --}}
-                                        {{ $details['quantity'] }} x {{ $details['name'] }} - </p>
+                                            <img style="width:35px; height:30px; border-radius:100px;" src="{{ asset('uploads/product/small/'.$details['product_image']['image']) }}" > 
+                                        {{ $details['quantity'] }} x {{ $details['name'] }} </p>
                                         <input type="hidden" multiple name="name" value="{{ $details['name'] }}">
                                         <input type="hidden" multiple name="qty" value="{{ $details['quantity'] }}">
                                     </div>
