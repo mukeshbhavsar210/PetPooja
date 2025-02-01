@@ -242,10 +242,10 @@
                                                 </select>  
 
                                                 <select class="form-select" aria-label="Default select example" name="table_number">
-                                                    @if ($seatings->isNotEmpty())
+                                                    @if ($seats->isNotEmpty())
                                                         <option selected>Selected table</option>
-                                                        @foreach ($seatings as $value )
-                                                            <option value="{{ $value->name }}">{{ $value->name }}</option>
+                                                        @foreach ($seats as $value )
+                                                            <option value="{{ $value->table_slug }}">{{ $value->table_name }}</option>
                                                         @endforeach
                                                     @endif
                                                 </select>                                          

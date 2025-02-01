@@ -9,8 +9,8 @@ class Area extends Model
 {
     use HasFactory;
 
-    public function seating(){
-        return $this->hasMany(Seating::class);
+    public function seat(){
+        return $this->hasMany(Seat::class);
     }
 
     public function categories(){

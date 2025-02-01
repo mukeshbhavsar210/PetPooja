@@ -218,3 +218,28 @@ border-bottom-right-radius: 0;
 .active .form, .active .removeBtn { display: block;}
 .active .addBtn { display: none;}
 .removeBtn { display: none;}
+
+
+.checkbox-alias{  
+  display: inline-block; border:1px #ccc solid; border-radius: 10px;;
+  width: 100%; text-align: center;
+  height: 100px; padding:28px 0;
+z-index: 1;
+position: relative;
+transition: all 250ms ease-out;
+cursor: pointer;
+}
+
+.checkbox-alias .small-text { font-size: 12px;}
+
+.invisible-checkboxes .countSeat { position: absolute; top:10px; right:15px; background-color: #fff; z-index: 9; border-radius: 100px; padding: 1px 2px; font-size: 11px; height: 22px; width: 22px; border:1px #ccc solid;; }
+
+.invisible-checkboxes input[type=checkbox]{ display: none;  }
+
+.invisible-checkboxes input[type=checkbox]:checked + .checkbox-alias{
+  background-color: #007bff; color:#fff; 
+}
+
+.invisible-checkboxes:has(input:checked) .checkbox-alias {
+  background-color: #007bff;
+}

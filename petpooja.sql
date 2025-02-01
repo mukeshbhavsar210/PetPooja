@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.0
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 10, 2025 at 02:23 PM
--- Server version: 10.4.24-MariaDB
--- PHP Version: 8.2.0
+-- Generation Time: Feb 01, 2025 at 10:12 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -29,7 +29,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `areas` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `area_name` varchar(255) NOT NULL,
+  `area_slug` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -38,11 +39,34 @@ CREATE TABLE `areas` (
 -- Dumping data for table `areas`
 --
 
-INSERT INTO `areas` (`id`, `name`, `created_at`, `updated_at`) VALUES
-(2, 'HSR Layout', '2025-01-09 01:48:07', '2025-01-09 03:06:10'),
-(3, 'BTM Layout', '2025-01-09 03:06:18', '2025-01-09 03:06:18'),
-(4, 'Electronic City', '2025-01-09 03:06:25', '2025-01-09 03:06:25'),
-(5, 'Chandkheda', '2025-01-09 06:51:01', '2025-01-09 06:51:01');
+INSERT INTO `areas` (`id`, `area_name`, `area_slug`, `created_at`, `updated_at`) VALUES
+(4, 'Ahmedabad', 'ahmedabad', '2025-01-08 05:16:45', '2025-01-08 05:16:45'),
+(5, 'Chandkheda', 'chandkheda', '2025-01-09 06:51:01', '2025-01-09 06:51:01'),
+(6, 'Prahladnagar', 'prahladnagar', '2025-01-10 23:50:03', '2025-01-10 23:50:03'),
+(7, 'Shahibaug', 'shahibaug', '2025-01-16 08:47:47', '2025-01-16 08:47:47');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `articles`
+--
+
+CREATE TABLE `articles` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `title` varchar(255) NOT NULL,
+  `text` text NOT NULL,
+  `author` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `articles`
+--
+
+INSERT INTO `articles` (`id`, `title`, `text`, `author`, `created_at`, `updated_at`) VALUES
+(3, 'Article test', 'Test content', 'John Doe', '2025-01-27 04:06:58', '2025-01-27 04:06:58'),
+(4, 'Hello World', 'hello world', 'Mukesh Bhavsar', '2025-01-27 04:07:15', '2025-01-27 04:07:15');
 
 -- --------------------------------------------------------
 
@@ -52,8 +76,8 @@ INSERT INTO `areas` (`id`, `name`, `created_at`, `updated_at`) VALUES
 
 CREATE TABLE `branches` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `address` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `address` text NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -73,8 +97,9 @@ INSERT INTO `branches` (`id`, `name`, `address`, `created_at`, `updated_at`) VAL
 
 CREATE TABLE `categories` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `image` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) NOT NULL,
+  `slug` varchar(255) NOT NULL,
+  `image` varchar(255) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -83,10 +108,11 @@ CREATE TABLE `categories` (
 -- Dumping data for table `categories`
 --
 
-INSERT INTO `categories` (`id`, `name`, `image`, `created_at`, `updated_at`) VALUES
-(182, 'Breakfast', NULL, '2025-01-08 23:04:59', '2025-01-08 23:04:59'),
-(183, 'Lunch', NULL, '2025-01-08 23:05:15', '2025-01-08 23:05:15'),
-(184, 'Dinner', NULL, '2025-01-08 23:05:23', '2025-01-08 23:05:23');
+INSERT INTO `categories` (`id`, `name`, `slug`, `image`, `created_at`, `updated_at`) VALUES
+(187, 'Lunch', 'lunch', '187_Lunch.png', '2025-01-11 05:06:23', '2025-01-11 05:06:23'),
+(188, 'Dinner', 'dinner', '188_Dinner.png', '2025-01-11 05:06:33', '2025-01-11 05:06:33'),
+(189, 'Desserts', 'desserts', '189_Desserts.png', '2025-01-11 05:06:42', '2025-01-11 05:06:43'),
+(190, 'Drinks', 'drinks', '190_Drinks.png', '2025-01-11 05:06:51', '2025-01-11 05:06:52');
 
 -- --------------------------------------------------------
 
@@ -96,8 +122,8 @@ INSERT INTO `categories` (`id`, `name`, `image`, `created_at`, `updated_at`) VAL
 
 CREATE TABLE `countries` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `code` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -359,16 +385,11 @@ INSERT INTO `countries` (`id`, `name`, `code`, `created_at`, `updated_at`) VALUE
 CREATE TABLE `customer_addresses` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `user_id` bigint(20) UNSIGNED NOT NULL,
-  `first_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `last_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `mobile` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `mobile` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
   `country_id` bigint(20) UNSIGNED NOT NULL,
-  `address` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `apartment` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `city` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `state` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `zip` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `address` text NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -377,8 +398,20 @@ CREATE TABLE `customer_addresses` (
 -- Dumping data for table `customer_addresses`
 --
 
-INSERT INTO `customer_addresses` (`id`, `user_id`, `first_name`, `last_name`, `mobile`, `email`, `country_id`, `address`, `apartment`, `city`, `state`, `zip`, `created_at`, `updated_at`) VALUES
-(1, 3, 'Dhruv', 'Bhavsar', '09978835005', 'dhruvbhavsar210@gmail.com', 100, 'Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms,', NULL, 'Banglore', 'Karnataka', '560100', '2023-11-25 04:10:25', '2023-12-29 06:13:59');
+INSERT INTO `customer_addresses` (`id`, `user_id`, `name`, `mobile`, `email`, `country_id`, `address`, `created_at`, `updated_at`) VALUES
+(1, 3, 'Dhruv', '09978835005', 'dhruvbhavsar210@gmail.com', 100, 'Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms,', '2023-11-25 04:10:25', '2023-12-29 06:13:59');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `dining_carts`
+--
+
+CREATE TABLE `dining_carts` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -388,12 +421,12 @@ INSERT INTO `customer_addresses` (`id`, `user_id`, `first_name`, `last_name`, `m
 
 CREATE TABLE `discount_coupons` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `code` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `max_uses` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `max_uses_user` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `type` enum('percent','fixed') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'fixed',
+  `code` varchar(255) NOT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
+  `max_uses` varchar(255) DEFAULT NULL,
+  `max_uses_user` varchar(255) DEFAULT NULL,
+  `type` enum('percent','fixed') NOT NULL DEFAULT 'fixed',
   `discount_amount` double(10,2) NOT NULL,
   `min_amount` double(10,2) DEFAULT NULL,
   `status` int(11) NOT NULL DEFAULT 1,
@@ -420,13 +453,41 @@ INSERT INTO `discount_coupons` (`id`, `code`, `name`, `description`, `max_uses`,
 
 CREATE TABLE `failed_jobs` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `uuid` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `connection` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `queue` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `payload` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
-  `exception` longtext COLLATE utf8mb4_unicode_ci NOT NULL,
+  `uuid` varchar(255) NOT NULL,
+  `connection` text NOT NULL,
+  `queue` text NOT NULL,
+  `payload` longtext NOT NULL,
+  `exception` longtext NOT NULL,
   `failed_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `items`
+--
+
+CREATE TABLE `items` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `photo` varchar(255) NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `items`
+--
+
+INSERT INTO `items` (`id`, `name`, `description`, `photo`, `price`, `created_at`, `updated_at`) VALUES
+(1, 'Android smartphone with a 6.5', 'Android smartphone with a 6.5-inch display, octa-core processor, 4GB of RAM, 64GB storage (expandable), a triple rear camera setup (13MP main, 2MP depth, 2MP macro), an approximate 8MP front camera.', 'http://example.com/storage/app/public/products/phone.jpeg', 698.88, NULL, NULL),
+(2, 'Digital Camera EOS', 'Canon cameras come in various models with diverse features, but generally, they offer high-quality imaging, a range of resolutions, interchangeable lenses, advanced autofocus systems.', 'http://example.com/storage/app/public/products/canon.jpg', 983.00, NULL, NULL),
+(3, 'LOIS CARON Watch', 'The Lois Caron watch typically features a stainless steel case, quartz movement, analog display, synthetic leather or metal strap, and water resistance at varying depths.', 'http://example.com/storage/app/public/products/watch.jpg', 675.00, NULL, NULL),
+(4, 'Elegante unisex adult square', 'Sunglasses come in a wide variety of styles, but they generally feature UV-protective lenses housed in plastic or metal frames.', 'http://example.com/storage/app/public/products/sunclass.jpg', 159.99, NULL, NULL),
+(5, 'Large Capacity Folding Bag', 'A typical travel bag is designed with durable materials, multiple compartments, sturdy handles, and often includes wheels for easy maneuverability.', 'http://example.com/storage/app/public/products/bag.jpg', 68.00, NULL, NULL),
+(6, 'Lenovo Smartchoice Ideapad 3', 'Lenovo laptops typically offer various configurations with features such as Intel or AMD processors.', 'http://example.com/storage/app/public/products/laptop.jpg', 129.99, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -436,7 +497,9 @@ CREATE TABLE `failed_jobs` (
 
 CREATE TABLE `menus` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `slug` varchar(255) NOT NULL,
+  `image` varchar(255) DEFAULT NULL,
   `category_id` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -446,11 +509,9 @@ CREATE TABLE `menus` (
 -- Dumping data for table `menus`
 --
 
-INSERT INTO `menus` (`id`, `name`, `category_id`, `created_at`, `updated_at`) VALUES
-(5, 'South Indian', 182, '2025-01-09 00:26:07', '2025-01-09 00:26:07'),
-(6, 'North Indian', 184, '2025-01-09 00:27:39', '2025-01-09 00:27:39'),
-(7, 'Gujarathi Thali', 183, '2025-01-09 00:27:49', '2025-01-09 00:27:49'),
-(8, 'Rajasthani Thali', 183, '2025-01-09 01:36:57', '2025-01-09 01:36:57');
+INSERT INTO `menus` (`id`, `name`, `slug`, `image`, `category_id`, `created_at`, `updated_at`) VALUES
+(15, 'Roti', 'roti', '15_Roti.png', 187, '2025-01-11 05:08:21', '2025-01-11 05:08:21'),
+(16, 'Biryani', 'biryani', '16_Biryani.png', 187, '2025-01-11 05:08:34', '2025-01-11 05:08:34');
 
 -- --------------------------------------------------------
 
@@ -460,8 +521,8 @@ INSERT INTO `menus` (`id`, `name`, `category_id`, `created_at`, `updated_at`) VA
 
 CREATE TABLE `menu_categories` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT '1',
+  `name` varchar(255) NOT NULL,
+  `status` varchar(255) NOT NULL DEFAULT '1',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -474,7 +535,7 @@ CREATE TABLE `menu_categories` (
 
 CREATE TABLE `migrations` (
   `id` int(10) UNSIGNED NOT NULL,
-  `migration` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `migration` varchar(255) NOT NULL,
   `batch` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -523,7 +584,44 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (38, '2025_01_09_082552_create_tables_table', 31),
 (39, '2025_01_10_065444_create_branches_table', 32),
 (40, '2025_01_10_065526_create_settings_table', 33),
-(41, '2025_01_10_101525_alter_users_table', 34);
+(41, '2025_01_10_101525_alter_users_table', 34),
+(42, '2025_01_15_103703_create_sessions_table', 35),
+(43, '2025_01_16_053512_create_items_table', 36),
+(44, '2025_01_17_105545_create_cart_table', 37),
+(45, '2025_01_18_070223_create_dining_carts_table', 38),
+(46, '2025_01_20_123902_create_order_items_table', 38),
+(47, '2025_01_22_061205_create_products_table', 39),
+(48, '2025_01_22_082454_create_products_table', 40),
+(49, '2025_01_22_091941_create_product_images_table', 41),
+(50, '2025_01_26_122245_create_product_views_table', 42),
+(51, '2025_01_26_130415_create_user_roles_table', 43),
+(52, '2025_01_28_115518_create_orders_table', 44),
+(53, '2025_01_29_123429_create_taxes_table', 45),
+(54, '2025_02_01_071017_create_permission_tables', 46);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `model_has_permissions`
+--
+
+CREATE TABLE `model_has_permissions` (
+  `permission_id` bigint(20) UNSIGNED NOT NULL,
+  `model_type` varchar(255) NOT NULL,
+  `model_id` bigint(20) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `model_has_roles`
+--
+
+CREATE TABLE `model_has_roles` (
+  `role_id` bigint(20) UNSIGNED NOT NULL,
+  `model_type` varchar(255) NOT NULL,
+  `model_id` bigint(20) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -533,27 +631,27 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 
 CREATE TABLE `orders` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `user_id` bigint(20) UNSIGNED NOT NULL,
-  `subtotal` double(10,2) NOT NULL,
-  `shipping` double(10,2) NOT NULL,
-  `coupon_code` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `coupon_code_id` int(11) DEFAULT NULL,
-  `discount` double(10,2) DEFAULT NULL,
-  `grandtotal` double(10,2) NOT NULL,
-  `payment_status` enum('paid','not paid') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'not paid',
-  `status` enum('pending','shipped','delivered','cancelled') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'pending',
-  `shipped_date` timestamp NULL DEFAULT NULL,
-  `first_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `last_name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `mobile` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `country_id` bigint(20) UNSIGNED NOT NULL,
-  `address` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `apartment` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `city` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `state` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `zip` varchar(10) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `notes` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `session_id` varchar(255) DEFAULT NULL,
+  `seat_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `area_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `order_type` enum('Dinein','Takeaway','Delivery') NOT NULL DEFAULT 'Dinein',
+  `delivery_name` varchar(255) DEFAULT NULL,
+  `delivery_phone` varchar(255) DEFAULT NULL,
+  `delivery_email` varchar(255) DEFAULT NULL,
+  `takeaway_name` varchar(255) DEFAULT NULL,
+  `takeaway_phone` varchar(255) DEFAULT NULL,
+  `takeaway_email` varchar(255) DEFAULT NULL,
+  `ready_time` varchar(255) DEFAULT NULL,
+  `address` text DEFAULT NULL,
+  `notes` text DEFAULT NULL,
+  `shipping` double(10,2) DEFAULT NULL,
+  `shipped_date` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  `gst` int(100) NOT NULL DEFAULT 18,
+  `sgst` int(100) NOT NULL DEFAULT 9,
+  `cgst` int(20) NOT NULL DEFAULT 9,
+  `total` double(10,2) DEFAULT NULL,
+  `payment` enum('paid','not paid') NOT NULL DEFAULT 'not paid',
+  `status` enum('running','pending','shipped','delivered') NOT NULL DEFAULT 'running',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -562,25 +660,9 @@ CREATE TABLE `orders` (
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`id`, `user_id`, `subtotal`, `shipping`, `coupon_code`, `coupon_code_id`, `discount`, `grandtotal`, `payment_status`, `status`, `shipped_date`, `first_name`, `last_name`, `mobile`, `email`, `country_id`, `address`, `apartment`, `city`, `state`, `zip`, `notes`, `created_at`, `updated_at`) VALUES
-(19, 3, 314.00, 10.00, 'IND30', 4, 31.40, 292.60, 'not paid', 'cancelled', '2023-11-28 11:24:54', 'Dhruv', 'Bhavsar', '0997883500', 'dhruvbhavsar210@gmail.com', 100, 'Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms,', NULL, 'Banglore', 'Karnataka', '560100', NULL, '2023-11-29 00:51:51', '2023-11-29 05:55:09'),
-(26, 3, 1151.00, 40.00, 'IND99', 5, 90.00, 1101.00, 'not paid', 'delivered', NULL, 'Dhruv', 'Bhavsar', '09978835005', 'dhruvbhavsar210@gmail.com', 100, 'Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms,', NULL, 'Banglore', 'Karnataka', '560100', NULL, '2023-11-29 02:17:59', '2023-11-29 02:17:59'),
-(27, 3, 314.00, 10.00, 'IND30', 4, 31.40, 292.60, 'not paid', 'pending', NULL, 'Dhruv', 'Bhavsar', '09978835005', 'dhruvbhavsar210@gmail.com', 100, 'Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms,', NULL, 'Banglore', 'Karnataka', '560100', NULL, '2023-11-29 03:06:56', '2023-11-29 03:06:56'),
-(28, 3, 314.00, 10.00, '', NULL, 0.00, 324.00, 'not paid', 'cancelled', '2023-11-28 11:13:49', 'Dhruv', 'Bhavsar', '09978835005', 'dhruvbhavsar210@gmail.com', 100, 'Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms,', NULL, 'Banglore', 'Karnataka', '560100', NULL, '2023-11-29 03:50:43', '2023-11-29 06:16:02'),
-(29, 3, 279.00, 10.00, '', NULL, 0.00, 289.00, 'not paid', 'pending', NULL, 'Dhruv', 'Bhavsar', '09978835005', 'dhruvbhavsar210@gmail.com', 100, 'Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms,', NULL, 'Banglore', 'Karnataka', '560100', NULL, '2023-11-29 07:12:26', '2023-11-29 07:12:26'),
-(30, 3, 971.00, 10.00, '', NULL, 0.00, 981.00, 'not paid', 'pending', NULL, 'Dhruv', 'Bhavsar', '09978835005', 'dhruvbhavsar210@gmail.com', 100, 'Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms,', NULL, 'Banglore', 'Karnataka', '560100', NULL, '2023-11-29 07:18:57', '2023-11-29 07:18:57'),
-(31, 3, 1942.00, 20.00, '', NULL, 0.00, 1962.00, 'not paid', 'pending', NULL, 'Dhruv', 'Bhavsar', '09978835005', 'dhruvbhavsar210@gmail.com', 100, 'Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms,', NULL, 'Banglore', 'Karnataka', '560100', NULL, '2023-11-30 05:00:31', '2023-11-30 05:00:31'),
-(32, 3, 971.00, 10.00, '', NULL, 0.00, 981.00, 'not paid', 'pending', NULL, 'Dhruv', 'Bhavsar', '09978835005', 'dhruvbhavsar210@gmail.com', 100, 'Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms,', NULL, 'Banglore', 'Karnataka', '560100', NULL, '2023-11-30 05:09:40', '2023-11-30 05:09:40'),
-(33, 3, 160.00, 10.00, '', NULL, 0.00, 170.00, 'not paid', 'pending', NULL, 'Dhruv', 'Bhavsar', '09978835005', 'dhruvbhavsar210@gmail.com', 100, 'Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms,', NULL, 'Banglore', 'Karnataka', '560100', NULL, '2023-12-29 06:14:00', '2023-12-29 06:14:00'),
-(34, 3, 0.00, 0.00, '', NULL, 0.00, 0.00, 'not paid', 'pending', NULL, 'Dhruv', 'Bhavsar', '09978835005', 'dhruvbhavsar210@gmail.com', 100, 'Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms,', NULL, 'Banglore', 'Karnataka', '560100', NULL, '2023-12-29 06:14:06', '2023-12-29 06:14:06'),
-(35, 3, 279.00, 10.00, '', NULL, 0.00, 289.00, 'not paid', 'pending', NULL, 'Dhruv', 'Bhavsar', '09978835005', 'dhruvbhavsar210@gmail.com', 100, 'Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms,', NULL, 'Banglore', 'Karnataka', '560100', NULL, '2023-12-29 06:28:37', '2023-12-29 06:28:37'),
-(36, 3, 0.00, 0.00, '', NULL, 0.00, 0.00, 'not paid', 'pending', NULL, 'Dhruv', 'Bhavsar', '09978835005', 'dhruvbhavsar210@gmail.com', 100, 'Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms,', NULL, 'Banglore', 'Karnataka', '560100', NULL, '2023-12-29 06:29:02', '2023-12-29 06:29:02'),
-(37, 3, 439.00, 20.00, '', NULL, 0.00, 459.00, 'not paid', 'pending', NULL, 'Dhruv', 'Bhavsar', '09978835005', 'dhruvbhavsar210@gmail.com', 100, 'Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms,', NULL, 'Banglore', 'Karnataka', '560100', NULL, '2023-12-29 06:40:49', '2023-12-29 06:40:49'),
-(38, 3, 613.00, 10.00, '', NULL, 0.00, 623.00, 'not paid', 'pending', NULL, 'Dhruv', 'Bhavsar', '09978835005', 'dhruvbhavsar210@gmail.com', 100, 'Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms,', NULL, 'Banglore', 'Karnataka', '560100', NULL, '2023-12-29 07:00:16', '2023-12-29 07:00:16'),
-(39, 3, 892.00, 20.00, '', NULL, 0.00, 912.00, 'not paid', 'pending', NULL, 'Dhruv', 'Bhavsar', '09978835005', 'dhruvbhavsar210@gmail.com', 100, 'Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms,', NULL, 'Banglore', 'Karnataka', '560100', NULL, '2023-12-29 07:16:05', '2023-12-29 07:16:05'),
-(40, 3, 279.00, 10.00, '', NULL, 0.00, 289.00, 'not paid', 'pending', NULL, 'Dhruv', 'Bhavsar', '09978835005', 'dhruvbhavsar210@gmail.com', 100, 'Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms,', NULL, 'Banglore', 'Karnataka', '560100', NULL, '2023-12-29 07:24:08', '2023-12-29 07:24:08'),
-(41, 3, 279.00, 10.00, '', NULL, 0.00, 289.00, 'not paid', 'pending', NULL, 'Dhruv', 'Bhavsar', '09978835005', 'dhruvbhavsar210@gmail.com', 100, 'Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms,', NULL, 'Banglore', 'Karnataka', '560100', NULL, '2023-12-29 07:24:26', '2023-12-29 07:24:26'),
-(42, 3, 160.00, 10.00, '', NULL, 0.00, 170.00, 'not paid', 'pending', NULL, 'Dhruv', 'Bhavsar', '09978835005', 'dhruvbhavsar210@gmail.com', 100, 'Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms, Keerthi Royal Palms,', NULL, 'Banglore', 'Karnataka', '560100', NULL, '2023-12-29 07:36:09', '2023-12-29 07:36:09');
+INSERT INTO `orders` (`id`, `session_id`, `seat_id`, `area_id`, `order_type`, `delivery_name`, `delivery_phone`, `delivery_email`, `takeaway_name`, `takeaway_phone`, `takeaway_email`, `ready_time`, `address`, `notes`, `shipping`, `shipped_date`, `gst`, `sgst`, `cgst`, `total`, `payment`, `status`, `created_at`, `updated_at`) VALUES
+(3, '9756254457', 45, NULL, 'Dinein', NULL, NULL, NULL, NULL, NULL, NULL, '1', NULL, 'asdadsda', 80.00, '2025-01-29 13:20:32', 18, 9, 9, 790.00, 'not paid', 'shipped', '2025-01-29 06:54:34', '2025-01-29 07:50:32'),
+(4, '5870027405', 45, NULL, 'Dinein', NULL, NULL, NULL, NULL, NULL, NULL, '1', NULL, 'I want spicy biriyani', NULL, '2025-01-30 11:04:15', 18, 9, 9, 790.00, 'not paid', 'shipped', '2025-01-29 08:45:55', '2025-01-30 05:34:15');
 
 -- --------------------------------------------------------
 
@@ -591,14 +673,24 @@ INSERT INTO `orders` (`id`, `user_id`, `subtotal`, `shipping`, `coupon_code`, `c
 CREATE TABLE `order_items` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `order_id` bigint(20) UNSIGNED NOT NULL,
-  `product_id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `image` varchar(100) DEFAULT NULL,
   `qty` int(11) NOT NULL,
   `price` double(10,2) NOT NULL,
-  `total` double(10,2) NOT NULL,
+  `total` double(10,2) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `order_items`
+--
+
+INSERT INTO `order_items` (`id`, `order_id`, `name`, `image`, `qty`, `price`, `total`, `created_at`, `updated_at`) VALUES
+(54, 3, 'Keerthi Estate', NULL, 1, 700.00, 700.00, '2025-01-29 06:54:34', '2025-01-29 06:54:34'),
+(55, 3, 'Roti', NULL, 1, 90.00, 90.00, '2025-01-29 06:54:34', '2025-01-29 06:54:34'),
+(56, 4, 'Keerthi Estate', NULL, 1, 700.00, 700.00, '2025-01-29 08:45:55', '2025-01-29 08:45:55'),
+(57, 4, 'Roti', NULL, 1, 90.00, 90.00, '2025-01-29 08:45:55', '2025-01-29 08:45:55');
 
 -- --------------------------------------------------------
 
@@ -608,9 +700,9 @@ CREATE TABLE `order_items` (
 
 CREATE TABLE `pages` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `slug` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `content` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) NOT NULL,
+  `slug` varchar(255) NOT NULL,
+  `content` text DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -631,8 +723,8 @@ INSERT INTO `pages` (`id`, `name`, `slug`, `content`, `created_at`, `updated_at`
 --
 
 CREATE TABLE `password_reset_tokens` (
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `token` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -644,15 +736,15 @@ CREATE TABLE `password_reset_tokens` (
 
 CREATE TABLE `payments` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `payment_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `product_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `quantity` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `amount` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `currency` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `customer_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `customer_email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `payment_status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `payment_method` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `payment_id` varchar(255) NOT NULL,
+  `product_name` varchar(255) NOT NULL,
+  `quantity` varchar(255) NOT NULL,
+  `amount` varchar(255) NOT NULL,
+  `currency` varchar(255) NOT NULL,
+  `customer_name` varchar(255) NOT NULL,
+  `customer_email` varchar(255) NOT NULL,
+  `payment_status` varchar(255) NOT NULL,
+  `payment_method` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -668,7 +760,33 @@ INSERT INTO `payments` (`id`, `payment_id`, `product_name`, `quantity`, `amount`
 (4, 'pay_NI9RXepNn0DvuX', 'Laptop', '1', '20', 'INR', 'Mukesh Bhavsar', 'mukeshbhavsar210@gmail.com', 'captured', 'Razorpay', '2023-12-29 06:23:02', '2023-12-29 06:23:02'),
 (5, 'pay_NI9TDm9Ol5VNP1', 'Laptop', '1', '20', 'INR', 'Mukesh Bhavsar', 'mukeshbhavsar210@gmail.com', 'captured', 'Razorpay', '2023-12-29 06:24:36', '2023-12-29 06:24:36'),
 (6, 'pay_NIAFj17qtlJHrk', 'Laptop', '1', '50', 'INR', 'Mukesh Bhavsar', 'mukeshbhavsar210@gmail.com', 'captured', 'Razorpay', '2023-12-29 07:10:33', '2023-12-29 07:10:33'),
-(7, 'pay_PNpg6ofAw6MYWY', 'Laptop', '1', '20', 'INR', 'Mukesh Bhavsar', 'mukeshbhavsar210@gmail.com', 'captured', 'Razorpay', '2024-11-20 23:33:11', '2024-11-20 23:33:11');
+(7, 'pay_PNpg6ofAw6MYWY', 'Laptop', '1', '20', 'INR', 'Mukesh Bhavsar', 'mukeshbhavsar210@gmail.com', 'captured', 'Razorpay', '2024-11-20 23:33:11', '2024-11-20 23:33:11'),
+(8, 'pay_Pio71yak0XsJ6l', 'Laptop', '1', '20', 'INR', 'Mukesh Bhavsar', 'mukeshbhavsar210@gmail.com', 'captured', 'Razorpay', '2025-01-12 23:40:26', '2025-01-12 23:40:26'),
+(9, 'pay_Pio8eoC2jpmUdJ', 'Laptop', '1', '20', 'INR', 'Mukesh Bhavsar', 'mukeshbhavsar210@gmail.com', 'captured', 'Razorpay', '2025-01-12 23:41:53', '2025-01-12 23:41:53');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `permissions`
+--
+
+CREATE TABLE `permissions` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `guard_name` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `permissions`
+--
+
+INSERT INTO `permissions` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VALUES
+(1, 'Create category', 'admin', '2025-02-01 02:20:28', '2025-02-01 02:20:28'),
+(2, 'Edit Category', 'admin', '2025-02-01 02:20:48', '2025-02-01 02:20:48'),
+(3, 'Create Menu', 'admin', '2025-02-01 02:24:34', '2025-02-01 02:24:34'),
+(4, 'Edit Menu', 'admin', '2025-02-01 03:30:41', '2025-02-01 03:30:41');
 
 -- --------------------------------------------------------
 
@@ -678,11 +796,11 @@ INSERT INTO `payments` (`id`, `payment_id`, `product_name`, `quantity`, `amount`
 
 CREATE TABLE `personal_access_tokens` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `tokenable_type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `tokenable_type` varchar(255) NOT NULL,
   `tokenable_id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `token` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `abilities` text COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) NOT NULL,
+  `token` varchar(64) NOT NULL,
+  `abilities` text DEFAULT NULL,
   `last_used_at` timestamp NULL DEFAULT NULL,
   `expires_at` timestamp NULL DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -697,23 +815,33 @@ CREATE TABLE `personal_access_tokens` (
 
 CREATE TABLE `products` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `slug` varchar(255) NOT NULL,
+  `image` varchar(100) DEFAULT NULL,
   `category_id` bigint(20) UNSIGNED NOT NULL,
-  `menu_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `menu_id` bigint(20) UNSIGNED NOT NULL,
+  `product_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `description` varchar(255) DEFAULT NULL,
   `price` double(10,2) NOT NULL,
-  `veg_nonveg` enum('Veg','Non-veg','Egg') COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Veg',
+  `compare_price` double(10,2) DEFAULT NULL,
+  `veg_nonveg` enum('Veg','Non-veg','Egg') NOT NULL DEFAULT 'Veg',
+  `status` int(11) NOT NULL DEFAULT 1,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `seat_id` bigint(20) UNSIGNED NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`id`, `title`, `category_id`, `menu_id`, `description`, `price`, `veg_nonveg`, `created_at`, `updated_at`) VALUES
-(1, 'Masala Dosa', 182, 5, 'masala', 55.00, 'Egg', '2025-01-09 00:30:50', '2025-01-09 00:30:50'),
-(2, 'Roti', 184, 6, 'sdfdsf', 90.00, 'Veg', '2025-01-09 01:24:54', '2025-01-09 01:24:54');
+INSERT INTO `products` (`id`, `name`, `slug`, `image`, `category_id`, `menu_id`, `product_id`, `description`, `price`, `compare_price`, `veg_nonveg`, `status`, `created_at`, `updated_at`, `seat_id`) VALUES
+(1, 'Biriyani', 'biriyani', '', 188, 16, 1, NULL, 100.00, 99.00, 'Non-veg', 1, '2025-01-22 03:43:14', '2025-01-22 03:43:14', 0),
+(2, 'Roti', 'roti', '', 188, 15, 2, 'roti', 55.00, 55.00, 'Veg', 1, '2025-01-22 03:45:51', '2025-01-22 03:45:51', 0),
+(3, 'Roti', 'roti', '', 188, 15, 3, 'roti', 90.00, 55.00, 'Veg', 1, '2025-01-22 03:51:36', '2025-01-22 03:51:36', 0),
+(4, 'Mukesh Bhavsar', 'mukesh-bhavsar', NULL, 188, 16, 4, NULL, 700.00, 1200.00, 'Veg', 1, '2025-01-22 05:03:20', '2025-01-22 05:03:20', 0),
+(5, 'Sona Bhavsar', 'sona-bhavsar', NULL, 188, 16, 3, NULL, 700.00, NULL, 'Non-veg', 1, '2025-01-22 05:04:02', '2025-01-22 05:04:02', 0),
+(6, 'Keerthi Estate', 'keerthi-estate', NULL, 188, 16, 4, NULL, 700.00, 1200.00, 'Non-veg', 1, '2025-01-22 05:06:52', '2025-01-22 05:06:52', 0);
 
 -- --------------------------------------------------------
 
@@ -724,8 +852,7 @@ INSERT INTO `products` (`id`, `title`, `category_id`, `menu_id`, `description`, 
 CREATE TABLE `product_images` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `product_id` bigint(20) UNSIGNED NOT NULL,
-  `image` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `sort_order` int(11) DEFAULT NULL,
+  `image` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -734,10 +861,11 @@ CREATE TABLE `product_images` (
 -- Dumping data for table `product_images`
 --
 
-INSERT INTO `product_images` (`id`, `product_id`, `image`, `sort_order`, `created_at`, `updated_at`) VALUES
-(47, 57, '57-47-1736400053.jpg', NULL, '2025-01-08 23:50:53', '2025-01-08 23:50:53'),
-(48, 1, '1-48-1736402450.jpg', NULL, '2025-01-09 00:30:50', '2025-01-09 00:30:50'),
-(49, 2, '2-49-1736405694.jpg', NULL, '2025-01-09 01:24:54', '2025-01-09 01:24:54');
+INSERT INTO `product_images` (`id`, `product_id`, `image`, `created_at`, `updated_at`) VALUES
+(1, 3, '3-1-1737537697.jpg', '2025-01-22 03:51:36', '2025-01-22 03:51:37'),
+(2, 4, '4-2-1737542000.jpg', '2025-01-22 05:03:20', '2025-01-22 05:03:20'),
+(3, 5, '5-3-1737542043.jpg', '2025-01-22 05:04:03', '2025-01-22 05:04:03'),
+(4, 6, '6-4-1737542212.png', '2025-01-22 05:06:52', '2025-01-22 05:06:52');
 
 -- --------------------------------------------------------
 
@@ -748,9 +876,9 @@ INSERT INTO `product_images` (`id`, `product_id`, `image`, `sort_order`, `create
 CREATE TABLE `product_ratings` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `product_id` bigint(20) UNSIGNED NOT NULL,
-  `username` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `comment` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `username` varchar(255) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `comment` varchar(255) NOT NULL,
   `rating` double(3,2) NOT NULL,
   `status` int(11) NOT NULL DEFAULT 0,
   `created_at` timestamp NULL DEFAULT NULL,
@@ -760,37 +888,113 @@ CREATE TABLE `product_ratings` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `seatings`
+-- Table structure for table `product_views`
 --
 
-CREATE TABLE `seatings` (
+CREATE TABLE `product_views` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `area_id` bigint(20) UNSIGNED NOT NULL,
-  `product_code` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT 'Table_01',
-  `status` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'Available',
-  `seating_capacity` int(11) NOT NULL,
+  `name` varchar(255) NOT NULL DEFAULT 'table_view',
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
--- Dumping data for table `seatings`
+-- Dumping data for table `product_views`
 --
 
-INSERT INTO `seatings` (`id`, `name`, `area_id`, `product_code`, `status`, `seating_capacity`, `created_at`, `updated_at`) VALUES
-(1, 'T1', 4, 'Mukesh', 'Available', 2, '2025-01-09 03:07:27', '2025-01-09 03:07:27'),
-(2, 'Table_01', 2, 'Sona', 'Booked', 10, '2025-01-09 03:37:55', '2025-01-09 03:37:55'),
-(3, 'Table_02', 2, 'Dhruv', 'Reserved', 4, '2025-01-09 03:45:16', '2025-01-09 03:45:16'),
-(4, 'Table_02', 3, 'Priyanka', 'Filled', 8, '2025-01-09 03:47:30', '2025-01-09 03:47:30'),
-(5, 'T2', 4, NULL, 'Available', 4, '2025-01-09 04:38:48', '2025-01-09 04:38:48'),
-(6, 'T3', 4, NULL, 'Filled', 6, '2025-01-09 04:40:01', '2025-01-09 04:40:01'),
-(7, 'T2', 3, NULL, 'Filled', 6, '2025-01-09 05:07:35', '2025-01-09 05:07:35'),
-(8, 'T3', 3, NULL, 'Available', 10, '2025-01-09 06:22:00', '2025-01-09 06:22:00'),
-(9, 'T4', 3, NULL, 'Booked', 10, '2025-01-09 06:31:53', '2025-01-09 06:31:53'),
-(10, 'T1', 5, NULL, 'Available', 2, '2025-01-09 06:51:27', '2025-01-09 06:51:27'),
-(11, 'T2', 5, NULL, 'Available', 10, '2025-01-09 06:51:45', '2025-01-09 06:51:45'),
-(12, 'T3', 5, NULL, 'Available', 4, '2025-01-09 06:51:59', '2025-01-09 06:51:59');
+INSERT INTO `product_views` (`id`, `name`, `created_at`, `updated_at`) VALUES
+(1, 'grid_view', '2025-01-26 06:54:44', '2025-01-26 06:54:44');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `roles`
+--
+
+CREATE TABLE `roles` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `guard_name` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `roles`
+--
+
+INSERT INTO `roles` (`id`, `name`, `guard_name`, `created_at`, `updated_at`) VALUES
+(1, 'Admin', 'admin', '2025-02-01 02:37:43', '2025-02-01 03:11:20'),
+(2, 'Waiter', 'admin', '2025-02-01 03:37:47', '2025-02-01 03:37:47');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `role_has_permissions`
+--
+
+CREATE TABLE `role_has_permissions` (
+  `permission_id` bigint(20) UNSIGNED NOT NULL,
+  `role_id` bigint(20) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `role_has_permissions`
+--
+
+INSERT INTO `role_has_permissions` (`permission_id`, `role_id`) VALUES
+(1, 1),
+(2, 1),
+(3, 1),
+(3, 2),
+(4, 2);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `seats`
+--
+
+CREATE TABLE `seats` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `table_name` varchar(255) NOT NULL,
+  `table_slug` varchar(100) NOT NULL,
+  `area_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `status` enum('available','running','pending','shipped','delivered') NOT NULL DEFAULT 'available',
+  `seating_capacity` int(11) DEFAULT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `seats`
+--
+
+INSERT INTO `seats` (`id`, `table_name`, `table_slug`, `area_id`, `status`, `seating_capacity`, `created_at`, `updated_at`) VALUES
+(3, 'Table_03', 'table_03', 5, 'running', NULL, NULL, NULL),
+(25, 'Table 02', 'table-02', 6, 'shipped', 2, '2025-01-20 23:03:37', '2025-01-20 23:03:37'),
+(42, 'Table 1', 'table-1', NULL, 'running', 2, '2025-01-28 05:39:44', '2025-01-28 05:39:44'),
+(43, 'Table 2', 'table-2', NULL, 'running', 2, '2025-01-28 05:41:47', '2025-01-28 05:41:47'),
+(44, 'Table 3', 'table-3', NULL, 'pending', 6, '2025-01-28 05:44:55', '2025-01-28 05:44:55'),
+(45, 'Table 4', 'table-4', NULL, 'delivered', 2, '2025-01-28 06:02:48', '2025-01-28 06:02:48'),
+(46, 'Table 5', 'table-5', NULL, 'running', 10, '2025-01-29 08:53:56', '2025-01-29 08:53:56'),
+(47, 'Table 9999Mukesh', 'table-9999mukesh', 7, 'available', 2, '2025-01-30 05:44:11', '2025-01-30 05:44:11'),
+(48, 'Table 6', 'table-6', NULL, 'available', 8, '2025-01-30 05:48:20', '2025-01-30 05:48:20');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sessions`
+--
+
+CREATE TABLE `sessions` (
+  `id` varchar(255) NOT NULL,
+  `user_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `ip_address` varchar(45) DEFAULT NULL,
+  `user_agent` text DEFAULT NULL,
+  `payload` longtext NOT NULL,
+  `last_activity` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -800,12 +1004,12 @@ INSERT INTO `seatings` (`id`, `name`, `area_id`, `product_code`, `status`, `seat
 
 CREATE TABLE `settings` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `restaurant_name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `restaurant_email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `restaurant_phone` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `restaurant_logo` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `restaurant_theme` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `restaurant_address` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `restaurant_name` varchar(255) NOT NULL,
+  `restaurant_email` varchar(255) NOT NULL,
+  `restaurant_phone` varchar(255) NOT NULL,
+  `restaurant_logo` varchar(255) NOT NULL,
+  `restaurant_theme` varchar(255) NOT NULL,
+  `restaurant_address` text NOT NULL,
   `branch_id` bigint(20) UNSIGNED NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -826,7 +1030,7 @@ INSERT INTO `settings` (`id`, `restaurant_name`, `restaurant_email`, `restaurant
 
 CREATE TABLE `shipping_charges` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `country_id` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `country_id` varchar(255) NOT NULL,
   `amount` double(10,2) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
@@ -846,12 +1050,34 @@ INSERT INTO `shipping_charges` (`id`, `country_id`, `amount`, `created_at`, `upd
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `taxes`
+--
+
+CREATE TABLE `taxes` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `gst` int(11) NOT NULL,
+  `sgst` int(11) NOT NULL,
+  `cgst` int(11) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `taxes`
+--
+
+INSERT INTO `taxes` (`id`, `gst`, `sgst`, `cgst`, `created_at`, `updated_at`) VALUES
+(1, 18, 9, 9, '2025-01-29 12:36:59', '2025-01-29 12:36:59');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `temp_images`
 --
 
 CREATE TABLE `temp_images` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -919,7 +1145,56 @@ INSERT INTO `temp_images` (`id`, `name`, `created_at`, `updated_at`) VALUES
 (231, '1736402299.jpg', '2025-01-09 00:28:19', '2025-01-09 00:28:19'),
 (232, '1736402447.jpg', '2025-01-09 00:30:47', '2025-01-09 00:30:47'),
 (233, '1736405653.jpg', '2025-01-09 01:24:13', '2025-01-09 01:24:13'),
-(234, '1736405691.jpg', '2025-01-09 01:24:51', '2025-01-09 01:24:51');
+(234, '1736405691.jpg', '2025-01-09 01:24:51', '2025-01-09 01:24:51'),
+(235, '1736572692.jpg', '2025-01-10 23:48:12', '2025-01-10 23:48:12'),
+(236, '1736572738.jpg', '2025-01-10 23:48:58', '2025-01-10 23:48:58'),
+(237, '1736579823.png', '2025-01-11 01:47:03', '2025-01-11 01:47:03'),
+(238, '1736579949.png', '2025-01-11 01:49:09', '2025-01-11 01:49:09'),
+(239, '1736580721.png', '2025-01-11 02:02:01', '2025-01-11 02:02:01'),
+(240, '1736580773.png', '2025-01-11 02:02:53', '2025-01-11 02:02:53'),
+(241, '1736580789.png', '2025-01-11 02:03:09', '2025-01-11 02:03:09'),
+(242, '1736581324.png', '2025-01-11 02:12:04', '2025-01-11 02:12:04'),
+(243, '1736591138.png', '2025-01-11 04:55:38', '2025-01-11 04:55:38'),
+(244, '1736591193.png', '2025-01-11 04:56:33', '2025-01-11 04:56:33'),
+(245, '1736591286.png', '2025-01-11 04:58:06', '2025-01-11 04:58:06'),
+(246, '1736591438.png', '2025-01-11 05:00:38', '2025-01-11 05:00:38'),
+(247, '1736591531.png', '2025-01-11 05:02:11', '2025-01-11 05:02:11'),
+(248, '1736591782.png', '2025-01-11 05:06:22', '2025-01-11 05:06:22'),
+(249, '1736591791.png', '2025-01-11 05:06:31', '2025-01-11 05:06:31'),
+(250, '1736591801.png', '2025-01-11 05:06:41', '2025-01-11 05:06:41'),
+(251, '1736591810.png', '2025-01-11 05:06:50', '2025-01-11 05:06:50'),
+(252, '1736591888.png', '2025-01-11 05:08:08', '2025-01-11 05:08:08'),
+(253, '1736591900.png', '2025-01-11 05:08:20', '2025-01-11 05:08:20'),
+(254, '1736591913.png', '2025-01-11 05:08:33', '2025-01-11 05:08:33'),
+(255, '1736591969.jpg', '2025-01-11 05:09:29', '2025-01-11 05:09:29'),
+(256, '1736592154.jpg', '2025-01-11 05:12:34', '2025-01-11 05:12:34'),
+(257, '1736592293.jpg', '2025-01-11 05:14:53', '2025-01-11 05:14:53'),
+(258, '1736596123.jpg', '2025-01-11 06:18:43', '2025-01-11 06:18:43'),
+(259, '1736600188.jpg', '2025-01-11 07:26:28', '2025-01-11 07:26:28'),
+(260, '1737036258.jpg', '2025-01-16 08:34:18', '2025-01-16 08:34:18'),
+(261, '1737036344.jpg', '2025-01-16 08:35:44', '2025-01-16 08:35:44'),
+(262, '1737036382.jpg', '2025-01-16 08:36:22', '2025-01-16 08:36:22'),
+(263, '1737036434.jpg', '2025-01-16 08:37:14', '2025-01-16 08:37:14'),
+(264, '1737036473.jpg', '2025-01-16 08:37:53', '2025-01-16 08:37:53'),
+(265, '1737036691.jpg', '2025-01-16 08:41:31', '2025-01-16 08:41:31'),
+(266, '1737036824.jpg', '2025-01-16 08:43:44', '2025-01-16 08:43:44'),
+(267, '1737528604.png', '2025-01-22 01:20:04', '2025-01-22 01:20:04'),
+(268, '1737528943.jpg', '2025-01-22 01:25:43', '2025-01-22 01:25:43'),
+(269, '1737533193.jpg', '2025-01-22 02:36:33', '2025-01-22 02:36:33'),
+(270, '1737533270.jpg', '2025-01-22 02:37:50', '2025-01-22 02:37:50'),
+(271, '1737533350.jpg', '2025-01-22 02:39:10', '2025-01-22 02:39:10'),
+(272, '1737533471.jpg', '2025-01-22 02:41:11', '2025-01-22 02:41:11'),
+(273, '1737533683.jpg', '2025-01-22 02:44:43', '2025-01-22 02:44:43'),
+(274, '1737533719.jpg', '2025-01-22 02:45:19', '2025-01-22 02:45:19'),
+(275, '1737537070.jpg', '2025-01-22 03:41:10', '2025-01-22 03:41:10'),
+(276, '1737537131.jpg', '2025-01-22 03:42:11', '2025-01-22 03:42:11'),
+(277, '1737537192.png', '2025-01-22 03:43:12', '2025-01-22 03:43:12'),
+(278, '1737537346.jpg', '2025-01-22 03:45:46', '2025-01-22 03:45:46'),
+(279, '1737537694.jpg', '2025-01-22 03:51:34', '2025-01-22 03:51:34'),
+(280, '1737541956.jpg', '2025-01-22 05:02:36', '2025-01-22 05:02:36'),
+(281, '1737541996.jpg', '2025-01-22 05:03:16', '2025-01-22 05:03:16'),
+(282, '1737542040.jpg', '2025-01-22 05:04:00', '2025-01-22 05:04:00'),
+(283, '1737542210.png', '2025-01-22 05:06:50', '2025-01-22 05:06:50');
 
 -- --------------------------------------------------------
 
@@ -929,21 +1204,21 @@ INSERT INTO `temp_images` (`id`, `name`, `created_at`, `updated_at`) VALUES
 
 CREATE TABLE `users` (
   `id` bigint(20) UNSIGNED NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
   `role` int(11) DEFAULT 1,
   `status` int(11) NOT NULL DEFAULT 1,
   `email_verified_at` timestamp NULL DEFAULT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `restaurant_name` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `restaurant_email` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `restaurant_phone` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `restaurant_logo` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `restaurant_theme` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `restaurant_address` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `restaurant_name` varchar(255) DEFAULT NULL,
+  `restaurant_email` varchar(255) DEFAULT NULL,
+  `restaurant_phone` varchar(255) DEFAULT NULL,
+  `restaurant_logo` varchar(255) DEFAULT NULL,
+  `restaurant_theme` varchar(255) DEFAULT NULL,
+  `restaurant_address` varchar(255) DEFAULT NULL,
   `branch_name` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL,
   `branch_address` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`branch_address`)),
-  `remember_token` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `remember_token` varchar(100) DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -953,8 +1228,23 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `role`, `status`, `email_verified_at`, `password`, `restaurant_name`, `restaurant_email`, `restaurant_phone`, `restaurant_logo`, `restaurant_theme`, `restaurant_address`, `branch_name`, `branch_address`, `remember_token`, `created_at`, `updated_at`) VALUES
-(3, 'Priyanka', 'p.bhavsar2610@gmail.com', 2, 1, NULL, '$2y$10$0mtiGc/VLwgP6N/pAcy1geZ6WX4S/X1fojexw8cif.OTxOgux9Uma', '', '', '', '', '', '', NULL, NULL, NULL, '2023-11-25 00:32:42', '2023-12-27 09:00:23'),
-(7, 'Mukesh Bhavsar', 'mukeshbhavsar210@gmail.com', 2, 1, NULL, '$2y$10$g5scInipiNbxyBzeskxKw.vhwO7H29BXe72JTqj5s6tPGPueWjIvm', 'Lemon Tree', 'dhruvbhavsar210@gmail.com', '121', '7-Lemon Tree444.png', NULL, 'Navrangpura Praga', NULL, NULL, NULL, '2023-12-19 07:11:37', '2025-01-10 07:27:46');
+(3, 'Priyanka', 'p.bhavsar2610@gmail.com', 2, 1, NULL, '$2y$10$0mtiGc/VLwgP6N/pAcy1geZ6WX4S/X1fojexw8cif.OTxOgux9Uma', 'Lemon Tree', 'mukeshbhavsar210@gmail.com', '09978835005', '3-.png', NULL, 'Keerthi Royal Palms,', NULL, NULL, NULL, '2023-11-25 00:32:42', '2025-01-10 23:55:26'),
+(7, 'Mukesh Bhavsar', 'mukeshbhavsar210@gmail.com', 2, 1, NULL, '0192023a7bbd73250516f069df18b500', 'Lemon Tree', 'dhruvbhavsar210@gmail.com', '121', '7-Lemon Tree444.png', NULL, 'Navrangpura Praga', NULL, NULL, NULL, '2023-12-19 07:11:37', '2025-01-10 07:27:46');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `user_roles`
+--
+
+CREATE TABLE `user_roles` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `role_name` varchar(255) NOT NULL,
+  `role_status` varchar(255) NOT NULL,
+  `show_options` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -978,6 +1268,12 @@ CREATE TABLE `wishlists` (
 -- Indexes for table `areas`
 --
 ALTER TABLE `areas`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `articles`
+--
+ALTER TABLE `articles`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -1007,6 +1303,12 @@ ALTER TABLE `customer_addresses`
   ADD KEY `customer_addresses_country_id_foreign` (`country_id`);
 
 --
+-- Indexes for table `dining_carts`
+--
+ALTER TABLE `dining_carts`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `discount_coupons`
 --
 ALTER TABLE `discount_coupons`
@@ -1018,6 +1320,12 @@ ALTER TABLE `discount_coupons`
 ALTER TABLE `failed_jobs`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`);
+
+--
+-- Indexes for table `items`
+--
+ALTER TABLE `items`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `menus`
@@ -1039,20 +1347,33 @@ ALTER TABLE `migrations`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `model_has_permissions`
+--
+ALTER TABLE `model_has_permissions`
+  ADD PRIMARY KEY (`permission_id`,`model_id`,`model_type`),
+  ADD KEY `model_has_permissions_model_id_model_type_index` (`model_id`,`model_type`);
+
+--
+-- Indexes for table `model_has_roles`
+--
+ALTER TABLE `model_has_roles`
+  ADD PRIMARY KEY (`role_id`,`model_id`,`model_type`),
+  ADD KEY `model_has_roles_model_id_model_type_index` (`model_id`,`model_type`);
+
+--
 -- Indexes for table `orders`
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `orders_user_id_foreign` (`user_id`),
-  ADD KEY `orders_country_id_foreign` (`country_id`);
+  ADD KEY `orders_seat_id_foreign` (`seat_id`),
+  ADD KEY `orders_area_id_foreign` (`area_id`);
 
 --
 -- Indexes for table `order_items`
 --
 ALTER TABLE `order_items`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `orders_items_order_id_foreign` (`order_id`),
-  ADD KEY `orders_items_product_id_foreign` (`product_id`);
+  ADD KEY `order_items_order_id_foreign` (`order_id`);
 
 --
 -- Indexes for table `pages`
@@ -1073,6 +1394,13 @@ ALTER TABLE `payments`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `permissions`
+--
+ALTER TABLE `permissions`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `permissions_name_guard_name_unique` (`name`,`guard_name`);
+
+--
 -- Indexes for table `personal_access_tokens`
 --
 ALTER TABLE `personal_access_tokens`
@@ -1086,7 +1414,8 @@ ALTER TABLE `personal_access_tokens`
 ALTER TABLE `products`
   ADD PRIMARY KEY (`id`),
   ADD KEY `products_category_id_foreign` (`category_id`),
-  ADD KEY `products_menu_id_foreign` (`menu_id`);
+  ADD KEY `products_menu_id_foreign` (`menu_id`),
+  ADD KEY `products_product_image_id_foreign` (`product_id`);
 
 --
 -- Indexes for table `product_images`
@@ -1103,11 +1432,39 @@ ALTER TABLE `product_ratings`
   ADD KEY `product_ratings_product_id_foreign` (`product_id`);
 
 --
--- Indexes for table `seatings`
+-- Indexes for table `product_views`
 --
-ALTER TABLE `seatings`
+ALTER TABLE `product_views`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `roles`
+--
+ALTER TABLE `roles`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `roles_name_guard_name_unique` (`name`,`guard_name`);
+
+--
+-- Indexes for table `role_has_permissions`
+--
+ALTER TABLE `role_has_permissions`
+  ADD PRIMARY KEY (`permission_id`,`role_id`),
+  ADD KEY `role_has_permissions_role_id_foreign` (`role_id`);
+
+--
+-- Indexes for table `seats`
+--
+ALTER TABLE `seats`
   ADD PRIMARY KEY (`id`),
   ADD KEY `tables_area_id_foreign` (`area_id`);
+
+--
+-- Indexes for table `sessions`
+--
+ALTER TABLE `sessions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `sessions_user_id_index` (`user_id`),
+  ADD KEY `sessions_last_activity_index` (`last_activity`);
 
 --
 -- Indexes for table `settings`
@@ -1123,6 +1480,12 @@ ALTER TABLE `shipping_charges`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `taxes`
+--
+ALTER TABLE `taxes`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `temp_images`
 --
 ALTER TABLE `temp_images`
@@ -1134,6 +1497,12 @@ ALTER TABLE `temp_images`
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `users_email_unique` (`email`);
+
+--
+-- Indexes for table `user_roles`
+--
+ALTER TABLE `user_roles`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `wishlists`
@@ -1151,6 +1520,12 @@ ALTER TABLE `wishlists`
 -- AUTO_INCREMENT for table `areas`
 --
 ALTER TABLE `areas`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+
+--
+-- AUTO_INCREMENT for table `articles`
+--
+ALTER TABLE `articles`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
@@ -1163,7 +1538,7 @@ ALTER TABLE `branches`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=185;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=195;
 
 --
 -- AUTO_INCREMENT for table `countries`
@@ -1178,6 +1553,12 @@ ALTER TABLE `customer_addresses`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
+-- AUTO_INCREMENT for table `dining_carts`
+--
+ALTER TABLE `dining_carts`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `discount_coupons`
 --
 ALTER TABLE `discount_coupons`
@@ -1190,10 +1571,16 @@ ALTER TABLE `failed_jobs`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT for table `items`
+--
+ALTER TABLE `items`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
 -- AUTO_INCREMENT for table `menus`
 --
 ALTER TABLE `menus`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `menu_categories`
@@ -1205,19 +1592,19 @@ ALTER TABLE `menu_categories`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `order_items`
 --
 ALTER TABLE `order_items`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=58;
 
 --
 -- AUTO_INCREMENT for table `pages`
@@ -1229,7 +1616,13 @@ ALTER TABLE `pages`
 -- AUTO_INCREMENT for table `payments`
 --
 ALTER TABLE `payments`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `permissions`
+--
+ALTER TABLE `permissions`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `personal_access_tokens`
@@ -1241,13 +1634,13 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `product_images`
 --
 ALTER TABLE `product_images`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `product_ratings`
@@ -1256,10 +1649,22 @@ ALTER TABLE `product_ratings`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT for table `seatings`
+-- AUTO_INCREMENT for table `product_views`
 --
-ALTER TABLE `seatings`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+ALTER TABLE `product_views`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `roles`
+--
+ALTER TABLE `roles`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `seats`
+--
+ALTER TABLE `seats`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT for table `settings`
@@ -1274,16 +1679,28 @@ ALTER TABLE `shipping_charges`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
+-- AUTO_INCREMENT for table `taxes`
+--
+ALTER TABLE `taxes`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
 -- AUTO_INCREMENT for table `temp_images`
 --
 ALTER TABLE `temp_images`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=235;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=284;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT for table `user_roles`
+--
+ALTER TABLE `user_roles`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `wishlists`
@@ -1309,25 +1726,37 @@ ALTER TABLE `menus`
   ADD CONSTRAINT `menus_category_id_foreign` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE CASCADE;
 
 --
+-- Constraints for table `model_has_permissions`
+--
+ALTER TABLE `model_has_permissions`
+  ADD CONSTRAINT `model_has_permissions_permission_id_foreign` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `model_has_roles`
+--
+ALTER TABLE `model_has_roles`
+  ADD CONSTRAINT `model_has_roles_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE;
+
+--
 -- Constraints for table `orders`
 --
 ALTER TABLE `orders`
-  ADD CONSTRAINT `orders_country_id_foreign` FOREIGN KEY (`country_id`) REFERENCES `countries` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `orders_user_id_foreign` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `orders_area_id_foreign` FOREIGN KEY (`area_id`) REFERENCES `areas` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `orders_seat_id_foreign` FOREIGN KEY (`seat_id`) REFERENCES `seats` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `order_items`
 --
 ALTER TABLE `order_items`
-  ADD CONSTRAINT `orders_items_order_id_foreign` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `orders_items_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `order_items_order_id_foreign` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `products`
 --
 ALTER TABLE `products`
   ADD CONSTRAINT `products_category_id_foreign` FOREIGN KEY (`category_id`) REFERENCES `categories` (`id`) ON DELETE CASCADE,
-  ADD CONSTRAINT `products_menu_id_foreign` FOREIGN KEY (`menu_id`) REFERENCES `menus` (`id`) ON DELETE CASCADE;
+  ADD CONSTRAINT `products_menu_id_foreign` FOREIGN KEY (`menu_id`) REFERENCES `menus` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `products_product_image_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `product_images` (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `product_images`
@@ -1342,9 +1771,16 @@ ALTER TABLE `product_ratings`
   ADD CONSTRAINT `product_ratings_product_id_foreign` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `seatings`
+-- Constraints for table `role_has_permissions`
 --
-ALTER TABLE `seatings`
+ALTER TABLE `role_has_permissions`
+  ADD CONSTRAINT `role_has_permissions_permission_id_foreign` FOREIGN KEY (`permission_id`) REFERENCES `permissions` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `role_has_permissions_role_id_foreign` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `seats`
+--
+ALTER TABLE `seats`
   ADD CONSTRAINT `tables_area_id_foreign` FOREIGN KEY (`area_id`) REFERENCES `areas` (`id`) ON DELETE CASCADE;
 
 --

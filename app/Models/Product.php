@@ -13,6 +13,10 @@ class Product extends Model
         return $this->hasMany(ProductImage::class);
     }
 
+    public function seat(){
+        return $this->hasMany(Seat::class);
+    }
+
     public function image(){
         return $this->belongsTo(ProductImage::class);
     }

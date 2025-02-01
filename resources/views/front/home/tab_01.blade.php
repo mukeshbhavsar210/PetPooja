@@ -20,12 +20,19 @@
             <option value="3">12:00</option>
         </select>       
         
-        <select class="form-select" aria-label="Default select example" name="table_number">
-            <option selected>table</option>
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-        </select>  
+        <select name="table_number" id="table_number" class="form-control mt-2 mb-2">
+            <option value="">Select a Table</option>
+            @if($seats->isNotEmpty())
+                @foreach ($seats as $value)
+                    @if($value->area_id == NULL)
+                        <option value="{{ $value->id }}">{{ $value->table_name }}</option>
+                    @elseif($value->area_id == '')
+                        <option value="{{ $value->id }}">{{ $value->table_name }}</option>
+                    @endif
+                @endforeach
+            @endif
+        </select>
+      
     </div>
 
     <button type="submit" class="btn btn-primary">Order</button>

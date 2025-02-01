@@ -12,11 +12,9 @@
             </div>
         </div>
     </div>
-    <!-- /.container-fluid -->
 </section>
-<!-- Main content -->
+
 <section class="content">
-    <!-- Default box -->
     <div class="container-fluid">
         <form action="" method="post" id="userForm" name="userForm">
             <div class="card">
@@ -36,7 +34,7 @@
                                 <p></p>
                             </div>
                         </div>
-                        <div class="col-md-6">
+                        <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="password">Password</label>
                                 <input type="password" name="password" id="password" class="form-control" placeholder="Password">
@@ -51,7 +49,6 @@
                                 <p></p>
                             </div>
                         </div>
-
                         <div class="col-md-3">
                             <div class="mb-3">
                                 <label for="status">Status</label>
@@ -60,6 +57,17 @@
                                     <option {{ ($user->status == 0) ? 'selected' : ' '}} value="0">Block</option>
                                 </select>
                             </div>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="status">Role</label>
+                            @if($roles->isNotEmpty())
+                                @foreach ($roles as $value)                                    
+                                    <div class="form-group">
+                                        <input {{ ($hasRoles->contains($value->id)) ? 'checked' : '' }} type="checkbox" id="role-{{ $value->id }}" class="rounded" name="role[]" value="{{ $value->name }}" />
+                                        <label for="role-{{ $value->id }}">{{ $value->name }}</label>
+                                    </div>        
+                                @endforeach
+                            @endif
                         </div>
                     </div>
                 </div>

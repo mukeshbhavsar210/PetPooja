@@ -13,6 +13,16 @@ class OrderItem extends Model
         return $this->belongsTo(Order::class, 'order_id', );
     }
 
+    public function assigned_seat(){
+        return $this->belongsTo(Seat::class, 'seat_id', );
+    }
+
+    
+
+    public function seat(){
+        return $this->belongsTo(Seat::class);
+    }
+
     protected $fillable = ['order_id', 'product_id', 'name', 'qty', 'price', 'total'];
 
 }

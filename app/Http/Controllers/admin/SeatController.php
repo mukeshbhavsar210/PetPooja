@@ -6,16 +6,17 @@ use App\Http\Controllers\Controller;
 use App\Models\Area;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Category;
-use App\Models\Seating;
+use App\Models\Menu;
+use App\Models\Seat;
 use App\Models\SubCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Collection;
 
-class SeatingController extends Controller
+class SeatController extends Controller
 {
     public function index(Request $request){
-        $seatings = Seating::orderBy('table_name','ASC')->get();
+        $seatings = Seat::orderBy('table_name','ASC')->get();
         $areas = Area::orderBy('area_name','ASC')->with('seating')->get();
 
         $areaCount = DB::table('areas')
@@ -36,30 +37,26 @@ class SeatingController extends Controller
     }
 
    
-
     public function store(Request $request){
-
         //QR CODE
         $number = mt_rand(1000000000, 9999999999);        
-        if($this->productCodeExists($number)){
-            $number = mt_rand(1000000000, 9999999999);
-        }
+        // if($this->productCodeExists($number)){
+        //     $number = mt_rand(1000000000, 9999999999);
+        // }
         $request['product_code'] = $number;
        
         //Seating::create($request->all());
 
         //Validation
         $validator = Validator::make($request->all(), [
-            'area_name' => 'required',    
-            'area_id' => 'uniq',         
+             
         ]);
        
         if ($validator->passes()) {
-            $menu = new Seating();
-            $menu->area_id = $request->area;
-            $menu->area_name = $request->name;
-            $menu->slug = $request->slug;
-            $menu->product_code = $request->qr_generate;            
+            $menu = new Seat();
+            $menu->area_id = $request->area_name;
+            $menu->table_name = $request->table_name;
+            $menu->table_slug = $request->slug;          
             $menu->seating_capacity = $request->seating_capacity;
             $menu->save();
 
@@ -78,13 +75,13 @@ class SeatingController extends Controller
         }
     }
 
-    public function productCodeExists($number){
-        return Seating::whereProductCode($number)->exists();
-    }
+    // public function productCodeExists($number){
+    //     return Seat::whereProductCode($number)->exists();
+    // }
 
     public function edit($id, Request $request){
 
-        $subCategory = Seating::find($id);
+        $subCategory = Seat::find($id);
         if(empty($subCategory)){
             $request->session()->flash('error','Record not found');
             return redirect()->route('menu.index');

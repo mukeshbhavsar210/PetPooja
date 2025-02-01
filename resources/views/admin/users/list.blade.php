@@ -9,7 +9,8 @@
                 <h1>Users</h1>
             </div>
             <div class="col-sm-6 text-right">
-                <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#exampleModalRight">Add Member</button>
+                <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#roleManagement">Role Management</button>
+                <button type="button" class="btn btn-primary float-right mr-3" data-toggle="modal" data-target="#addMember">Add Member</button>
             </div>
         </div>
     </div>
@@ -22,7 +23,7 @@
 
         @include('admin.message')
 
-        <div class="modal fade drawer right-align" id="exampleModalRight" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade drawer right-align" id="addMember" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -83,6 +84,56 @@
             </div>
         </div>
 
+
+        <div class="modal fade drawer right-align" id="roleManagement" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Role management</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="user_role" method="post" >
+                        @csrf
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="mb-3">
+                                            <label for="role_name">Role Name</label>
+                                            <input type="text" name="role_name" id="role_name" class="form-control" placeholder="Name">
+                                            <p></p>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label for="role_name">Access Menu</label>
+                                        <div class="mb-3">
+                                            <input type="checkbox" id="show_options" name="show_options" value="Bike">
+                                            <label for="show_options"> Dashboard</label><br>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <label for="role_name">Access Menu</label>
+                                        <div class="mb-3">
+                                            <input type="checkbox" id="show_options" name="show_options" value="Bike">
+                                            <label for="show_options"> Dashboard</label><br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <div class="pb-5 pt-3">
+                                <button type="submit" class="btn btn-primary">Create</button>
+                                <a href="{{ route('users.index') }}" class="btn btn-outline-dark ml-3">Cancel</a>
+                            </div>
+                        </div>
+                    </form>                  
+                </div>
+            </div>
+        </div>
+
         <div class="card">
             <form action="" method="get" >
                 <div class="card-header">
@@ -120,7 +171,10 @@
                                 <tr>
                                     <td>{{ $user->name }}</td>
                                     <td>{{ $user->email }}</td>
-                                    <td>{{ $user->role }}</td>
+                                    <td>{{ $user->roles->pluck('name')->implode(', ') }}</td>
+                                    <td>
+                                        {{ \Carbon\Carbon::parse($user->created_at)->format('d M, Y') }}
+                                    </td>
                                     <td>
                                         @if (Auth::user()->role != 'account')
                                         <a href="{{ route('users.edit', $user->id ) }}">

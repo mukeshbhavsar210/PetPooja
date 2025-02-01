@@ -18,7 +18,16 @@ class CategoryController extends Controller
 {
     public function index(Request $request){
         $categories = Category::latest();
-        $menus = Menu::orderBy('name','ASC')->get();
+        $menus = DB::table('menus')
+                    ->join('categories', 'categories.id', '=', 'menus.category_id')
+                    ->select('menus.category_id AS id',
+                    DB::raw("count(categories.id) AS total_products"))
+                    ->groupBy('menus.category_id')
+                    ->get();
+
+        //$userNames = Menu::pluck('slug'); 
+
+        //$menus = Menu::orderBy('name','ASC')->get();
 
         $totalMenu = DB::table('categories')
                     ->select(DB::raw('count(*) as total'))
@@ -38,6 +47,8 @@ class CategoryController extends Controller
         $data['totalMenu'] = $totalMenu;
         $data['menus'] = $menus;
         $data['menuCount'] = $menuCount;
+
+        //dd($userNames);
         
         return view('admin.category.list', $data);
     }

@@ -72,14 +72,30 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if ($orders->isNotEmpty())
-                                    @foreach ($orders as $value)
+                                @if ($orderItems->isNotEmpty())
+                                    @foreach ($orderItems as $value)
                                         @if($value->orders->order_type == 'Dinein')
                                             <tr>
                                                 <td><a href="{{ route('orders.detail',$value->order_id) }}">{{ $value->order_id }}</a></td>
                                                 <td>{{ $value->name }} - {{ $value->qty }}</td>
                                                 <td>{{ $value->orders->ready_time }}</td>
-                                                <td>Table no. {{ $value->orders->table_number }}</td>
+                                                <td>{{ $value->orders->seat->table_name }} 
+                                                    @if ($value->orders->status == 'running')
+                                                        <span class="badge bg-danger">Running</span>
+                                                    @elseif ($value->orders->status == 'pending')
+                                                        <svg class="text-danger h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                        </svg>
+                                                    @elseif ($value->orders->status == 'shipped')
+                                                        <span class="badge bg-info">Shipped</span>
+                                                    @elseif ($value->orders->status == 'delivered')
+                                                        <svg class="text-success-500 h-6 w-6 text-success" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                                        </svg>
+                                                    @else
+                                                        <span class="badge bg-danger">Cancelled</span>
+                                                    @endif
+                                                </td>
                                                 <td>{{ $value->orders->notes }}</td>
                                                 <td>₹ {{ number_format($value->price,2) }}</td>
                                                 <td>₹ {{ number_format($value->price*$value->qty,2) }}</td>
@@ -113,8 +129,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if ($orders->isNotEmpty())
-                                    @foreach ($orders as $value)
+                                @if ($orderItems->isNotEmpty())
+                                    @foreach ($orderItems as $value)
                                         @if($value->orders->order_type == 'Takeaway')
                                             <tr>
                                                 <td><a href="{{ route('orders.detail',$value->order_id) }}">{{ $value->order_id }}</a></td>
@@ -156,8 +172,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @if ($orders->isNotEmpty())
-                                    @foreach ($orders as $value)
+                                @if ($orderItems->isNotEmpty())
+                                    @foreach ($orderItems as $value)
                                         @if($value->orders->order_type == 'Delivery')
                                             <tr>
                                                 <td><a href="{{ route('orders.detail',$value->order_id) }}">{{ $value->order_id }}</a></td>
