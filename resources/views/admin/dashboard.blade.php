@@ -37,7 +37,7 @@
                         <div class="icon">
                             <i class="ion ion-person-add"></i>
                         </div>
-                        <a href="javascript:void(0);" class="small-box-footer">&nbsp;</a>
+                        <a href="{{ route('categories.index') }}" class="small-box-footer text-dark">View <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-6">
@@ -48,7 +48,7 @@
                         <div class="icon">
                             <i class="ion ion-person-add"></i>
                         </div>
-                        <a href="javascript:void(0);" class="small-box-footer">&nbsp;</a>
+                        <a href="{{ route('products.index') }}" class="small-box-footer text-dark">View <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
 
@@ -60,7 +60,7 @@
                         <div class="icon">
                             <i class="ion ion-person-add"></i>
                         </div>
-                        <a href="javascript:void(0);" class="small-box-footer">&nbsp;</a>
+                        <a href="{{ route('menu.index') }}" class="small-box-footer text-dark">View <i class="fas fa-arrow-circle-right"></i></a>
                     </div>
                 </div>
 

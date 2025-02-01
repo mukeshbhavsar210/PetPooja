@@ -16,7 +16,7 @@ class ShopController extends Controller
     public function index(Request $request, $menuSlug = null) {       
         $menuSelected = ' ';
 
-        $categories = Category::orderBy("name","ASC")->with('menu')->get();        
+        $categories = Category::orderBy("name","ASC")->with('menus')->get();        
         $products = Product::where('status',1);
 
         if(!empty($menuSlug)) {

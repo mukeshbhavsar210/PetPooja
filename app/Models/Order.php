@@ -16,4 +16,10 @@ class Order extends Model
     public function items(){
         return $this->belongsTo(Order::class);
     }
+
+    public function seat(){
+        return $this->belongsTo(Seat::class, 'seat_id');
+    }
+
+   
 }

@@ -69,16 +69,13 @@
                 <a class="nav-link" data-toggle="tab" href="#tabs-4" role="tab">Payments</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#tabs-5" role="tab">Staff Roles</a>
+                <a class="nav-link" data-toggle="tab" href="#tabs-5" role="tab">Reservation</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#tabs-6" role="tab">Reservation</a>
+                <a class="nav-link" data-toggle="tab" href="#tabs-6" role="tab">About us</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#tabs-7" role="tab">About us</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#tabs-8" role="tab">Customer Website</a>
+                <a class="nav-link" data-toggle="tab" href="#tabs-7" role="tab">Customer Website</a>
             </li>
         </ul>
 
@@ -114,25 +111,18 @@
             <div class="tab-pane" id="tabs-5" role="tabpanel">
                 <div class="card">
                     <div class="card-body">
-                        <h1>Staff Roles</h1>
+                        <h1>Reservation</h1>
                     </div>
                 </div>                
             </div>
             <div class="tab-pane" id="tabs-6" role="tabpanel">
                 <div class="card">
                     <div class="card-body">
-                        <h1>Reservation</h1>
-                    </div>
-                </div>                
-            </div>
-            <div class="tab-pane" id="tabs-7" role="tabpanel">
-                <div class="card">
-                    <div class="card-body">
                         <h1>About us</h1>
                     </div>
                 </div>                
             </div>
-            <div class="tab-pane" id="tabs-8" role="tabpanel">
+            <div class="tab-pane" id="tabs-7" role="tabpanel">
                 <div class="card">
                     <div class="card-body">
                         <h1>Customer Website</h1>

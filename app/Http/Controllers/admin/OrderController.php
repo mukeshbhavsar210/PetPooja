@@ -6,33 +6,29 @@ use App\Http\Controllers\Controller;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\Product;
+use App\Models\Seat;
+use App\Models\Tax;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
     public function index(Request $request){
-        $orders = OrderItem::latest('order_items.created_at')->with('orders')->get();
-
-        $results = DB::table('users')
-                    ->join('orders', 'users.email', '=', 'orders.email')
-                    ->select('users.*', 'orders.table_number as name')
-                    ->get();
-
+        $orderItems = OrderItem::latest('order_items.created_at')->with('orders')->get();
         $data = [
-            'orders' => $orders,
-            'results'=> $results
+            'orderItems' => $orderItems,
         ];
-        
         //$orders = $orders->paginate(10);
         return view('admin.orders.list', $data);
     }
 
     public function detail($orderId){
-        $order = Order::findOrFail($orderId);
+        $order = Order::with('seat')->findOrFail($orderId);
         $products = Product::latest('id')->with('product_images');
         $orderItems = OrderItem::where('order_id',$orderId)->get();
 
+        //dd($taxes);
+        
         return view('admin.orders.detail',[
             'order' => $order,
             'orderItems' => $orderItems,
@@ -41,8 +37,8 @@ class OrderController extends Controller
     }
 
 
-    public function changeOrderStatus(Request $request, $orderId){
-        $order = Order::find($orderId);
+    public function changeOrderStatus(Request $request, $id){
+        $order = Order::find($id);
         $order->status = $request->status;
         $order->shipped_date = $request->shipped_date;
         $order->save();

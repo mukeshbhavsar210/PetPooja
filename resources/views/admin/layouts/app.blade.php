@@ -15,8 +15,7 @@
         <link rel="stylesheet" href="{{ asset('admin-assets/plugins/summernote/summernote-bs4.min.css') }} ">
         <link rel="stylesheet" href="{{ asset('admin-assets/plugins/select2/css/select2.min.css') }} ">
         <link rel="stylesheet" href="{{ asset('admin-assets/css/datetimepicker.css') }} ">
-        <meta name="csrf-token" content="{{ csrf_token() }}">
-
+        <meta name="csrf-token" content="{{ csrf_token() }}">		
 	</head>
 
 	<body class="hold-transition sidebar-mini">
@@ -219,17 +218,21 @@
 				$('.removeBtn').click(function() {
                 	$(this).parent().removeClass('active');
         		});
+
+				$('.nav-tabs').find('.nav-link:first').addClass('active');
+				$('.tab-content').find('.tab-pane:first').addClass('active');
+
+				// $(":checkbox").change(function () {
+        		// 	$(this).parent().toggleClass('selected');
+    			// });
             })
 
             //Alert timeout
             setTimeout(function () {
                 $('.alert').fadeOut(300);
             }, 1500);
-
-
         </script>
 
         @yield('customJs')
-
 	</body>
 </html>

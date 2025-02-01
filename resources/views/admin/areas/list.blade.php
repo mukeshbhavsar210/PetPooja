@@ -5,11 +5,14 @@
 <section class="content-header">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-sm-9">
+            <div class="col-sm-8">
+                <h1>Tables <span class="count">{{ $totalTable }}</span></h1>
+            </div>
+            <div class="col-sm-2">
                 <div class="flex-wrapper">
                     <button type="button" class="btn addBtn" >+</button>
                     <button type="button" class="btn removeBtn" >x</button>
-                    <h1>Area <span class="count">{{ $totalTable }}</span></h1>
+                    Add Area <span class="count">{{ $totalArea }}</span>
                     {{-- <form action="" method="post" id="addAreaForm" name="addAreaForm"> --}}
                     <form action="areas" method="post" class="form">
                         @csrf
@@ -23,6 +26,10 @@
                     </form>
                 </div>
             </div>
+
+            <div class="col-sm-2">
+                <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#addTable">Add Table</button>
+            </div>
         </div>
     </div>
 </section>
@@ -31,9 +38,111 @@
     <div class="container-fluid">
         @include('admin.message')
 
-        <div class="row">
+        <div class="modal fade drawer right-align" id="addTable" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Add Menu</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                    {{-- <form action="" method="post" name="addingTableForm" id="addingTableForm"> --}}
+                        <form action="seatings" method="post">
+                            @csrf
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="table_name">Table Code</label>
+                                        <input type="text" name="table_name" id="name" class="form-control" placeholder="e.g. Table_01">
+                                        <input type="hidden" name="slug" id="slug" class="form-control" placeholder="Slug">
+                                        <p></p>
+                                    </div>  
+                                </div>    
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="seating_capacity">Seating Capacity</label>
+                                        <select name="seating_capacity" id="seating_capacity" class="form-control">
+                                            <option value="">Select table</option>
+                                            <option value="2">2 tables</option>
+                                            <option value="4">4 tables</option>
+                                            <option value="6">6 tables</option>
+                                            <option value="8">8 tables</option>
+                                            <option value="10">10 tables</option>
+                                        </select>
+                                        <p></p>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Select Restaurant</label>
+                                    </div>
+                                    
+                                    <div class="row">
+                                        @if($areas->isNotEmpty())
+                                            @foreach ($areas as $value)
+                                                <div class="col-md-4">
+                                                    <div class="card">
+                                                        <div class="p-2 pt-3 pl-3">
+                                                            <input type="radio" id="area_{{ $value->area_name }}" value="{{ $value->id }}" name="area_name" />
+                                                            <label for="area_{{ $value->area_name }}">{{ $value->area_name }}</label>                                                    
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            @endforeach
+                                        @endif
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Create</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-3">
             <div class="col-md-8">
-                <div id="accordion" class="accordion">
+                <div class="row">
+                    @if($seats->isNotEmpty())
+                        @foreach ($seats as $value)
+                            <div class="col-md-3">
+                                <div class="invisible-checkboxes">
+                                    <input {{ ($value->status == 'running') ? 'checked' : '' }} type="checkbox" id="custom_{{ $value->table_slug }}"  value="{{ $value->table_name }}" />
+                                    <label class="checkbox-alias" for="custom_{{ $value->table_slug }}">{{ $value->table_name }} <p class="small-text">Seats: {{ $value->seating_capacity }}</p></label>
+                                    
+                                    <div class="countSeat">
+                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#showQR_{{ $value->table_slug }}">QR</a>
+                                    </div>
+                                </div>
+
+                                <div class="modal fade drawer right-align" id="showQR_{{ $value->table_slug }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog modal-sm" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">QR Code</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <h2>{{ $value->table_name }}</h2>
+                                                <h2>{{ $value->area_id }}</h2>
+                                                {!! DNS2D::getBarcodeHTML('http://127.0.0.1:8000/'.$value->table_slug, 'QRCODE',6.5,6.5) !!}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    @endif
+                </div>
+
+                <div id="accordion" class="accordion mt-3">
                 <div class="card mb-0">
                     @if ($areas->isNotEmpty())
                         @foreach ($areas as $value)
@@ -43,131 +152,64 @@
                             <div id="collapse_{{ $value->id }}" class="collapse" data-parent="#accordion" >
                                 <div class="card-body">
                                     <div class="row">
-                                        @if ($value->seating->isNotEmpty())
-                                            @foreach ($value->seating as $value)
+                                        @if ($value->seat->isNotEmpty())
+                                            @foreach ($value->seat as $value)
                                                 <div class="col-md-4">
-                                                    <div class="card">
-                                                        <div class="card-header">
-                                                            <button data-toggle="modal" data-target="#qr_{{ $value->id }}" class="btn btn-primary">{{ $value->table_name }}</button>
-                                                        </div>
-                                                        <div class="card-body">
-                                                        
-                                                        {!! DNS2D::getBarcodeHTML('http://127.0.0.1:8000/'.$value->area_name.'/'.$value->table_slug, 'QRCODE',6.5,6.5) !!}
-                                                        @if($value->status == 'Available')
-                                                            <div class="status available ">Available</div>
-                                                        @endif
-                                                        @if($value->status == 'Reserved')
-                                                            <div class="status reserved mt-2">Reserved</div>
-                                                        @endif
-                                                        @if($value->status == 'Booked')
-                                                            <div class="status booked mt-2">Booked</div>
-                                                        @endif
-                                                        @if($value->status == 'Filled')
-                                                            <div class="status filled mt-2">Filled</div>
-                                                        @endif
-                                                    </div>
-                                                </div>
+                                                    <div class="invisible-checkboxes">
+                                                        <input {{ ($value->status == 'running') ? 'checked' : '' }} type="checkbox" id="custom_{{ $value->area_id }}_{{ $value->table_slug }}"  value="{{ $value->table_name }}" />
+                                                        <label class="checkbox-alias" for="custom_{{ $value->area_id }}_{{ $value->table_slug }}">{{ $value->table_name }} <p class="small-text">Seats: {{ $value->seating_capacity }}</p></label>
+                                                        {{-- {!! DNS2D::getBarcodeHTML('http://127.0.0.1:8000/'.$value->area->area_name.'/'.$value->table_slug, 'QRCODE',6.5,6.5) !!} --}}
 
-                                                    <div class="modal fade" id="qr_{{ $value->id }}" tabindex="-1" role="dialog" aria-labelledby="basicModal" aria-hidden="true">
-                                                        <div class="modal-dialog">
+                                                        <div class="countSeat">
+                                                            <a href="javascript:void(0)" data-toggle="modal" data-target="#showQR_branch_{{ $value->table_slug }}">QR</a>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="modal fade drawer right-align" id="showQR_branch_{{ $value->table_slug }}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog modal-sm" role="document">
                                                             <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h4 class="modal-title" id="myModalLabel">Add table for - {{ $value->area->area_name }}</h4>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                {{ $value->area_name }}
-                                                                {{-- {!! DNS2D::getBarcodeHTML('http://127.0.0.1:8000/'.$value->area_name.'/'.$value->table_slug, 'QRCODE',6.5,6.5) !!} --}}
-
-                                                                <form action="" method="post" name="addingTableForm" id="addingTableForm">
-                                                                    {{-- <form action="seatings" method="post">
-                                                                        @csrf --}}
-                                                                        <div class="row">
-                                                                            {{-- <div class="mb-3 ">
-                                                                                <select name="area" id="area" class="form-control">
-                                                                                    <option selected value="{{ $value->id }}">{{ $value->area_name }}</option>
-                                                                                </select>
-                                                                            </div> --}}
-                                                                            <div class="col-md-12">
-                                                                                <div class="form-group">
-                                                                                    <label for="name">Select Area</label>
-                                                                                    <select name="area" id="area" class="form-control">
-                                                                                        <option value="">Select a Area</option>
-                                                                                        @if($areas->isNotEmpty())
-                                                                                            @foreach ($areas as $value)
-                                                                                                <option value="{{ $value->id }}">{{ $value->area_name }}</option>
-                                                                                            @endforeach
-                                                                                        @endif
-                                                                                    </select>
-                                                                                    <p></p>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-md-12">
-                                                                                <div class="form-group">
-                                                                                    <label for="table_name">Table Code</label>
-                                                                                    <input type="text" name="table_name" id="name" class="form-control" placeholder="e.g. Table_01">
-                                                                                    <input type="text" name="slug" id="slug" class="form-control" placeholder="Slug">
-                                                                                    {{-- <input type="text" name="name" id="name" class="form-control" placeholder="Name">
-                                                                                    {{-- <input type="hidden" name="product_code" id="product_code" class="form-control">
-                                                                                    <input type="hidden" name="qr_generate" id="qr_generate"> --}}
-                                                                                    <p></p>
-                                                                                </div>  
-                                                                            </div>    
-                                                                            <div class="col-md-12">
-                                                                                <div class="form-group">
-                                                                                    <label for="seating_capacity">Seating Capacity</label>
-                                                                                    <select name="seating_capacity" id="seating_capacity" class="form-control">
-                                                                                        <option value="">Select table</option>
-                                                                                        <option value="2">2 tables</option>
-                                                                                        <option value="4">4 tables</option>
-                                                                                        <option value="6">6 tables</option>
-                                                                                        <option value="8">8 tables</option>
-                                                                                        <option value="10">10 tables</option>
-                                                                                    </select>
-                                                                                    <p></p>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-md-12">
-                                                                                <button type="submit" class="btn btn-primary mt-4">Create</button>
-                                                                            </div>
-                                                                        </div>
-                                                                    </form>
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                @if ($value->seating->isNotEmpty())
-                                                                    @foreach ($value->seating as $value)
-                                                                        <button data-toggle="modal" data-target="#qr_{{ $value->id }}" class="btn btn-primary">111{{ $value->table_name }}</button>
-                                                                    @endforeach
-                                                                @endif
-                                                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                                            </div>
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="exampleModalLabel2">QR Code</h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <h2>{{ $value->table_name }}</h2>
+                                                                    <h2>{{ $value->area_name }}</h2>
+                                                                    {!! DNS2D::getBarcodeHTML('http://127.0.0.1:8000/'.$value->table_slug, 'QRCODE',6.5,6.5) !!}
+                                                                </div>
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    </div>                                                    
                                                 </div>
                                                 @endforeach
                                             @endif
                                         </div>
                                     </div>                           
-                                <div class="card-footer">
-                                    <a href="{{ route('categories.index') }}" class="btn btn-primary">Add table</a>
                                 </div>
-                            </div>
-                        @endforeach
-                    @endif
+                            @endforeach
+                        @endif
+                    </div>
                 </div>
-            </div>
-            
-              
             </div>
 
             <div class="col-md-4">
-                <div class="card">
-                    <div class="card-header">Assgin table</div>
-                    <div class="card-body">1</div>
-                    <div class="card-footer">1</div>
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item"><a class="nav-link active" data-toggle="tab" href="#tabs_1" role="tab">Dinein</a></li>
+                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tabs_2" role="tab">Takeaway</a></li>
+                    <li class="nav-item"><a class="nav-link" data-toggle="tab" href="#tabs_3" role="tab">Delivery</a></li>
+                </ul>
+                <div class="tab-content card">
+                    <div class="tab-pane card-body" id="tabs_1" role="tabpanel">
+                        <h2>Dinein</h2>
+                    </div>
+                    <div class="tab-pane card-body" id="tabs_2" role="tabpanel">
+                        <h2>Takeaway</h2>
+                    </div>
+                    <div class="tab-pane card-body" id="tabs_3" role="tabpanel">
+                        <h2>Delivery</h2>
+                    </div>
                 </div>
             </div>
         </div>
@@ -206,11 +248,12 @@ $('#area_name').change(function(){
                 $("button[type=submit]").prop('disabled', false);
                 if(response["status"] == true){
                     $("#slug").val(response["slug"]);
-                    $("#product_code").val(response["slug"]);
                 }
             }
         });
     })
+
+    
 
     $("#addingTableForm").submit(function(event){
         event.preventDefault();

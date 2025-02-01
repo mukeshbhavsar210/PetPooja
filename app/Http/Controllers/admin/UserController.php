@@ -7,9 +7,22 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Role;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
 class UserController extends Controller
 {
+
+    // public static function middleware(): array {
+    //     return [
+    //             new Middleware('permission:view users', only: ['index']),
+    //             new Middleware('permission:edit users', only: ['edit']),
+    //             //new Middleware('permission:create roles', only: ['create']),
+    //             //new Middleware('permission:delete roles', only: ['destroy']),
+    //         ];
+    // }
+
     public function index(Request $request){
         $users = User::latest();
 
@@ -65,6 +78,8 @@ class UserController extends Controller
 
     public function edit(Request $request, $id){
         $user = User::find($id);
+        $roles = Role::orderBy('name','ASC')->get();
+        $hasRoles = $user->roles()->pluck('id');
 
         if($user == null){
             $message = 'User not found';
@@ -73,7 +88,9 @@ class UserController extends Controller
         }
 
         return view('admin.users.edit', [
-            'user' => $user
+            'user' => $user,
+            'roles' => $roles,
+            'hasRoles' => $hasRoles,
         ]);
     }
 
@@ -109,6 +126,8 @@ class UserController extends Controller
             }
 
             $user->save();
+
+            $user->syncRoles($request->role);
 
             $message = 'User added successfully';
 

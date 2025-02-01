@@ -14,7 +14,7 @@ use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\admin\ProductImageController;
 use App\Http\Controllers\admin\ProductSubCategoryController;
 use App\Http\Controllers\admin\QrController;
-use App\Http\Controllers\admin\SeatingController;
+use App\Http\Controllers\admin\SeatController;
 use App\Http\Controllers\admin\SettingController;
 use App\Http\Controllers\admin\ShippingController;
 use App\Http\Controllers\admin\TempImagesController;
@@ -23,6 +23,9 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\admin\ArticleController;
+use App\Http\Controllers\admin\PermissionController;
+use App\Http\Controllers\admin\RoleController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
@@ -70,6 +73,9 @@ Route::post('checkout/razorpay',[CartController::class,'razorpayPayment'])->name
 Route::get('checkout/payment-success',[CartController::class,'razorpaySuccess'])->name('checkout.success');
 Route::get('checkout/payment-failed',[CartController::class,'razorpayFailed'])->name('checkout.failed');
 
+
+
+
 //User realted
 Route::group(['prefix' => 'account'], function(){
     Route::group(['middleware' => 'guest'], function(){
@@ -80,6 +86,14 @@ Route::group(['prefix' => 'account'], function(){
     });
 
     Route::group(['middleware' => 'auth'], function(){
+        //Users
+        Route::get('/users', [UserController::class, 'index'])->name('users.index');
+        Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
+        Route::post('/users', [UserController::class, 'store'])->name('users.store');
+        Route::get('/users/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
+        Route::post('/users/{id}', [UserController::class, 'update'])->name('users.update');
+        Route::delete('/users', [UserController::class, 'destroy'])->name('users.destroy');
+
         Route::get('/profile',[AuthController::class,'profile'])->name('account.profile');
         Route::post('/update-profile',[AuthController::class,'updateProfile'])->name('account.updateProfile');
         Route::post('/update-address',[AuthController::class,'updateAddress'])->name('account.updateAddress');
@@ -138,11 +152,11 @@ Route::group(['prefix' => 'admin',], function(){
         Route::post('/order/send-email/{id}', [OrderController::class, 'sendInvoiceEmail'])->name('orders.sendInvoiceEmail');
 
         //Table Routes
-        Route::get('/tables', [SeatingController::class, 'index'])->name('tables.index');
-        //Route::post('/seatings', [SeatingController::class, 'store'])->name('seatings.store');
-        Route::get('/tables/{table}/edit', [SeatingController::class, 'edit'])->name('tables.edit');
-        Route::put('/tables/{table}', [SeatingController::class, 'update'])->name('tables.update');
-        Route::delete('/tables/{table}', [SeatingController::class, 'destroy'])->name('tables.delete');
+        Route::get('/tables', [SeatController::class, 'index'])->name('tables.index');
+        Route::post('/seatings', [SeatController::class, 'store'])->name('seatings.store');
+        Route::get('/tables/{table}/edit', [SeatController::class, 'edit'])->name('tables.edit');
+        Route::put('/tables/{table}', [SeatController::class, 'update'])->name('tables.update');
+        Route::delete('/tables/{table}', [SeatController::class, 'destroy'])->name('tables.delete');
 
         //QR Codes Routes
         // Route::get('/qr_codes', [QrController::class, 'index'])->name('qr_codes.index');
@@ -155,6 +169,7 @@ Route::group(['prefix' => 'admin',], function(){
         Route::get('/products', [ProductController::class, 'index'])->name('products.index');
         Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
         Route::post('/products', [ProductController::class, 'store'])->name('products.store');
+        Route::post('/product_view', [ProductController::class, 'view_store'])->name('products.store');
         Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
         Route::put('/products/{product}', [ProductController::class, 'update'])->name('products.update');
         Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.delete');
@@ -182,12 +197,35 @@ Route::group(['prefix' => 'admin',], function(){
         Route::put('/coupons/{coupon}', [DiscountCodeController::class, 'update'])->name('coupons.update');
         Route::delete('/coupons/{coupon}', [DiscountCodeController::class, 'destroy'])->name('coupons.delete');
 
-        
+        //Permissions
+        Route::get('/permissions', [PermissionController::class, 'index'])->name('permissions.index');
+        Route::get('/permissions/create', [PermissionController::class, 'create'])->name('permissions.create');
+        Route::post('/permissions', [PermissionController::class, 'store'])->name('permissions.store');
+        Route::get('/permissions/{id}/edit', [PermissionController::class, 'edit'])->name('permissions.edit');
+        Route::post('/permissions/{id}', [PermissionController::class, 'update'])->name('permissions.update');
+        Route::delete('/permissions', [PermissionController::class, 'destroy'])->name('permissions.destroy');        
+
+        //Roles
+        Route::get('/roles', [RoleController::class, 'index'])->name('roles.index');
+        Route::get('/roles/create', [RoleController::class, 'create'])->name('roles.create');
+        Route::post('/roles', [RoleController::class, 'store'])->name('roles.store');
+        Route::get('/roles/{id}/edit', [RoleController::class, 'edit'])->name('roles.edit');
+        Route::post('/roles/{id}', [RoleController::class, 'update'])->name('roles.update');
+        Route::delete('/roles', [RoleController::class, 'destroy'])->name('roles.destroy');
+
+        //Articles
+        Route::get('/articles', [ArticleController::class, 'index'])->name('articles.index');
+        Route::get('/articles/create', [ArticleController::class, 'create'])->name('articles.create');
+        Route::post('/articles', [ArticleController::class, 'store'])->name('articles.store');
+        Route::get('/articles/{id}/edit', [ArticleController::class, 'edit'])->name('articles.edit');
+        Route::post('/articles/{id}', [ArticleController::class, 'update'])->name('articles.update');
+        Route::delete('/articles', [ArticleController::class, 'destroy'])->name('articles.destroy');
 
         //Users Routes
         Route::get('/users', [UserController::class, 'index'])->name('users.index');
         Route::get('/users/create', [UserController::class, 'create'])->name('users.create');
         Route::post('/users', [UserController::class, 'store'])->name('users.store');
+        Route::post('/user_role', [UserController::class, 'store_role'])->name('users.role');
         Route::get('/users/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
         Route::put('/users/{user}', [UserController::class, 'update'])->name('users.update');
         Route::delete('/users/{user}', [UserController::class, 'destroy'])->name('users.delete');
@@ -197,7 +235,6 @@ Route::group(['prefix' => 'admin',], function(){
         Route::post('/settings/website_information', [SettingController::class, 'websiteInformation'])->name('settings.websiteInformation');                
         Route::post('/settings/branch', [SettingController::class, 'branch'])->name('settings.branch');                
 
-       
         
         
         //Password

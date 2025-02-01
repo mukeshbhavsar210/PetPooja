@@ -5,6 +5,9 @@ namespace App\Http\Controllers\admin;
 use App\Http\Controllers\Controller;
 use App\Models\Area;
 use App\Models\Cart;
+use App\Models\Order;
+use App\Models\Product;
+use App\Models\Seat;
 use App\Models\Seating;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -12,24 +15,20 @@ use Illuminate\Support\Facades\Validator;
 
 class AreaController extends Controller {
     public function index(Request $request){
-        $areas = Area::orderBy('area_name','ASC')->with('seating')->get();
+        $areas = Area::orderBy('area_name','ASC')->get();
+        $seats = Seat::where('area_id',NULL)->with('order')->get();
 
-        // $pic = DB::table('product_images')
-        //             ->rightJoin('products','product_images.product_id','=','products.id')
-        //             ->select('product_images.*','product_images.product_id')
-        //             ->get();
+      
 
-        $seatings = DB::table('seatings')
-                    ->join('areas','seatings.area_id','=','areas.id')
-                    ->select('seatings.*','areas.area_name')
-                    //->where('areas.area_name','=','Chandkheda')
-                    ->get();
-
-        $totalTable = DB::table('seatings')
+        $totalTable = DB::table('seats')
                     ->select(DB::raw('count(*) as total_tables'))
                     ->get()[0]->total_tables;
 
-        $tableIndividual = DB::table('seatings')
+        $totalArea = DB::table('areas')
+                    ->select(DB::raw('count(*) as total_tables'))
+                    ->get()[0]->total_tables;
+
+        $tableIndividual = DB::table('seats')
                     //->join('areas','seatings.area_id','=','areas.id')
                     ->select(DB::raw('count(*) as number'), 'area_id')
                     ->groupBy('area_id')
@@ -38,9 +37,12 @@ class AreaController extends Controller {
         //$seatings = $seatings->paginate(10);
       
         $data['areas'] = $areas;
-        $data['seatings'] = $seatings;
+        $data['seats'] = $seats;
         $data['tableIndividual'] = $tableIndividual;
         $data['totalTable'] = $totalTable;
+        $data['totalArea'] = $totalArea;        
+               
+        //dd($seats);
 
         return view('admin.areas.list', $data);
     }
@@ -95,7 +97,7 @@ class AreaController extends Controller {
         ]);
        
         if ($validator->passes()) {
-            $menu = new Seating();
+            $menu = new Seat();
             $menu->area_id = $request->area;
             $menu->table_name = $request->table_name;
             $menu->slug = $request->slug;
@@ -119,7 +121,7 @@ class AreaController extends Controller {
     }
 
     public function productCodeExists($number){
-        return Seating::whereProductCode($number)->exists();
+        return Seat::whereProductCode($number)->exists();
     }
 
 

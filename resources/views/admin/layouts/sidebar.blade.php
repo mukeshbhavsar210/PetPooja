@@ -43,7 +43,7 @@
                 <li class="nav-item">
                     <a href="{{ route('areas.index') }}" class="nav-link {{ (\Request::route()->getName() == 'areas.index') ? 'active' : '' }}">
                         <i class="fa fa-home" aria-hidden="true"></i>
-                        <p>Areas</p>
+                        <p>Tables</p>
                     </a>
                 </li>
                 {{-- <li class="nav-item">
@@ -64,6 +64,18 @@
                         <p>Customers</p>
                     </a>
                 </li>
+                <li class="nav-item">
+                    <a href="{{ route('permissions.index') }}" class="nav-link">
+                        <i class="fa fa-cog" aria-hidden="true"></i>
+                        <p>Permission</p>
+                    </a>
+                </li>  
+                <li class="nav-item">
+                    <a href="{{ route('roles.index') }}" class="nav-link">
+                        <i class="fa fa-cog" aria-hidden="true"></i>
+                        <p>Roles</p>
+                    </a>
+                </li>  
                 <li class="nav-item">
                     <a href="{{ route('settings.index') }}" class="nav-link">
                         <i class="fa fa-cog" aria-hidden="true"></i>

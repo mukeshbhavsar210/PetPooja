@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Menu;
 use App\Models\Product;
 use App\Models\ProductImage;
+use App\Models\ProductView;
 use App\Models\TempImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -125,6 +126,34 @@ class ProductController extends Controller {
             'status' => true,
             'message' => 'Menu added successfully'
         ]);
+
+        } else {
+            return response()->json([
+                'status' => false,
+                'errors' => $validator->errors()
+            ]);
+        }
+    }
+
+    public function view_store(Request $request){
+        $rules = [
+                                    
+        ];
+
+        $validator = Validator::make($request->all(),$rules);
+
+        if ($validator->passes()) {
+            $product = new ProductView;
+            $product->toggleActive()->save();          
+            //$product->name = $request->view;  
+            //$product->save();
+
+            $request->session()->flash('success','View set successfully');
+
+            return response()->json([
+                'status' => true,
+                'message' => 'View set successfully'
+            ]);
 
         } else {
             return response()->json([

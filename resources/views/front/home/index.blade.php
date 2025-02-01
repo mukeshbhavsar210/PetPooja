@@ -39,9 +39,9 @@
                                     <div class="menu-product__item__name text-overflow">{{ $value->name }} </div>
                                     <div class="menu-product__item__price no-wrap">
                                         ₹ {{ $value->price }}
-                                        @if ($value->compare_price > 0)
+                                        {{-- @if ($value->compare_price > 0)
                                             <span class="text-underline"><del>₹ {{ $value->compare_price }}</del></span>
-                                        @endif
+                                        @endif --}}
                                     </div>
 
                                     <div class="product-details">
@@ -137,17 +137,14 @@
                 @if(session('cart'))
                     <div class="basket-page__content__products">
                         @foreach(session('cart') as $id => $details)
-                            {{-- @dd($details); --}}
                             @include('front.layouts.message')
 
                             {{-- <form action="" method="POST" id="diningForm" name="diningForm"> --}}
                             <form action="dining" method="POST" >
                                 @csrf
-
                                 <div class="row mb-2">
                                     <div class="col-7">
-                                        <p class="my-2">
-                                            <img style="width:35px; height:30px; border-radius:100px;" src="{{ asset('uploads/product/small/'.$details['product_image']['image']) }}" > 
+                                        <img style="width:35px; height:30px; border-radius:100px;" src="{{ asset('uploads/product/small/'.$details['product_image']['image']) }}" > 
                                         {{ $details['quantity'] }} x {{ $details['name'] }} </p>
                                         <input type="hidden" multiple name="name" value="{{ $details['name'] }}">
                                         <input type="hidden" multiple name="qty" value="{{ $details['quantity'] }}">
@@ -157,9 +154,7 @@
                                             <?php 
                                                 $isEmpty = $details['quantity'];   
                                             ?>
-
                                             <input type="hidden" multiple name="name" value="{{ $details['name'] }}">
-
                                             @if($isEmpty > 1)
                                                 <div class="input-group-btn">
                                                     <button class="btn--icon sub" data-id=" ">
@@ -181,7 +176,6 @@
                                                     </button>
                                                 </div>
                                             @endif
-
                                             <div class="input-group-btn">
                                                 <button class="btn--icon add" data-id=" ">
                                                     <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor"
@@ -201,32 +195,28 @@
                                         </div>
                                     </div>
                                     <?php $total += $details['price'] * $details['quantity'] ?>
-                                    {{-- <input type="number" value="{{ $details['quantity'] }}" class="form-control quantity" />
-                                    Rs.{{ $details['price'] * $details['quantity'] }} --}}
                                 </div>
                         @endforeach
                     </div>
                 @endif
-
                 <input type="hidden" name="total" value="{{ $total }}">
 
-            <div class="basket-page__content__total">
-                @if(!empty($details))
-                    <div>Total:</div>
-                    <div style="flex-grow: 1;"></div>
-                    ₹{{ $total }}
-                @else
-                    <div class="col-md-12">
-                        <div class="emptyBag">
-                            <img src="{{ asset('front-assets/images/empty_bag.png') }}">
-                            <h5>Nothing to order</h5>
+                <div class="basket-page__content__total">
+                    @if(!empty($details))
+                        <div>Total:</div>
+                        <div style="flex-grow: 1;"></div>
+                        ₹{{ $total }}
+                    @else
+                        <div class="col-md-12">
+                            <div class="emptyBag">
+                                <img src="{{ asset('front-assets/images/empty_bag.png') }}">
+                                <h5>Nothing to order</h5>
+                            </div>
                         </div>
-                    </div>
-                @endif
-            </div>
+                    @endif
+                </div>
 
-            @if(!empty($details))
-            
+                @if(!empty($details))
                 <div class="tab-content">
                     <div class="tab-pane p-3 active" id="tabs-1" role="tabpanel">
                         @include('front.home.tab_01')
@@ -239,8 +229,7 @@
                     <div class="tab-pane p-3" id="tabs-3" role="tabpanel">
                         @include('front.home.tab_03')
                     </div>
-                </div>
-                
+                </div>                
             @endif
         </div>
     </div>

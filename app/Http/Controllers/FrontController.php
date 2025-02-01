@@ -11,24 +11,25 @@ use Illuminate\Support\Facades\Session;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\ProductImage;
+use App\Models\Seat;
 use App\Models\Seating;
 use Illuminate\Support\Facades\DB;
 
 class FrontController extends Controller {
     public function show() {
         $products = Product::with('product_images')->orderBy('id','DESC')->get();
-        $areas = Area::orderBy('id','DESC')->with('seating')->orderBy('id','DESC')->get();
-        $seat_number = Seating::orderBy('id','DESC')->get();        
+        $areas = Area::orderBy('id','DESC')->with('seat')->orderBy('id','DESC')->get();
+        $seats = Seat::orderBy('id','DESC')->get();        
       
         //$cartCount = (count(Session::get('cart', array())));
 
         $data = [
             'products'=> $products,
             'areas'=> $areas,
-            'seat_number'=> $seat_number,
+            'seats'=> $seats,
         ];
 
-        //dd($results);
+        //dd($seats);
 
         return view('front.home.index', $data);        
     }
@@ -47,7 +48,7 @@ class FrontController extends Controller {
 
         $products = Product::orderBy('id','DESC')->get();
         $areas = Area::orderBy('id','DESC')->with('seating')->orderBy('id','DESC')->get();
-        $seat_number = Seating::orderBy('id','DESC')->get();
+        $seat_number = Seat::orderBy('id','DESC')->get();
 
         $products = Product::where('status',1);
 
@@ -69,25 +70,25 @@ class FrontController extends Controller {
         $areaSelected = ' ';
 
         $products = Product::orderBy('id','DESC')->get();
-        $seatings = Seating::orderBy("name","ASC")->with('area')->get(); 
+        $seats = Seat::orderBy("table_name","ASC")->with('area')->get(); 
         $areas = Area::where('status',1);
 
         if(!empty($areaSlug)) {
-            $restaurant = Area::where('slug',$areaSlug)->first();
-            $seatings = $seatings->where('area_id',$restaurant->id);
+            $restaurant = Area::where('area_slug',$areaSlug)->first();
+            $seats = $seats->where('area_id',$restaurant->id);
             $areaSelected = $restaurant->id;
         }
 
         //$seatings = $seatings->paginate(10);
         
-        $data['seatings'] = $seatings;  
+        $data['seats'] = $seats;  
         $data['products'] = $products;  
         $data['areas'] = $areas;        
         $data['areaSelected'] = $areaSelected;
         
         //dd($seatings);
 
-        return view('front.shop.test',$data);
+        return view('front.home.restaurant',$data);
     }
 
 
@@ -95,7 +96,7 @@ class FrontController extends Controller {
         $product = Product::with('product_images')->find($id);
         
 
-        //dd($product->product_images->toArray());
+        //dd($product->seat->toArray());
 
         if (!$product) {
             abort(404);
@@ -111,6 +112,7 @@ class FrontController extends Controller {
                     "name" => $product->name,
                     "quantity" => 1,
                     "price" => $product->price,
+                    //"seat" => $product->seat,
                     "product_image" => $product->product_images->first()->toArray(),
                 ]
             ];
@@ -129,6 +131,7 @@ class FrontController extends Controller {
             "name" => $product->name,
             "quantity" => 1,
             "price" => $product->price,
+            //"seat" => $product->seat,
             "product_image" => $product->product_images->first()->toArray(),
         ];
 
@@ -238,10 +241,10 @@ class FrontController extends Controller {
         if ($validator->passes()) {
             $dinein = new Order();
             $dinein->session_id = session('session_id'); 
+            $dinein->seat_id = $request->table_number;
             $dinein->order_type = $request->order_type;
             $dinein->notes = $request->notes;
             $dinein->ready_time = $request->ready_time;
-            $dinein->table_number = $request->table_number;
             $dinein->total = $request->total;
             $dinein->save();
 
