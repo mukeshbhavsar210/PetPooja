@@ -12,6 +12,9 @@
                     @endcan    --}}
             </div>
             <div class="col-sm-3">
+                @can('create roles')
+                    <a href="{{ route('roles.create') }}" class="btn btn-primary">Create</a>    
+                @endcan
                 <button type="button" class="btn btn-primary float-right" data-toggle="modal" data-target="#createRole">Create Role</button>
             </div>
         </div>

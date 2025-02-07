@@ -235,8 +235,6 @@ Route::group(['prefix' => 'admin',], function(){
         Route::post('/settings/website_information', [SettingController::class, 'websiteInformation'])->name('settings.websiteInformation');                
         Route::post('/settings/branch', [SettingController::class, 'branch'])->name('settings.branch');                
 
-        
-        
         //Password
         Route::get('/change-password', [SettingController::class, 'showChangePasswordForm'])->name('admin.showChangePasswordForm');
         Route::post('/process-change-password', [SettingController::class, 'processChangePassword'])->name('admin.processChangePassword');

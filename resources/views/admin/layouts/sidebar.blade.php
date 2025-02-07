@@ -38,7 +38,7 @@
                     <a href="{{ route('products.index') }}" class="nav-link {{ (\Request::route()->getName() == 'products.index') ? 'active' : '' }}">
                         <i class="fa fa-home" aria-hidden="true"></i>
                         <p>Menu Item</p>
-                        </a>
+                    </a>
                 </li>
                 <li class="nav-item">
                     <a href="{{ route('areas.index') }}" class="nav-link {{ (\Request::route()->getName() == 'areas.index') ? 'active' : '' }}">
@@ -59,12 +59,6 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('users.index') }}" class="nav-link">
-                        <i class="nav-icon  fas fa-users"></i>
-                        <p>Customers</p>
-                    </a>
-                </li>
-                <li class="nav-item">
                     <a href="{{ route('permissions.index') }}" class="nav-link">
                         <i class="fa fa-cog" aria-hidden="true"></i>
                         <p>Permission</p>
@@ -75,16 +69,22 @@
                         <i class="fa fa-cog" aria-hidden="true"></i>
                         <p>Roles</p>
                     </a>
-                </li>  
+                </li> 
                 <li class="nav-item">
                     <a href="{{ route('settings.index') }}" class="nav-link">
                         <i class="fa fa-cog" aria-hidden="true"></i>
                         <p>Settings</p>
                     </a>
-                </li>               
+                </li>  
+                <li class="nav-item">
+                    <a href="{{ route('users.index') }}" class="nav-link">
+                        <i class="fa fa-cog" aria-hidden="true"></i>
+                        <p>Users</p>
+                    </a>
+                </li> 
                 <li class="nav-item">
                     <a href="{{ route('pages.index') }}" class="nav-link">
-                        <i class="nav-icon  far fa-file-alt"></i>
+                        <i class="fa fa-cog" aria-hidden="true"></i>
                         <p>Pages</p>
                     </a>
                 </li>

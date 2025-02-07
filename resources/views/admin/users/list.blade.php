@@ -37,37 +37,35 @@
                             <div class="card-body">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <div class="mb-3">
+                                        <div class="form-group mb-3">
                                             <label for="name">Name</label>
                                             <input type="text" name="name" id="name" class="form-control" placeholder="Name">
                                             <p></p>
                                         </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="mb-3">
+                                        <div class="form-group mb-3">
                                             <label for="email">Email</label>
                                             <input type="email" name="email" id="email" class="form-control" placeholder="Email">
                                             <p></p>
                                         </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="mb-3">
+                                        <div class="form-group mb-3">
                                             <label for="password">Password</label>
                                             <input type="password" name="password" id="password" class="form-control" placeholder="Password">
                                             <p></p>
                                         </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="mb-3">
-                                            <label for="role">Role</label>
-                                            <select name="role" id="role" class="form-control">
-                                                <option value="">Select Role</option>
-                                                <option value="Admin">Admin</option>
-                                                <option value="Branch_head">Branch Head</option>
-                                                <option value="Chef">Chef</option>
-                                                <option value="Waiter">Waiter</option>
-                                            </select>
+                                        <div class="form-group mb-3">
+                                            <label for="confirm_password">Confirm Password</label>
+                                            <input type="password" name="confirm_password" id="confirm_password" class="form-control" placeholder="Confirm Password">
                                             <p></p>
+                                        </div>
+                                        <div class="row">
+                                            @if($roles->isNotEmpty())
+                                                @foreach ($roles as $value)
+                                                    <div class="col-md-4">
+                                                        <input  type="checkbox" id="role-{{ $value->id }}" class="rounded" name="role[]" value="{{ $value->name }}" />
+                                                        <label for="role-{{ $value->id }}">{{ $value->name }}</label>
+                                                    </div>        
+                                                @endforeach
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
